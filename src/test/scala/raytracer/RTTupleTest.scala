@@ -15,6 +15,7 @@
 
 package raytracer
 
+import org.omg.CORBA.Environment
 import org.scalatest.FunSuite
 
 class RTTupleTest extends FunSuite {
@@ -53,5 +54,67 @@ class RTTupleTest extends FunSuite {
   }
   test("RTTuple.test_vector_vector_sub") {
     assert((Vector(3, 2, 1) - Vector(5, 6, 7)) === Vector(-2, -4, -6))
+  }
+  test("RTTuple.test_vector_sub_zero") {
+    assert((Vector(0, 0, 0) - Vector(1, -2, 3)) === Vector(-1, 2, -3))
+  }
+  test("RTTuple.test_tuple_negate") {
+    val t = new RTTuple(1, -2, 3 ,-4)
+    assert(t.negate() === new RTTuple(-1, 2, -3, 4))
+  }
+  test("RTTuple.test_tuple_multiply1") {
+    val t = new RTTuple(1, -2, 3 ,-4)
+    assert(t*3.5 === new RTTuple(3.5, -7, 10.5, -14))
+  }
+  test("RTTuple.test_tuple_multiply2") {
+    val t = new RTTuple(1, -2, 3 ,-4)
+    assert(t*0.5 === new RTTuple(0.5, -1, 1.5, -2))
+  }
+  test("RTTuple.test_tuple_divide1") {
+    val t = new RTTuple(1, -2, 3 ,-4)
+    assert(t/2 === new RTTuple(0.5, -1, 1.5, -2))
+  }
+  test("RTTuple.test_vector_magnitude1") {
+    assert(Vector(1, 0, 0).magnitude() === 1)
+  }
+  test("RTTuple.test_vector_magnitude2") {
+    assert(Vector(0, 1, 0).magnitude() === 1)
+  }
+  test("RTTuple.test_vector_magnitude3") {
+    assert(Vector(0, 0, 1).magnitude() === 1)
+  }
+  test("RTTuple.test_vector_magnitude4") {
+    assert(Vector(1, 2, 3).magnitude() === math.sqrt(14))
+  }
+  test("RTTuple.test_vector_magnitude5") {
+    assert(Vector(-1, -2, -3).magnitude() === math.sqrt(14))
+  }
+  test("RTTuple.test_vector_normalise1") {
+    assert(Vector(4, 0, 0).normalise() === Vector(1, 0, 0))
+  }
+  test("RTTuple.test_vector_normalise2") {
+    assert(Vector(1, 2, 3).normalise() === Vector(0.26726, 0.53452, 0.80178))
+  }
+  test("RTTuple.test_vector_normalise_magnitude") {
+    assert(Vector(1, 2, 3).normalise().magnitude() === 1 )
+  }
+  test("RTTuple.test_vector_dot") {
+    assert((Vector(1, 2, 3) dot Vector(2,3,4)) === 20)
+  }
+  test("RTTuple.test_vector_cross1") {
+    assert((Vector(1, 2, 3) cross Vector(2,3,4)) === Vector(-1, 2, -1))
+  }
+  test("RTTuple.test_vector_cross2") {
+    assert((Vector(2,3,4) cross Vector(1, 2, 3) ) === Vector(1, -2, 1))
+  }
+  test("RTTuple.test_projectile1") {
+    val p = Projectile(Point(0, -1, 0), Vector(1, 0, 0).normalise())
+    val e = new ParticleEnvironment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0))
+    assert(e.ticksToLand(p, 0) === 0)
+  }
+  test("RTTuple.test_projectile2") {
+    val p = Projectile(Point(0, 1, 0), Vector(1, 0, 0).normalise())
+    val e = new ParticleEnvironment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0))
+    assert(e.ticksToLand(p, 0) === 5)
   }
 }

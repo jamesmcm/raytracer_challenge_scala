@@ -34,7 +34,18 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double){
 
   def -(that: RTTuple): RTTuple = new RTTuple(x - that.x, y - that.y, z - that.z, w - that.w)
 
+  def *(that: Double): RTTuple = new RTTuple(x * that, y * that, z * that, w * that)
+
+  def /(that: Double): RTTuple = new RTTuple(x / that, y / that, z / that, w / that)
+
   def negate(): RTTuple = new RTTuple(-x, -y, -z, -w)
+
+  def magnitude(): Double = Math.sqrt(x*x  + y*y + z*z + w*w)
+
+  def normalise(): RTTuple = this / this.magnitude()
+
+  def dot(that: RTTuple): Double = x*that.x + y*that.y + z*that.z + w*that.w
+  def cross(that: RTTuple): RTTuple = Vector(y*that.z - z*that.y, z*that.x - x*that.z, x*that.y - y*that.x)
 
 }
 
