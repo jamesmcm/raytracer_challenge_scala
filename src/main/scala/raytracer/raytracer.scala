@@ -19,4 +19,11 @@ package object raytracer {
   def doubleEq(x: Double, y: Double): Boolean = {
     if (Math.abs(x-y) <= EPSILON) true else false
   }
+
+  def stringToFile(filename: String, output: String): Unit = {
+    import java.io._
+    val pw = new PrintWriter(new File(filename))
+    pw.write(output)
+    pw.close()
+  }
 }

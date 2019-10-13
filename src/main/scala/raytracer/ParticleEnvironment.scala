@@ -29,6 +29,33 @@ class ParticleEnvironment(val gravity: RTTuple, wind: RTTuple) {
       case _ => ticksToLand(tick(p), acc + 1)
     }
   }
+
+  @tailrec
+  final def ticksInBoundsToCanvas(canvas: Canvas, p: Projectile, col: Colour): Unit = {
+    p.position.toTuple match {
+      case (x, y, z, w) if Math.round(x).toInt >= canvas.width || Math.round(x).toInt < 0 => ()
+      case (x, y, z, w) if Math.round(y).toInt >= canvas.height || Math.round(y).toInt < 0 => ()
+      case (x, y, z, w) => {canvas.writePixel(Math.round(x).toInt, canvas.height - Math.round(y).toInt, col); ticksInBoundsToCanvas(canvas, tick(p), col);}
+    }
+  }
+
+}
+
+object ParticleEnvironment{
+
+  def apply(gravity: RTTuple, wind: RTTuple): ParticleEnvironment = new ParticleEnvironment(gravity, wind)
+
+  def drawParticleTest(): Unit = {
+    val start = Point(0, 1, 0)
+    val velocity = Vector(1, 1.8, 0).normalise() * 11.25
+    val p = Projectile(start, velocity)
+
+    val e = ParticleEnvironment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0))
+    val canvas = Canvas(900, 500)
+
+    e.ticksInBoundsToCanvas(canvas, p, Colour(1, 0, 0))
+    stringToFile("test1.ppm", canvas.toPPM)
+  }
 }
 
 final case class Projectile(position: RTTuple, velocity: RTTuple)

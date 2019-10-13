@@ -16,5 +16,6 @@
 package raytracer
 
 object Main extends App {
+  ParticleEnvironment.drawParticleTest()
 }
 

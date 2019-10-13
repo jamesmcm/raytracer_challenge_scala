@@ -21,6 +21,11 @@ class Canvas(val width: Int, val height: Int){
   var pixels: Array[Array[Colour]] = Array.fill(height)(Array.fill(width)(Colour(0,0,0)))
   val maxcol: Int = 255
 
+  def fillCanvas(c: Colour): Unit = {
+    val _ = (0 until height).map((y: Int) => (0 until width).map((x: Int) => writePixel(x, y, c)))
+    ()
+  }
+
   def writePixel(x: Int, y: Int, c: Colour): Unit = {
     // TODO: return new canvas
     pixels(y)(x) = c
@@ -43,13 +48,23 @@ class Canvas(val width: Int, val height: Int){
           scaleAndClamp
         ).mkString(" ")
       ).mkString(" ")
-    ).mkString("\n")
+    ).map(Canvas.cutLine70Chars).mkString("\n") + "\n"
   }
 
-  def cutTo70Chars(s: String): String = {
+}
+
+object Canvas{
+  def apply(width: Int, height: Int): Canvas = new Canvas(width, height)
+
+  def replaceLastSpaceWithNewline(s: String): String = {
+    // Only remove if >= 70 chars
     s.length match {
-      case x if x > 70 => s
+      case x if x >= 70 => s.slice(0, s.length - (s.reverse.indexOf(" ") + 1)) + "\n" + s.slice(s.length - (s.reverse.indexOf(" ")), s.length)
       case _ => s
     }
+  }
+
+  def cutLine70Chars(s: String): String = {
+    (0 to (s.length/70)).map((x: Int) => s.slice(70*x, 70*(x + 1))).map(replaceLastSpaceWithNewline).mkString("")
   }
 }
