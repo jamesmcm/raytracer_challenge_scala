@@ -131,4 +131,23 @@ class MatrixTest extends FunSuite {
 
     assert(m1 * Matrix.getIdentityMatrix(4) === m1)
   }
+
+  test("Matrix.test_transpose1") {
+    val s1: String = """| 0 | 9 | 3 | 0 |
+                        | 9 | 8 | 0 | 8 |
+                        | 1 | 8 | 5 | 3 |
+                        | 0 | 0 | 5 | 8 |""".stripMargin
+    val res: String = """| 0 | 9 | 1 | 0 |
+                        | 9 | 8 | 8 | 0 |
+                        | 3 | 0 | 5 | 5 |
+                        | 0 | 8 | 3 | 8 |""".stripMargin
+
+    val m1: Matrix = Matrix.matrixFromString(s1)
+    val mres: Matrix = Matrix.matrixFromString(res)
+
+    assert(m1.transpose === mres)
+  }
+  test("Matrix.test_transpose2") {
+    assert(Matrix.getIdentityMatrix(4).transpose === Matrix.getIdentityMatrix(4))
+  }
   }

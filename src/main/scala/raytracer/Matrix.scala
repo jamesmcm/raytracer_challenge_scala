@@ -69,6 +69,10 @@ class Matrix (val m: Array[Array[Double]]){
     new RTTuple(args(0), args(1), args(2), args(3))
   }
 
+  def transpose: Matrix = {
+    new Matrix (m(0).indices.map(col).toArray)
+  }
+
   final override def hashCode: Int = m.##
 
 }
