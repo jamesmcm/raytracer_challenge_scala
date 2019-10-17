@@ -18,7 +18,7 @@ package raytracer
 import org.scalatest.FunSuite
 
 class MatrixTest extends FunSuite {
-  test("Colour.test_construction1") {
+  test("Matrix.test_construction1") {
     val s: String =
       """| 1 | 2 | 3 | 4 |
          | 5.5 | 6.5 | 7.5 | 8.5 |
@@ -29,7 +29,7 @@ class MatrixTest extends FunSuite {
     assert(m.m(0)(0) === 1 && m.m(0)(3) === 4 && m.m(1)(0) === 5.5 && m.m(1)(2) === 7.5 &&
       m.m(2)(2) === 11 && m.m(3)(0) === 13.5 && m.m(3)(2) === 15.5)
   }
-  test("Colour.test_construction2") {
+  test("Matrix.test_construction2") {
     val s: String =
       """| -3 | 5 |
          | 1 | -2 |""".stripMargin
@@ -37,7 +37,7 @@ class MatrixTest extends FunSuite {
     val m: Matrix = Matrix.matrixFromString(s)
     assert(m(0,0) === -3 && m(0,1) === 5 && m(1,0) === 1 && m(1,1) === -2)
   }
-  test("Colour.test_construction3") {
+  test("Matrix.test_construction3") {
     val s: String =
       """|-3|5|0|
          |1|-2|-7|
@@ -46,7 +46,7 @@ class MatrixTest extends FunSuite {
     val m: Matrix = Matrix.matrixFromString(s)
     assert(m(0,0) === -3 && m(1,1) === -2 && m(2,2) === 1)
   }
-  test("Colour.test_equality1") {
+  test("Matrix.test_equality1") {
     val s1: String = """| 1 | 2 | 3 | 4 |
 | 5 | 6 | 7 | 8 |
 | 9 | 8 | 7 | 6 |
@@ -61,7 +61,7 @@ class MatrixTest extends FunSuite {
     val m2: Matrix = Matrix.matrixFromString(s2)
     assert(m1 === m2)
   }
-  test("Colour.test_equality2") {
+  test("Matrix.test_equality2") {
     val s1: String = """| 1 | 2 | 3 | 4 |
                         | 5 | 6 | 7 | 8 |
                         | 9 | 8 | 7 | 6 |
@@ -75,5 +75,60 @@ class MatrixTest extends FunSuite {
     val m1: Matrix = Matrix.matrixFromString(s1)
     val m2: Matrix = Matrix.matrixFromString(s2)
     assert(!(m1 === m2))
+  }
+  test("Matrix.test_multiply1") {
+    val s1: String = """| 1 | 2 | 3 | 4 |
+                        | 5 | 6 | 7 | 8 |
+                        | 9 | 8 | 7 | 6 |
+                        | 5 | 4 | 3 | 2 |""".stripMargin
+
+    val s2: String = """| -2 | 1 | 2 | 3 |
+                        | 3 | 2 | 1 | -1 |
+                        | 4 | 3 | 6 | 5 |
+                        | 1 | 2 | 7 | 8 |""".stripMargin
+
+    val res: String = """| 20 | 22 | 50 | 48 |
+                        | 44 | 54 | 114 | 108 |
+                        | 40 | 58 | 110 | 102 |
+                        | 16 | 26 | 46 | 42 |""".stripMargin
+
+    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m2: Matrix = Matrix.matrixFromString(s2)
+    val mres: Matrix = Matrix.matrixFromString(res)
+
+    assert((m1*m2) === mres)
+  }
+  test("Matrix.test_multiply2") {
+    val s1: String = """| 1 | 2 | 3 | 4 |
+                        | 2 | 4 | 4 | 2 |
+                        | 8 | 6 | 4 | 1 |
+                        | 0 | 0 | 0 | 1 |""".stripMargin
+
+    val m1: Matrix = Matrix.matrixFromString(s1)
+
+    val tuple1: RTTuple = Point(1, 2, 3)
+    val res: RTTuple = Point(18, 24, 33)
+
+    assert((m1 tupleMult tuple1) === res)
+  }
+  test("Matrix.test_identitymatrix1") {
+    val s1: String = """| 1 | 0 | 0 | 0 |
+                        | 0 | 1 | 0 | 0 |
+                        | 0 | 0 | 1 | 0 |
+                        | 0 | 0 | 0 | 1 |""".stripMargin
+
+    val m1: Matrix = Matrix.matrixFromString(s1)
+
+    assert(m1 === Matrix.getIdentityMatrix(4))
+  }
+  test("Matrix.test_identitymatrix2") {
+    val s1: String = """| 0 | 1 | 2 | 4 |
+                        | 1 | 2 | 4 | 8 |
+                        | 2 | 4 | 8 | 16 |
+                        | 4 | 8 | 16 | 32 |""".stripMargin
+
+    val m1: Matrix = Matrix.matrixFromString(s1)
+
+    assert(m1 * Matrix.getIdentityMatrix(4) === m1)
   }
   }
