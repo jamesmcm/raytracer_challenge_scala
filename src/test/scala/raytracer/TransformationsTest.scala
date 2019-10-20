@@ -51,4 +51,16 @@ class TransformationsTest extends FunSuite {
   test("Matrix.test_halfquarter_inverse_xrotation") {
     assert(RotationX(math.Pi / 4).inverse.tupleMult(Point(0, 1, 0)) === Point(0, math.sqrt(2)/2, -math.sqrt(2)/2))
   }
+  test("Matrix.test_halfquarter_yrotation") {
+    assert(RotationY(math.Pi / 4).tupleMult(Point(0, 0, 1)) === Point(math.sqrt(2)/2, 0, math.sqrt(2)/2))
+  }
+  test("Matrix.test_fullquarter_yrotation") {
+    assert(RotationY(math.Pi / 2).tupleMult(Point(0, 0, 1)) === Point(1, 0, 0))
+  }
+  test("Matrix.test_halfquarter_zrotation") {
+    assert(RotationZ(math.Pi / 4).tupleMult(Point(0, 1, 0)) === Point(-math.sqrt(2)/2, math.sqrt(2)/2, 0))
+  }
+  test("Matrix.test_fullquarter_zrotation") {
+    assert(RotationZ(math.Pi / 2).tupleMult(Point(0, 1, 0)) === Point(-1, 0, 0))
+  }
 }

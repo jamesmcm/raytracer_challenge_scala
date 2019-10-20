@@ -78,3 +78,52 @@ object RotationX {
   }
 }
 
+object RotationY {
+  def apply(r: Double): Matrix = {
+    new Matrix(
+      Matrix.getIdentityMatrix(4).m.zipWithIndex.map(
+        (a: (Array[Double], Int)) => (a._1.zipWithIndex.map(
+          (b: (Double, Int)) => a._2 match {
+            case 0 =>  b._2 match {
+              case 0 => math.cos(r)
+              case 2 => math.sin(r)
+              case _ => b._1
+            }
+            case 2 =>  b._2 match {
+              case 1 => -1 * math.sin(r)
+              case 2 => math.cos(r)
+              case _ => b._1
+            }
+            case _ => b._1
+          }
+        )
+          )
+      )
+    )
+  }
+}
+
+object RotationZ {
+  def apply(r: Double): Matrix = {
+    new Matrix(
+      Matrix.getIdentityMatrix(4).m.zipWithIndex.map(
+        (a: (Array[Double], Int)) => (a._1.zipWithIndex.map(
+          (b: (Double, Int)) => a._2 match {
+            case 0 =>  b._2 match {
+              case 0 => math.cos(r)
+              case 1 => -math.sin(r)
+              case _ => b._1
+            }
+            case 1 =>  b._2 match {
+              case 0 => math.sin(r)
+              case 1 => math.cos(r)
+              case _ => b._1
+            }
+            case _ => b._1
+          }
+        )
+          )
+      )
+    )
+  }
+}
