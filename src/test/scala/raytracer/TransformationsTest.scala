@@ -63,4 +63,59 @@ class TransformationsTest extends FunSuite {
   test("Matrix.test_fullquarter_zrotation") {
     assert(RotationZ(math.Pi / 2).tupleMult(Point(0, 1, 0)) === Point(-1, 0, 0))
   }
+
+  test("Matrix.test_shearing_x_y") {
+    assert(Shearing(1, 0, 0, 0, 0, 0).tupleMult(Point(2, 3, 4)) === Point(5, 3, 4))
+  }
+  test("Matrix.test_shearing_x_z") {
+    assert(Shearing(0, 1, 0, 0, 0, 0).tupleMult(Point(2, 3, 4)) === Point(6, 3, 4))
+  }
+  test("Matrix.test_shearing_y_x") {
+    assert(Shearing(0, 0, 1, 0, 0, 0).tupleMult(Point(2, 3, 4)) === Point(2, 5, 4))
+  }
+  test("Matrix.test_shearing_y_z") {
+    assert(Shearing(0, 0, 0, 1, 0, 0).tupleMult(Point(2, 3, 4)) === Point(2, 7, 4))
+  }
+  test("Matrix.test_shearing_z_x") {
+    assert(Shearing(0, 0, 0, 0, 1, 0).tupleMult(Point(2, 3, 4)) === Point(2, 3, 6))
+  }
+  test("Matrix.test_shearing_z_y") {
+    assert(Shearing(0, 0, 0, 0, 0, 1).tupleMult(Point(2, 3, 4)) === Point(2, 3, 7))
+  }
+
+  test("Matrix.test_transformations_sequence") {
+    val p: RTTuple = Point(1, 0, 1)
+    val p2: RTTuple = RotationX(Math.PI / 2).tupleMult(p)
+    val p3: RTTuple = Scaling(5, 5, 5).tupleMult(p2)
+    val p4: RTTuple = Translation(10, 5, 7).tupleMult(p3)
+
+    assert(p2 === Point(1, -1, 0) && p3 === Point(5, -5, 0) && p4 === Point(15, 0, 7))
+  }
+  test("Matrix.test_transformations_chained") {
+    val p: RTTuple = Point(1, 0, 1)
+    val A: Matrix = RotationX(Math.PI / 2)
+    val B: Matrix = Scaling(5, 5, 5)
+    val C: Matrix = Translation(10, 5, 7)
+
+    assert((C*B*A).tupleMult(p) === Point(15, 0, 7))
+  }
+
+  test("Matrix.test_transformations_chained_matrix") {
+    val s1: String = """| 1 | 1 | 1 | 1 |
+                        | 0 | 0 | 0 | 0 |
+                        | 1 | 1 | 1 | 1 |
+                        | 1 | 1 | 1 | 1 |""".stripMargin
+    val res: String = """| 15 | 15 | 15 | 15 |
+                        | 0 | 0 | 0 | 0 |
+                        | 7 | 7 | 7 | 7 |
+                        | 1 | 1 | 1 | 1 |""".stripMargin
+    val m1: Matrix = Matrix.matrixFromString(s1)
+    val mres: Matrix = Matrix.matrixFromString(res)
+
+    val m2: Matrix = m1.rotateX(math.Pi/2).scale(5,5,5).translate(10, 5, 7)
+
+    println(m2)
+    assert(m2 === mres)
+  }
+
 }

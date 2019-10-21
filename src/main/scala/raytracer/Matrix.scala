@@ -63,6 +63,10 @@ class Matrix (val m: Array[Array[Double]]) {
     )
   }
 
+  final override def toString: String = {
+    m.map((x: Array[Double]) => "| " + x.mkString(" | ") + " |").mkString("\n")
+  }
+
   def tupleMult(that: RTTuple): RTTuple = {
     // TODO: Break up matrix multiplication function so we don't need to instantiate Matrix here
     val args: Array[Double] = (this * (new Matrix(Array(Array(that.x), Array(that.y), Array(that.z), Array(that.w))))).m.flatten
@@ -110,6 +114,13 @@ class Matrix (val m: Array[Array[Double]]) {
   }
 
   def isInvertible: Boolean = !(determinant === 0)
+
+  def rotateX(r: Double): Matrix = RotationX(r) * this
+  def rotateY(r: Double): Matrix = RotationY(r) * this
+  def rotateZ(r: Double): Matrix = RotationZ(r) * this
+  def translate(x: Double, y: Double, z: Double): Matrix = Translation(x, y, z) * this
+  def scale(x: Double, y: Double, z: Double): Matrix = Scaling(x, y, z) * this
+  def shear(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix = Shearing(xy, xz, yx, yz, zx, zy) * this
 
   final override def hashCode: Int = m.##
 

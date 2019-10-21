@@ -127,3 +127,33 @@ object RotationZ {
     )
   }
 }
+
+object Shearing {
+  def apply(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix = {
+    new Matrix(
+      Matrix.getIdentityMatrix(4).m.zipWithIndex.map(
+        (a: (Array[Double], Int)) => (a._1.zipWithIndex.map(
+          (b: (Double, Int)) => a._2 match {
+            case 0 =>  b._2 match {
+              case 1 => xy
+              case 2 => xz
+              case _ => b._1
+            }
+            case 1 =>  b._2 match {
+              case 0 => yx
+              case 2 => yz
+              case _ => b._1
+            }
+            case 2 =>  b._2 match {
+              case 0 => zx
+              case 1 => zy
+              case _ => b._1
+            }
+            case _ => b._1
+          }
+        )
+          )
+      )
+    )
+  }
+}
