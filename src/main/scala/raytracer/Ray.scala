@@ -15,18 +15,14 @@
 
 package raytracer
 
-object Main extends App {
-  // ParticleEnvironment.drawParticleTest()
-  drawClock(200)
+import apple.laf.JRSUIConstants.Direction
 
-  def drawClock(radius: Double): Unit = {
-    val canvas = Canvas(900, 500)
-    val pointList: List[RTTuple] = List.fill(12)(Point(0, radius, 0)).zipWithIndex.map(
-      (x: (RTTuple, Int)) => RotationZ(x._2 * (math.Pi / 6)).tupleMult(x._1))
-
-    pointList.foreach((t: RTTuple) => canvas.writePixel((canvas.width/2) + math.round(t.x).toInt, (canvas.height/2) - math.round(t.y).toInt, Colour(1,0,0)))
-
-    stringToFile("clock.ppm", canvas.toPPM)
+class Ray(val origin: RTTuple, val direction: RTTuple) {
+  def position(t: Double): RTTuple = {
+    origin + (direction * t)
   }
 }
 
+object Ray{
+  def apply(origin: RTTuple,  direction: RTTuple): Ray = new Ray(origin, direction)
+}

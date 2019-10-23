@@ -15,18 +15,26 @@
 
 package raytracer
 
-object Main extends App {
-  // ParticleEnvironment.drawParticleTest()
-  drawClock(200)
+import org.scalatest.FunSuite
 
-  def drawClock(radius: Double): Unit = {
-    val canvas = Canvas(900, 500)
-    val pointList: List[RTTuple] = List.fill(12)(Point(0, radius, 0)).zipWithIndex.map(
-      (x: (RTTuple, Int)) => RotationZ(x._2 * (math.Pi / 6)).tupleMult(x._1))
+class RayTest extends FunSuite {
+  test("Ray.test_creation") {
+    val origin: RTTuple = Point(1, 2, 3)
+    val direction: RTTuple = Vector(4, 5, 6)
+    val r: Ray = Ray(origin, direction)
 
-    pointList.foreach((t: RTTuple) => canvas.writePixel((canvas.width/2) + math.round(t.x).toInt, (canvas.height/2) - math.round(t.y).toInt, Colour(1,0,0)))
-
-    stringToFile("clock.ppm", canvas.toPPM)
+    assert(r.origin === origin && r.direction === direction)
   }
-}
 
+  test("Ray.test_position") {
+    val origin: RTTuple = Point(2, 3, 4)
+    val direction: RTTuple = Vector(1, 0, 0)
+    val r: Ray = Ray(origin, direction)
+
+    assert(r.position(0) === Point(2, 3, 4) &&
+      r.position(1) === Point(3, 3, 4) &&
+      r.position(-1) === Point(1, 3, 4) &&
+      r.position(2.5) === Point(4.5, 3, 4))
+  }
+
+}
