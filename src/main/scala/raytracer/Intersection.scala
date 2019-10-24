@@ -15,18 +15,16 @@
 
 package raytracer
 
-import apple.laf.JRSUIConstants.Direction
+class Intersection(val t: Double, val shape: SpaceObject) {
 
-class Ray(val origin: RTTuple, val direction: RTTuple) {
-  def position(t: Double): RTTuple = {
-    origin + (direction * t)
-  }
-
-  def transform(m: Matrix): Ray = {
-    Ray(m.tupleMult(origin), m.tupleMult(direction))
-  }
 }
 
-object Ray{
-  def apply(origin: RTTuple,  direction: RTTuple): Ray = new Ray(origin, direction)
+object Intersection {
+  def intersections(is: Intersection*): Seq[Intersection] = {
+    is
+  }
+  def hit(xs: Seq[Intersection]): Intersection = {
+    // TODO: Use better WartRemover hack
+    xs.filter(_.t>0).foldLeft(new Intersection(99999999, Sphere.unitSphere()))((s: Intersection, x: Intersection) => if (x.t < s.t) x else s )
+  }
 }
