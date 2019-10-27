@@ -25,6 +25,10 @@ class Colour(val red: Double, val green: Double, val blue: Double){
     }
   }
 
+  final def ===(that: Colour): Boolean = {
+    doubleEq(that.red, red) && doubleEq(that.green, green) && doubleEq(that.blue, blue)
+  }
+
   final override def hashCode: Int = (red, green, blue).##
 
   def +(that: Colour): Colour = Colour(red + that.red, green + that.green, blue + that.blue)
@@ -41,4 +45,5 @@ class Colour(val red: Double, val green: Double, val blue: Double){
 
 object Colour {
   def apply(red: Double, green: Double, blue: Double): Colour = new Colour(red, green, blue)
+  def black: Colour = new Colour(0,0,0)
 }

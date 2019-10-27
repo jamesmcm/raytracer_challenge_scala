@@ -15,7 +15,9 @@
 
 package raytracer
 
-class Sphere(val origin: RTTuple, val radius: Double, val transform: Matrix) extends SpaceObject {
+class Sphere(val origin: RTTuple, val radius: Double, val transform: Matrix, val material: Material) extends SpaceObject {
+  // Note origin and radius always assumed as unit sphere
+  // Use setTransform for transformations
 
   def intersect(r: Ray): Seq[Intersection] = {
     val (discriminant, a ,b): (Double, Double, Double) = getDiscriminant(r.transform(transform.inverse))
@@ -37,14 +39,25 @@ class Sphere(val origin: RTTuple, val radius: Double, val transform: Matrix) ext
   }
 
   def setTransform(m: Matrix): Sphere = {
-    new Sphere(origin, radius, m)
+    new Sphere(origin, radius, m, material)
+  }
+
+  def setMaterial(m: Material): Sphere = {
+    new Sphere(origin, radius, transform, m)
+  }
+
+  def normalAt(p: RTTuple): RTTuple = {
+    transform.inverse.transpose.tupleMult(transform.inverse.tupleMult(p) - origin).forceVector().normalise()
   }
 
 }
 
 object Sphere {
-  def unitSphere(): Sphere = new Sphere(Point(0,0,0), 1.0, Matrix.getIdentityMatrix(4))
+  def unitSphere(): Sphere = new Sphere(Point(0,0,0), 1.0,
+    Matrix.getIdentityMatrix(4), Material.defaultMaterial())
 }
 
 // TODO: Move me
-class SpaceObject()
+abstract class SpaceObject(){
+  def normalAt(p: RTTuple): RTTuple
+}

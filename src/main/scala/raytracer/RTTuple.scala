@@ -47,6 +47,10 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double){
   def dot(that: RTTuple): Double = x*that.x + y*that.y + z*that.z + w*that.w
   def cross(that: RTTuple): RTTuple = Vector(y*that.z - z*that.y, z*that.x - x*that.z, x*that.y - y*that.x)
 
+  def forceVector(): RTTuple = Vector(x, y, z)
+  def forcePoint(): RTTuple = Point(x, y, z)
+  def reflect(normal: RTTuple): RTTuple = this - normal * 2 * this.dot(normal)
+
 }
 
 object Vector {

@@ -15,7 +15,6 @@
 
 package raytracer
 
-import org.omg.CORBA.Environment
 import org.scalatest.FunSuite
 
 class RTTupleTest extends FunSuite {
@@ -116,5 +115,11 @@ class RTTupleTest extends FunSuite {
     val p = Projectile(Point(0, 1, 0), Vector(1, 0, 0).normalise())
     val e = new ParticleEnvironment(Vector(0, -0.1, 0), Vector(-0.01, 0, 0))
     assert(e.ticksToLand(p, 0) === 5)
+  }
+  test("RTTuple.test_reflect1") {
+    assert(Vector(1, -1, 0).reflect(Vector(0, 1, 0)) === Vector(1, 1, 0))
+  }
+  test("RTTuple.test_reflect2") {
+    assert(Vector(0, -1, 0).reflect(Vector(math.sqrt(2)/2, math.sqrt(2)/2, 0)) === Vector(1, 0, 0))
   }
 }
