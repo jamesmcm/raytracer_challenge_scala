@@ -15,11 +15,27 @@
 
 package raytracer
 
+import cats.implicits._
+
 class Sphere(val origin: RTTuple, val radius: Double, val transform: Matrix, val material: Material) extends SpaceObject {
   // Note origin and radius always assumed as unit sphere
   // Use setTransform for transformations
 
-  def intersect(r: Ray): Seq[Intersection] = {
+  final override def equals(that: Any): Boolean = {
+    that match {
+      case that: Sphere => origin === that.origin && radius === that.radius && transform === that.transform && material === that.material
+      case _ => false
+    }
+  }
+
+  final def ===(that: Sphere): Boolean = {
+    origin === that.origin && radius === that.radius && transform === that.transform && material === that.material
+  }
+
+  final override def hashCode: Int = (origin, radius, transform, material).##
+
+
+def intersect(r: Ray): Seq[Intersection] = {
     val (discriminant, a ,b): (Double, Double, Double) = getDiscriminant(r.transform(transform.inverse))
     discriminant match {
       case x if x < 0 => List()
@@ -59,5 +75,8 @@ object Sphere {
 
 // TODO: Move me
 abstract class SpaceObject(){
+  val material: Material
+
   def normalAt(p: RTTuple): RTTuple
+  def intersect(r: Ray): Seq[Intersection]
 }

@@ -15,23 +15,19 @@
 
 package raytracer
 
-class Light(val position: RTTuple, val intensity: Colour) {
-  final override def equals(that: Any): Boolean = {
-    that match {
-      case that: Light => position === that.position && intensity === that.intensity
-      case _ => false
-    }
+class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
+  def intersectWorld(r: Ray): Seq[Intersection] = {
+    shapes.par.flatMap((x: SpaceObject) => x.intersect(r)).seq.sortBy((z: Intersection) => z.t)
   }
-
-  final def ===(that: Light): Boolean = {
-    position === that.position && intensity === that.intensity
-  }
-
-  final override def hashCode: Int = (position, intensity).##
 }
 
-object Light {
-  def pointLight(position: RTTuple, intensity: Colour): Light = {
-    new Light(position, intensity)
+object World {
+  def emptyWorld: World = new World(Array[Light](), Array[SpaceObject]())
+  def defaultWorld: World = {
+    val m1: Material = new Material(Colour(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200.0)
+    val s1: Sphere = Sphere.unitSphere().setMaterial(m1)
+    val s2: Sphere = Sphere.unitSphere().setTransform(Scaling(0.5, 0.5, 0.5))
+    val light: Light = Light.pointLight(Point(-10, 10, -10), Colour(1,1,1))
+    new World(Array[Light](light), Array[SpaceObject](s1, s2))
   }
 }

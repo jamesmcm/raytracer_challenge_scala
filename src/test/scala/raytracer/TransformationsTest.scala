@@ -114,7 +114,6 @@ class TransformationsTest extends FunSuite {
 
     val m2: Matrix = m1.rotateX(math.Pi/2).scale(5,5,5).translate(10, 5, 7)
 
-    println(m2)
     assert(m2 === mres)
   }
 

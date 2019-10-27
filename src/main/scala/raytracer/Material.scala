@@ -26,6 +26,12 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
     }
   }
 
+  final def ===(that: Material): Boolean = {
+    (colour === that.colour) && doubleEq(ambient, that.ambient) &&
+      doubleEq(diffuse, that.diffuse) && doubleEq(specular, that.specular) && doubleEq(shininess, that.shininess)
+  }
+
+
   final override def hashCode: Int = (colour, ambient, diffuse, specular, shininess).##
 
   def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess)

@@ -28,6 +28,10 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double){
     }
   }
 
+  final def ===(that: RTTuple): Boolean = {
+    doubleEq(that.x, x) && doubleEq(that.y, y) && doubleEq(that.z, z) && (that.w === w)
+  }
+
   final override def hashCode: Int = (x, y, z, w).##
 
   def +(that: RTTuple): RTTuple = new RTTuple(x + that.x, y + that.y, z + that.z, w + that.w)

@@ -19,7 +19,7 @@ object Main extends App {
   // ParticleEnvironment.drawParticleTest()
   // drawClock(200)
   // castSphereSilhouette(100)
-  lightSphere(800)
+  lightSphere(2000)
 
 
   def drawClock(radius: Double): Unit = {
@@ -57,26 +57,26 @@ object Main extends App {
   }
 
   def lightSphere(canvas_size: Int): Unit = {
-    val m: Material = Material.defaultMaterial().setColour(Colour(1, 0.2, 1))
+    val m: Material = Material.defaultMaterial().setColour(Colour(0.2, 0.2, 1))
     val light: Light = Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))
 
     val canvas: Canvas = Canvas(canvas_size, canvas_size)
-    val sphere: Sphere = Sphere.unitSphere().setTransform(Scaling(0.5,1,1)).setMaterial(m)
+    val sphere: Sphere = Sphere.unitSphere().setMaterial(m)
     val ray_origin: RTTuple = Point(0, 0, -5)
     val wall_size: Double = 7.0
     val wall_z: Int = 10
     val pixel_size: Double = wall_size / canvas_size
     val half: Double = wall_size / 2
 
-    val pixels: List[(Int, Int)] = (0 until canvas_size).flatMap((y: Int) => List(y).zipAll((0 until canvas_size), y, y)).toList
+    val pixels: Array[(Int, Int)] = (0 until canvas_size).flatMap((y: Int) => List(y).zipAll((0 until canvas_size), y, y)).toArray
 
-    pixels.foreach(
+    pixels.par.foreach(
       (pix: (Int, Int)) => {
         val wall_target: RTTuple = Point(-half + pixel_size*pix._2, half - pixel_size * pix._1, wall_z)
         val ray: Ray = Ray(ray_origin, (wall_target - ray_origin).normalise())
         sphere.intersect(ray) match {
           case xs if xs.nonEmpty => canvas.writePixel(pix._2, pix._1,
-            m.lighting(light,
+            Intersection.hit(xs).shape.material.lighting(light,
             ray.position(Intersection.hit(xs).t),
             ray.direction.negate(),
             Intersection.hit(xs).shape.normalAt(ray.position(Intersection.hit(xs).t))
@@ -85,7 +85,7 @@ object Main extends App {
         }
       }
     ): Unit
-    stringToFile("sphere.ppm", canvas.toPPM)
+    stringToFile("sphere3.ppm", canvas.toPPM)
   }
 }
 

@@ -39,6 +39,14 @@ class Matrix (val m: Array[Array[Double]]) {
     }
   }
 
+  final def ===(that: Matrix): Boolean = {
+    if (that.m.length === m.length && that.m(0).length === m(0).length) (Matrix.mapMatrix(
+      (this zip that),
+      ((x: (Double, Double)) => doubleEq(x._1, x._2)))
+      .map((z: Array[Boolean]) => z.forall(identity)).reduce(_ && _)) else false
+  }
+
+
   def zip(that: Matrix): Array[Array[(Double, Double)]] = {
     Matrix.zipMatrix(m, that.m)
     // m.zip(that.m).map((x: (Array[Double], Array[Double])) => x._1 zip x._2)
