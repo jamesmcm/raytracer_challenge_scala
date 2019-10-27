@@ -51,4 +51,6 @@ object World {
     val light: Light = Light.pointLight(Point(-10, 10, -10), Colour(1,1,1))
     new World(Array[Light](light), Array[SpaceObject](s1, s2))
   }
+
+  def apply(lights: Seq[Light], shapes: Seq[SpaceObject]): World = new World(lights, shapes)
 }
