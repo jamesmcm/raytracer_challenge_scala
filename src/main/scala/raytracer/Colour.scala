@@ -41,6 +41,10 @@ class Colour(val red: Double, val green: Double, val blue: Double){
 
   def /(that: Double): Colour = Colour(red / that, green / that, blue / that)
 
+  final override def toString: String = {
+    "(" + red.toString + ", " + green.toString + ", " + blue.toString + ")"
+  }
+
 }
 
 object Colour {

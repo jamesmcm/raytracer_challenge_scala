@@ -15,9 +15,30 @@
 
 package raytracer
 
+import cats.implicits._
+
 class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
+  def setLights(l: Seq[Light]): World = {
+    new World(l, shapes)
+  }
+  def setShapes(s: Seq[SpaceObject]): World = {
+    new World(lights, s)
+  }
+
   def intersectWorld(r: Ray): Seq[Intersection] = {
     shapes.par.flatMap((x: SpaceObject) => x.intersect(r)).seq.sortBy((z: Intersection) => z.t)
+  }
+
+  def shadeHit(comps: Computation): Colour = {
+    lights.par.map(comps.shape.material.lighting(_, comps.point, comps.eyev, comps.normalv)).reduce(_ + _)
+  }
+
+  def colourAt(r: Ray): Colour = {
+    Intersection.hit(intersectWorld(r)) match {
+        // TODO: Swap hack for Option
+      case x: Intersection if x.t === 99999999 => Colour.black
+      case x: Intersection => shadeHit(Computation.prepareComputations(x, r))
+    }
   }
 }
 

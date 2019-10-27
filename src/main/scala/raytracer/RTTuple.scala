@@ -20,6 +20,7 @@ import cats.implicits._
 class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double){
 
   def toTuple: (Double, Double, Double, Double) = (x, y, z, w)
+  def toArray: Array[Double] = Array(x, y, z, w)
 
   final override def equals(that: Any): Boolean = {
     that match {

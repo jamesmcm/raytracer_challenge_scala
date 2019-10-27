@@ -117,4 +117,21 @@ class TransformationsTest extends FunSuite {
     assert(m2 === mres)
   }
 
+  test("Matrix.view_transformation_identity") {
+    assert(viewTransform(Point(0,0,0), Point(0,0,-1), Vector(0,1,0)) === Matrix.getIdentityMatrix(4))
+  }
+  test("Matrix.view_transformation_back") {
+    assert(viewTransform(Point(0,0,0), Point(0,0,1), Vector(0,1,0)) === Scaling(-1, 1, -1))
+  }
+  test("Matrix.view_transformation_world") {
+    assert(viewTransform(Point(0,0,8), Point(0,0,0), Vector(0,1,0)) === Translation(0, 0, -8))
+  }
+  test("Matrix.view_transformation_arbitrary") {
+    val res: String = """| -0.50709 | 0.50709 |  0.67612 | -2.36643 |
+                         |  0.76772 | 0.60609 |  0.12122 | -2.82843 |
+                         | -0.35857 | 0.59761 | -0.71714 |  0.00000 |
+                         |  0.00000 | 0.00000 |  0.00000 |  1.00000 |""".stripMargin
+    val mres: Matrix = Matrix.matrixFromString(res)
+    assert(viewTransform(Point(1,3,2), Point(4,-2,8), Vector(1,1,0)) === mres)
+  }
 }

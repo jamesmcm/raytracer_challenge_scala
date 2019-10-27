@@ -157,3 +157,16 @@ object Shearing {
     )
   }
 }
+
+object viewTransform {
+  def apply(from: RTTuple, to: RTTuple, up: RTTuple): Matrix = {
+    val forward: RTTuple = (to - from).normalise()
+    val upn: RTTuple = up.normalise()
+    val left: RTTuple = forward.cross(upn)
+    val true_up: RTTuple = left.cross(forward)
+
+    val orientation: Matrix = new Matrix(Array(left.toArray, true_up.toArray, forward.negate().toArray, Point(0,0,0).toArray))
+
+    orientation * Translation(-from.x, -from.y, -from.z)
+  }
+}

@@ -79,4 +79,6 @@ abstract class SpaceObject(){
 
   def normalAt(p: RTTuple): RTTuple
   def intersect(r: Ray): Seq[Intersection]
+  def setMaterial(m: Material): SpaceObject
+  def setTransform(m: Matrix): SpaceObject
 }
