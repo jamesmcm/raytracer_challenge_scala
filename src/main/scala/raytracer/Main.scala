@@ -15,9 +15,12 @@
 
 package raytracer
 
+import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position
+
 object Main extends App {
   // ParticleEnvironment.drawParticleTest()
-  drawClock(200)
+  // drawClock(200)
+  castSphere(100)
 
   def drawClock(radius: Double): Unit = {
     val canvas = Canvas(900, 500)
@@ -27,6 +30,30 @@ object Main extends App {
     pointList.foreach((t: RTTuple) => canvas.writePixel((canvas.width/2) + math.round(t.x).toInt, (canvas.height/2) - math.round(t.y).toInt, Colour(1,0,0)))
 
     stringToFile("clock.ppm", canvas.toPPM)
+  }
+
+  def castSphere(canvas_size: Int): Unit = {
+    val canvas: Canvas = Canvas(canvas_size, canvas_size)
+    val sphere: Sphere = Sphere.unitSphere().setTransform(Scaling(0.5,1,1))
+    val ray_origin: RTTuple = Point(0, 0, -5)
+    val wall_size: Double = 7.0
+    val wall_z: Int = 10
+    val pixel_size: Double = wall_size / canvas_size
+    val half: Double = wall_size / 2
+
+    val pixels: List[(Int, Int)] = (0 until canvas_size).flatMap((y: Int) => List(y).zipAll((0 until canvas_size), y, y)).toList
+
+    pixels.foreach(
+      (pix: (Int, Int)) => {
+        val wall_target: RTTuple = Point(-half + pixel_size*pix._2, half - pixel_size * pix._1, wall_z)
+        val ray: Ray = Ray(ray_origin, (wall_target - ray_origin).normalise())
+        sphere.intersect(ray) match {
+          case xs if xs.nonEmpty => canvas.writePixel(pix._2, pix._1, Colour(1,0,0)); Unit
+          case _ => Unit
+        }
+      }
+    ): Unit
+    stringToFile("circle2.ppm", canvas.toPPM)
   }
 }
 

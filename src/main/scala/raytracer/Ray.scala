@@ -15,8 +15,6 @@
 
 package raytracer
 
-import apple.laf.JRSUIConstants.Direction
-
 class Ray(val origin: RTTuple, val direction: RTTuple) {
   def position(t: Double): RTTuple = {
     origin + (direction * t)
