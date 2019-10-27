@@ -54,6 +54,9 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double){
   def forceVector(): RTTuple = Vector(x, y, z)
   def forcePoint(): RTTuple = Point(x, y, z)
   def reflect(normal: RTTuple): RTTuple = this - normal * 2 * this.dot(normal)
+  final override def toString: String = {
+    "(" + x.toString + ", " + y.toString + ", " + z.toString + ", " + w.toString + ")"
+  }
 
 }
 
