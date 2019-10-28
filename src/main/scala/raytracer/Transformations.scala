@@ -90,7 +90,7 @@ object RotationY {
               case _ => b._1
             }
             case 2 =>  b._2 match {
-              case 1 => -1 * math.sin(r)
+              case 0 => -1 * math.sin(r)
               case 2 => math.cos(r)
               case _ => b._1
             }

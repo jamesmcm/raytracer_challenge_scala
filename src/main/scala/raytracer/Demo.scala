@@ -106,11 +106,11 @@ object Demo {
     val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
       List(floor, leftSphere, rightSphere, middleSphere, left_wall, right_wall))
 
-    val camera: Camera = Camera(200, 100, math.Pi/3).setTransform(viewTransform(Point(0, 1.5, -5),
+    val camera: Camera = Camera(800, 600, math.Pi/3).setTransform(viewTransform(Point(0, 1.5, -5),
       Point(0, 1, 0), Vector(0, 1, 0)))
 
     val canvas: Canvas = camera.render(world)
-    stringToFile("scene3.ppm", canvas.toPPM)
+    stringToFile("scene4.ppm", canvas.toPPM)
 
   }
 
