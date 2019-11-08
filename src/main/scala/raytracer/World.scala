@@ -30,7 +30,7 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
   }
 
   def shadeHit(comps: Computation): Colour = {
-    lights.par.map(comps.shape.material.lighting(_, comps.point, comps.eyev, comps.normalv)).reduce(_ + _)
+    lights.par.map(comps.shape.material.lighting(_, comps.point, comps.eyev, comps.normalv, false)).reduce(_ + _)
   }
 
   def colourAt(r: Ray): Colour = {
@@ -39,6 +39,22 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
       case x: Intersection if x.t === 99999999 => Colour.black
       case x: Intersection => shadeHit(Computation.prepareComputations(x, r))
     }
+  }
+
+  def shadowedByLight(p: RTTuple, l: Light): Boolean = {
+    // TODO
+    val v: RTTuple = l.position - p
+    val distance: Double = v.magnitude()
+    val direction: RTTuple = v.normalise()
+
+    val h: Option[Intersection] = Intersection.hit(intersectWorld(Ray(p, direction)))
+    // TODO: Handle Option
+    false
+  }
+
+  def isShadowed(p: RTTuple): Boolean = {
+    // Handle multiple lights
+    lights.forall(shadowedByLight(p, _))
   }
 }
 

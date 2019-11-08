@@ -83,4 +83,29 @@ class WorldTest extends FunSuite {
     val c: Colour = w.colourAt(r)
     assert(c === inner.material.colour)
   }
+  test("World.shadow1") {
+    val w: World = World.defaultWorld
+    val p: RTTuple = Point(0, 10, 0)
+
+    assert(!w.isShadowed(p))
+  }
+
+  test("World.shadow2") {
+    val w: World = World.defaultWorld
+    val p: RTTuple = Point(10, -10, 10)
+
+    assert(w.isShadowed(p))
+  }
+  test("World.shadow3") {
+    val w: World = World.defaultWorld
+    val p: RTTuple = Point(-20, 20, -20)
+
+    assert(!w.isShadowed(p))
+  }
+  test("World.shadow4") {
+    val w: World = World.defaultWorld
+    val p: RTTuple = Point(-2, 2, -2)
+
+    assert(!w.isShadowed(p))
+  }
 }

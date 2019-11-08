@@ -73,7 +73,8 @@ object Demo {
             Intersection.hit(xs).shape.material.lighting(light,
               ray.position(Intersection.hit(xs).t),
               ray.direction.negate(),
-              Intersection.hit(xs).shape.normalAt(ray.position(Intersection.hit(xs).t))
+              Intersection.hit(xs).shape.normalAt(ray.position(Intersection.hit(xs).t)),
+              false
             )); Unit
           case _ => Unit
         }

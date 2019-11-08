@@ -52,14 +52,15 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
     if (light_dot_normal < 0 || reflect_dot_eye <= 0) Colour.black else light_intensity * specular * math.pow(reflect_dot_eye, shininess)
   }
 
-  def lighting(light: Light, p: RTTuple, eyev: RTTuple, normalv: RTTuple): Colour = {
+  def lighting(light: Light, p: RTTuple, eyev: RTTuple, normalv: RTTuple, in_shadow: Boolean): Colour = {
     val effective_colour: Colour = colour ** light.intensity // Colour blend
     val lightv: RTTuple = (light.position - p).normalise()
     val reflectv: RTTuple = lightv.negate().reflect(normalv)
 
+    if (in_shadow) (ambientContribution(effective_colour)) else (
     ambientContribution(effective_colour) +
       diffuseContribution(effective_colour, lightv.dot(normalv)) +
-      specularContribution(lightv.dot(normalv), reflectv.dot(eyev), light.intensity)
+      specularContribution(lightv.dot(normalv), reflectv.dot(eyev), light.intensity))
 
   }
 }
