@@ -87,25 +87,37 @@ class WorldTest extends FunSuite {
     val w: World = World.defaultWorld
     val p: RTTuple = Point(0, 10, 0)
 
-    assert(!w.isShadowed(p))
+    assert(!w.isShadowed(p, w.lights(0)))
   }
 
   test("World.shadow2") {
     val w: World = World.defaultWorld
     val p: RTTuple = Point(10, -10, 10)
 
-    assert(w.isShadowed(p))
+    assert(w.isShadowed(p, w.lights(0)))
   }
   test("World.shadow3") {
     val w: World = World.defaultWorld
     val p: RTTuple = Point(-20, 20, -20)
 
-    assert(!w.isShadowed(p))
+    assert(!w.isShadowed(p, w.lights(0)))
   }
   test("World.shadow4") {
     val w: World = World.defaultWorld
     val p: RTTuple = Point(-2, 2, -2)
 
-    assert(!w.isShadowed(p))
+    assert(!w.isShadowed(p, w.lights(0)))
+  }
+  test("World.shade_shadow") {
+    val w: World = World.defaultWorld
+      .setLights(List(Light.pointLight(Point(0, 0, -10), Colour(1, 1, 1))))
+      .setShapes(List(Sphere.unitSphere(), Sphere.unitSphere().setTransform(Translation(0, 0, 10))))
+    val r: Ray = Ray(Point(0,0,5), Vector(0,0,1))
+    val s2: SpaceObject = w.shapes(1)
+    val i: Intersection = new Intersection(4, s2)
+
+    val comps: Computation = Computation.prepareComputations(i, r)
+    val c: Colour = w.shadeHit(comps)
+    assert(c === Colour(0.1, 0.1, 0.1))
   }
 }

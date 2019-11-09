@@ -76,6 +76,7 @@ object Sphere {
 // TODO: Move me
 abstract class SpaceObject(){
   val material: Material
+  val transform: Matrix
 
   def normalAt(p: RTTuple): RTTuple
   def intersect(r: Ray): Seq[Intersection]
