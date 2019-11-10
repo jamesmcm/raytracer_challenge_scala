@@ -15,7 +15,7 @@
 
 package raytracer
 
-class Colour(val red: Double, val green: Double, val blue: Double){
+class Colour(val red: Double, val green: Double, val blue: Double) {
   def toTuple: (Double, Double, Double) = (red, green, blue)
 
   final override def equals(that: Any): Boolean = {
@@ -49,5 +49,6 @@ class Colour(val red: Double, val green: Double, val blue: Double){
 
 object Colour {
   def apply(red: Double, green: Double, blue: Double): Colour = new Colour(red, green, blue)
-  def black: Colour = new Colour(0,0,0)
+
+  def black: Colour = new Colour(0, 0, 0)
 }

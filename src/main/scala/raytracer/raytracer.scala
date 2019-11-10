@@ -17,7 +17,7 @@ package object raytracer {
   val EPSILON: Double = 0.00001;
 
   def doubleEq(x: Double, y: Double): Boolean = {
-    if (Math.abs(x-y) <= EPSILON) true else false
+    if (Math.abs(x - y) <= EPSILON) true else false
   }
 
   def stringToFile(filename: String, output: String): Unit = {

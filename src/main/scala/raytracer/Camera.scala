@@ -16,7 +16,7 @@
 package raytracer
 
 class Camera(val hsize: Int, val vsize: Int, val fov: Double, val transform: Matrix) {
-  val half_view: Double = math.tan(fov/2)
+  val half_view: Double = math.tan(fov / 2)
   val aspect: Double = hsize.toDouble / vsize.toDouble
 
   val (half_width: Double, half_height: Double) = Camera.calculateHalves(half_view, aspect)
@@ -26,14 +26,14 @@ class Camera(val hsize: Int, val vsize: Int, val fov: Double, val transform: Mat
   def setTransform(new_transform: Matrix): Camera = new Camera(hsize, vsize, fov, new_transform)
 
   def rayForPixel(px: Int, py: Int): Ray = {
-    val xoffset: Double = (px.toDouble+0.5) * pixel_size
-    val yoffset: Double = (py.toDouble+0.5) * pixel_size
+    val xoffset: Double = (px.toDouble + 0.5) * pixel_size
+    val yoffset: Double = (py.toDouble + 0.5) * pixel_size
 
     val world_x: Double = half_width - xoffset
     val world_y: Double = half_height - yoffset
 
     val pixel: RTTuple = transform.inverse.tupleMult(Point(world_x, world_y, -1))
-    val origin: RTTuple = transform.inverse.tupleMult(Point(0,0,0))
+    val origin: RTTuple = transform.inverse.tupleMult(Point(0, 0, 0))
     val direction: RTTuple = (pixel - origin).normalise()
     Ray(origin, direction)
   }
@@ -55,7 +55,7 @@ object Camera {
   def apply(hsize: Int, vsize: Int, fov: Double): Camera = new Camera(hsize, vsize, fov, Matrix.getIdentityMatrix(4))
 
   def calculateHalves(half_view: Double, aspect: Double): (Double, Double) = {
-    if (aspect >= 1){
+    if (aspect >= 1) {
       (half_view, half_view / aspect)
     } else {
       (half_view * aspect, half_view)

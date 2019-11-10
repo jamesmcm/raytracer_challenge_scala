@@ -36,10 +36,10 @@ class RTTupleTest extends FunSuite {
   }
 
   test("RTTuple.test_vector_eq") {
-    assert(Vector(4, -4, 3) === Vector(4, -4, 3) )
+    assert(Vector(4, -4, 3) === Vector(4, -4, 3))
   }
   test("RTTuple.test_point_eq") {
-    assert(Point(4, -4, 3) === Point(3.999999999999, -4, 3) )
+    assert(Point(4, -4, 3) === Point(3.999999999999, -4, 3))
   }
 
   test("RTTuple.test_point_vec_add") {
@@ -58,20 +58,20 @@ class RTTupleTest extends FunSuite {
     assert((Vector(0, 0, 0) - Vector(1, -2, 3)) === Vector(-1, 2, -3))
   }
   test("RTTuple.test_tuple_negate") {
-    val t = new RTTuple(1, -2, 3 ,-4)
+    val t = new RTTuple(1, -2, 3, -4)
     assert(t.negate() === new RTTuple(-1, 2, -3, 4))
   }
   test("RTTuple.test_tuple_multiply1") {
-    val t = new RTTuple(1, -2, 3 ,-4)
-    assert(t*3.5 === new RTTuple(3.5, -7, 10.5, -14))
+    val t = new RTTuple(1, -2, 3, -4)
+    assert(t * 3.5 === new RTTuple(3.5, -7, 10.5, -14))
   }
   test("RTTuple.test_tuple_multiply2") {
-    val t = new RTTuple(1, -2, 3 ,-4)
-    assert(t*0.5 === new RTTuple(0.5, -1, 1.5, -2))
+    val t = new RTTuple(1, -2, 3, -4)
+    assert(t * 0.5 === new RTTuple(0.5, -1, 1.5, -2))
   }
   test("RTTuple.test_tuple_divide1") {
-    val t = new RTTuple(1, -2, 3 ,-4)
-    assert(t/2 === new RTTuple(0.5, -1, 1.5, -2))
+    val t = new RTTuple(1, -2, 3, -4)
+    assert(t / 2 === new RTTuple(0.5, -1, 1.5, -2))
   }
   test("RTTuple.test_vector_magnitude1") {
     assert(Vector(1, 0, 0).magnitude() === 1)
@@ -95,16 +95,16 @@ class RTTupleTest extends FunSuite {
     assert(Vector(1, 2, 3).normalise() === Vector(0.26726, 0.53452, 0.80178))
   }
   test("RTTuple.test_vector_normalise_magnitude") {
-    assert(Vector(1, 2, 3).normalise().magnitude() === 1 )
+    assert(Vector(1, 2, 3).normalise().magnitude() === 1)
   }
   test("RTTuple.test_vector_dot") {
-    assert((Vector(1, 2, 3) dot Vector(2,3,4)) === 20)
+    assert((Vector(1, 2, 3) dot Vector(2, 3, 4)) === 20)
   }
   test("RTTuple.test_vector_cross1") {
-    assert((Vector(1, 2, 3) cross Vector(2,3,4)) === Vector(-1, 2, -1))
+    assert((Vector(1, 2, 3) cross Vector(2, 3, 4)) === Vector(-1, 2, -1))
   }
   test("RTTuple.test_vector_cross2") {
-    assert((Vector(2,3,4) cross Vector(1, 2, 3) ) === Vector(1, -2, 1))
+    assert((Vector(2, 3, 4) cross Vector(1, 2, 3)) === Vector(1, -2, 1))
   }
   test("RTTuple.test_projectile1") {
     val p = Projectile(Point(0, -1, 0), Vector(1, 0, 0).normalise())
@@ -120,6 +120,6 @@ class RTTupleTest extends FunSuite {
     assert(Vector(1, -1, 0).reflect(Vector(0, 1, 0)) === Vector(1, 1, 0))
   }
   test("RTTuple.test_reflect2") {
-    assert(Vector(0, -1, 0).reflect(Vector(math.sqrt(2)/2, math.sqrt(2)/2, 0)) === Vector(1, 0, 0))
+    assert(Vector(0, -1, 0).reflect(Vector(math.sqrt(2) / 2, math.sqrt(2) / 2, 0)) === Vector(1, 0, 0))
   }
 }

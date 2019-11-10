@@ -38,18 +38,18 @@ class RayTest extends FunSuite {
   }
 
   test("Ray.test_translate") {
-    val r: Ray = Ray(Point(1,2,3), Vector(0,1,0))
-    val m: Matrix = Translation(3,4,5)
+    val r: Ray = Ray(Point(1, 2, 3), Vector(0, 1, 0))
+    val m: Matrix = Translation(3, 4, 5)
     val r2: Ray = r.transform(m)
 
-    assert(r2.origin === Point(4,6,8) && r2.direction === Vector(0,1,0))
+    assert(r2.origin === Point(4, 6, 8) && r2.direction === Vector(0, 1, 0))
   }
   test("Ray.test_scale") {
-    val r: Ray = Ray(Point(1,2,3), Vector(0,1,0))
-    val m: Matrix = Scaling(2,3,4)
+    val r: Ray = Ray(Point(1, 2, 3), Vector(0, 1, 0))
+    val m: Matrix = Scaling(2, 3, 4)
     val r2: Ray = r.transform(m)
 
-    assert(r2.origin === Point(2,6,12) && r2.direction === Vector(0,3,0))
+    assert(r2.origin === Point(2, 6, 12) && r2.direction === Vector(0, 3, 0))
   }
 
 

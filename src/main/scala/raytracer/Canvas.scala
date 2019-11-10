@@ -16,9 +16,9 @@
 package raytracer
 
 
-class Canvas(val width: Int, val height: Int){
+class Canvas(val width: Int, val height: Int) {
   // TODO: Avoid var
-  var pixels: Array[Array[Colour]] = Array.fill(height)(Array.fill(width)(Colour(0,0,0)))
+  var pixels: Array[Array[Colour]] = Array.fill(height)(Array.fill(width)(Colour(0, 0, 0)))
   val maxcol: Int = 255
 
   def fillCanvas(c: Colour): Unit = {
@@ -53,7 +53,7 @@ class Canvas(val width: Int, val height: Int){
 
 }
 
-object Canvas{
+object Canvas {
   def apply(width: Int, height: Int): Canvas = new Canvas(width, height)
 
   def replaceLastSpaceWithNewline(s: String): String = {
@@ -65,6 +65,6 @@ object Canvas{
   }
 
   def cutLine70Chars(s: String): String = {
-    (0 to (s.length/70)).map((x: Int) => s.slice(70*x, 70*(x + 1))).map(replaceLastSpaceWithNewline).mkString("")
+    (0 to (s.length / 70)).map((x: Int) => s.slice(70 * x, 70 * (x + 1))).map(replaceLastSpaceWithNewline).mkString("")
   }
 }

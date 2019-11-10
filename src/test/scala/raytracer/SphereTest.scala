@@ -19,35 +19,35 @@ import org.scalatest.FunSuite
 
 class SphereTest extends FunSuite {
   test("Sphere.test_intersect1") {
-    val r: Ray = Ray(Point(0,0,-5), Vector(0,0,1))
+    val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
     val s: Sphere = Sphere.unitSphere()
 
     val xs: Seq[Intersection] = s.intersect(r)
     assert(xs.length === 2 && xs(0).t === 4.0 && xs(1).t === 6.0)
   }
   test("Sphere.test_intersect_tangent") {
-    val r: Ray = Ray(Point(0,1,-5), Vector(0,0,1))
+    val r: Ray = Ray(Point(0, 1, -5), Vector(0, 0, 1))
     val s: Sphere = Sphere.unitSphere()
 
     val xs: Seq[Intersection] = s.intersect(r)
     assert(xs.length === 2 && xs(0).t === 5.0 && xs(1).t === 5.0)
   }
   test("Sphere.test_intersect_miss") {
-    val r: Ray = Ray(Point(0,2,-5), Vector(0,0,1))
+    val r: Ray = Ray(Point(0, 2, -5), Vector(0, 0, 1))
     val s: Sphere = Sphere.unitSphere()
 
     val xs: Seq[Intersection] = s.intersect(r)
     assert(xs.length === 0)
   }
   test("Sphere.test_intersect_origin_inside") {
-    val r: Ray = Ray(Point(0,0,0), Vector(0,0,1))
+    val r: Ray = Ray(Point(0, 0, 0), Vector(0, 0, 1))
     val s: Sphere = Sphere.unitSphere()
 
     val xs: Seq[Intersection] = s.intersect(r)
     assert(xs.length === 2 && xs(0).t === -1.0 && xs(1).t === 1.0)
   }
   test("Sphere.test_intersect_sphere_behind") {
-    val r: Ray = Ray(Point(0,0,5), Vector(0,0,1))
+    val r: Ray = Ray(Point(0, 0, 5), Vector(0, 0, 1))
     val s: Sphere = Sphere.unitSphere()
 
     val xs: Seq[Intersection] = s.intersect(r)
@@ -55,7 +55,7 @@ class SphereTest extends FunSuite {
   }
 
   test("Sphere.test_intersect_object_set") {
-    val r: Ray = Ray(Point(0,0,-5), Vector(0,0,1))
+    val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
     val s: Sphere = Sphere.unitSphere()
 
     val xs: Seq[Intersection] = s.intersect(r)
@@ -63,8 +63,8 @@ class SphereTest extends FunSuite {
   }
 
   test("Sphere.test_intersect_scaling") {
-    val r: Ray = Ray(Point(0,0,-5), Vector(0,0,1))
-    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+    val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
+    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(2, 2, 2))
 
     val xs: Seq[Intersection] = s.intersect(r)
     assert(xs.length === 2 && xs(0).t === 3 && xs(1).t === 7)
@@ -72,44 +72,44 @@ class SphereTest extends FunSuite {
 
   test("Sphere.test_normal1") {
     val s: Sphere = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(1,0,0))
+    val n: RTTuple = s.normalAt(Point(1, 0, 0))
 
-    assert(n === Vector(1,0,0))
+    assert(n === Vector(1, 0, 0))
   }
   test("Sphere.test_normal2") {
     val s: Sphere = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(0,1,0))
+    val n: RTTuple = s.normalAt(Point(0, 1, 0))
 
-    assert(n === Vector(0,1,0))
+    assert(n === Vector(0, 1, 0))
   }
   test("Sphere.test_normal3") {
     val s: Sphere = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(0,0,1))
+    val n: RTTuple = s.normalAt(Point(0, 0, 1))
 
-    assert(n === Vector(0,0,1))
+    assert(n === Vector(0, 0, 1))
   }
 
   test("Sphere.test_normal4") {
     val s: Sphere = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(math.sqrt(3)/3,math.sqrt(3)/3,math.sqrt(3)/3))
+    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3))
 
-    assert(n === Vector(math.sqrt(3)/3,math.sqrt(3)/3,math.sqrt(3)/3))
+    assert(n === Vector(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3))
   }
   test("Sphere.test_normal5") {
     val s: Sphere = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(math.sqrt(3)/3,math.sqrt(3)/3,math.sqrt(3)/3))
+    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3))
 
     assert(n === n.normalise())
   }
   test("Sphere.test_normal_translated") {
-    val s: Sphere = Sphere.unitSphere().setTransform(Translation(0,1,0))
+    val s: Sphere = Sphere.unitSphere().setTransform(Translation(0, 1, 0))
     val n: RTTuple = s.normalAt(Point(0, 1.70711, -0.70711))
 
     assert(n === Vector(0, 0.70711, -0.70711))
   }
   test("Sphere.test_normal_scaled") {
-    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(1, 0.5, 1) * RotationZ(math.Pi/5))
-    val n: RTTuple = s.normalAt(Point(0, math.sqrt(2)/2, -math.sqrt(2)/2))
+    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(1, 0.5, 1) * RotationZ(math.Pi / 5))
+    val n: RTTuple = s.normalAt(Point(0, math.sqrt(2) / 2, -math.sqrt(2) / 2))
 
     assert(n === Vector(0, 0.97014, -0.24254))
   }

@@ -43,22 +43,22 @@ class TransformationsTest extends FunSuite {
   }
 
   test("Matrix.test_halfquarter_xrotation") {
-    assert(RotationX(math.Pi / 4).tupleMult(Point(0, 1, 0)) === Point(0, math.sqrt(2)/2, math.sqrt(2)/2))
+    assert(RotationX(math.Pi / 4).tupleMult(Point(0, 1, 0)) === Point(0, math.sqrt(2) / 2, math.sqrt(2) / 2))
   }
   test("Matrix.test_fullquarter_xrotation") {
     assert(RotationX(math.Pi / 2).tupleMult(Point(0, 1, 0)) === Point(0, 0, 1))
   }
   test("Matrix.test_halfquarter_inverse_xrotation") {
-    assert(RotationX(math.Pi / 4).inverse.tupleMult(Point(0, 1, 0)) === Point(0, math.sqrt(2)/2, -math.sqrt(2)/2))
+    assert(RotationX(math.Pi / 4).inverse.tupleMult(Point(0, 1, 0)) === Point(0, math.sqrt(2) / 2, -math.sqrt(2) / 2))
   }
   test("Matrix.test_halfquarter_yrotation") {
-    assert(RotationY(math.Pi / 4).tupleMult(Point(0, 0, 1)) === Point(math.sqrt(2)/2, 0, math.sqrt(2)/2))
+    assert(RotationY(math.Pi / 4).tupleMult(Point(0, 0, 1)) === Point(math.sqrt(2) / 2, 0, math.sqrt(2) / 2))
   }
   test("Matrix.test_fullquarter_yrotation") {
     assert(RotationY(math.Pi / 2).tupleMult(Point(0, 0, 1)) === Point(1, 0, 0))
   }
   test("Matrix.test_halfquarter_zrotation") {
-    assert(RotationZ(math.Pi / 4).tupleMult(Point(0, 1, 0)) === Point(-math.sqrt(2)/2, math.sqrt(2)/2, 0))
+    assert(RotationZ(math.Pi / 4).tupleMult(Point(0, 1, 0)) === Point(-math.sqrt(2) / 2, math.sqrt(2) / 2, 0))
   }
   test("Matrix.test_fullquarter_zrotation") {
     assert(RotationZ(math.Pi / 2).tupleMult(Point(0, 1, 0)) === Point(-1, 0, 0))
@@ -97,41 +97,44 @@ class TransformationsTest extends FunSuite {
     val B: Matrix = Scaling(5, 5, 5)
     val C: Matrix = Translation(10, 5, 7)
 
-    assert((C*B*A).tupleMult(p) === Point(15, 0, 7))
+    assert((C * B * A).tupleMult(p) === Point(15, 0, 7))
   }
 
   test("Matrix.test_transformations_chained_matrix") {
-    val s1: String = """| 1 | 1 | 1 | 1 |
-                        | 0 | 0 | 0 | 0 |
-                        | 1 | 1 | 1 | 1 |
-                        | 1 | 1 | 1 | 1 |""".stripMargin
-    val res: String = """| 15 | 15 | 15 | 15 |
-                        | 0 | 0 | 0 | 0 |
-                        | 7 | 7 | 7 | 7 |
-                        | 1 | 1 | 1 | 1 |""".stripMargin
+    val s1: String =
+      """| 1 | 1 | 1 | 1 |
+         | 0 | 0 | 0 | 0 |
+         | 1 | 1 | 1 | 1 |
+         | 1 | 1 | 1 | 1 |""".stripMargin
+    val res: String =
+      """| 15 | 15 | 15 | 15 |
+         | 0 | 0 | 0 | 0 |
+         | 7 | 7 | 7 | 7 |
+         | 1 | 1 | 1 | 1 |""".stripMargin
     val m1: Matrix = Matrix.matrixFromString(s1)
     val mres: Matrix = Matrix.matrixFromString(res)
 
-    val m2: Matrix = m1.rotateX(math.Pi/2).scale(5,5,5).translate(10, 5, 7)
+    val m2: Matrix = m1.rotateX(math.Pi / 2).scale(5, 5, 5).translate(10, 5, 7)
 
     assert(m2 === mres)
   }
 
   test("Matrix.view_transformation_identity") {
-    assert(viewTransform(Point(0,0,0), Point(0,0,-1), Vector(0,1,0)) === Matrix.getIdentityMatrix(4))
+    assert(viewTransform(Point(0, 0, 0), Point(0, 0, -1), Vector(0, 1, 0)) === Matrix.getIdentityMatrix(4))
   }
   test("Matrix.view_transformation_back") {
-    assert(viewTransform(Point(0,0,0), Point(0,0,1), Vector(0,1,0)) === Scaling(-1, 1, -1))
+    assert(viewTransform(Point(0, 0, 0), Point(0, 0, 1), Vector(0, 1, 0)) === Scaling(-1, 1, -1))
   }
   test("Matrix.view_transformation_world") {
-    assert(viewTransform(Point(0,0,8), Point(0,0,0), Vector(0,1,0)) === Translation(0, 0, -8))
+    assert(viewTransform(Point(0, 0, 8), Point(0, 0, 0), Vector(0, 1, 0)) === Translation(0, 0, -8))
   }
   test("Matrix.view_transformation_arbitrary") {
-    val res: String = """| -0.50709 | 0.50709 |  0.67612 | -2.36643 |
-                         |  0.76772 | 0.60609 |  0.12122 | -2.82843 |
-                         | -0.35857 | 0.59761 | -0.71714 |  0.00000 |
-                         |  0.00000 | 0.00000 |  0.00000 |  1.00000 |""".stripMargin
+    val res: String =
+      """| -0.50709 | 0.50709 |  0.67612 | -2.36643 |
+         |  0.76772 | 0.60609 |  0.12122 | -2.82843 |
+         | -0.35857 | 0.59761 | -0.71714 |  0.00000 |
+         |  0.00000 | 0.00000 |  0.00000 |  1.00000 |""".stripMargin
     val mres: Matrix = Matrix.matrixFromString(res)
-    assert(viewTransform(Point(1,3,2), Point(4,-2,8), Vector(1,1,0)) === mres)
+    assert(viewTransform(Point(1, 3, 2), Point(4, -2, 8), Vector(1, 1, 0)) === mres)
   }
 }

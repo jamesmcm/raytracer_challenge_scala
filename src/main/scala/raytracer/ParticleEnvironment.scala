@@ -35,13 +35,16 @@ class ParticleEnvironment(val gravity: RTTuple, wind: RTTuple) {
     p.position.toTuple match {
       case (x, y, z, w) if Math.round(x).toInt >= canvas.width || Math.round(x).toInt < 0 => ()
       case (x, y, z, w) if Math.round(y).toInt >= canvas.height || Math.round(y).toInt < 0 => ()
-      case (x, y, z, w) => {canvas.writePixel(Math.round(x).toInt, canvas.height - Math.round(y).toInt, col); ticksInBoundsToCanvas(canvas, tick(p), col);}
+      case (x, y, z, w) => {
+        canvas.writePixel(Math.round(x).toInt, canvas.height - Math.round(y).toInt, col);
+        ticksInBoundsToCanvas(canvas, tick(p), col);
+      }
     }
   }
 
 }
 
-object ParticleEnvironment{
+object ParticleEnvironment {
 
   def apply(gravity: RTTuple, wind: RTTuple): ParticleEnvironment = new ParticleEnvironment(gravity, wind)
 

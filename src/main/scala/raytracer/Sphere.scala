@@ -19,6 +19,7 @@ class Sphere(val transform: Matrix, val material: Material) extends SpaceObject 
   // Note origin and radius always assumed as unit sphere
   // Use setTransform for transformations
   type T = Sphere
+
   def constructor(t: Matrix, m: Material): T = new Sphere(t, m)
 
   final override def equals(that: Any): Boolean = {
@@ -73,6 +74,7 @@ abstract class SpaceObject() {
   def constructor(t: Matrix, m: Material): T
 
   def localNormalAt(p: RTTuple): RTTuple
+
   def normalAt(p: RTTuple): RTTuple = {
     val localPoint: RTTuple = transform.inverse.tupleMult(p)
 
@@ -80,6 +82,7 @@ abstract class SpaceObject() {
   }
 
   def localIntersect(r: Ray): Seq[Intersection]
+
   def intersect(r: Ray): Seq[Intersection] = {
     localIntersect(r.transform(transform.inverse))
   }

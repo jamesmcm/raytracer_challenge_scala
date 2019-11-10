@@ -35,9 +35,13 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
   final override def hashCode: Int = (colour, ambient, diffuse, specular, shininess).##
 
   def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess)
+
   def setAmbient(x: Double): Material = new Material(colour, x, diffuse, specular, shininess)
+
   def setDiffuse(x: Double): Material = new Material(colour, ambient, x, specular, shininess)
+
   def setSpecular(x: Double): Material = new Material(colour, ambient, diffuse, x, shininess)
+
   def setShininess(x: Double): Material = new Material(colour, ambient, diffuse, specular, x)
 
   def ambientContribution(effective_colour: Colour): Colour = {
@@ -58,13 +62,13 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
     val reflectv: RTTuple = lightv.negate().reflect(normalv)
 
     if (in_shadow) (ambientContribution(effective_colour)) else (
-    ambientContribution(effective_colour) +
-      diffuseContribution(effective_colour, lightv.dot(normalv)) +
-      specularContribution(lightv.dot(normalv), reflectv.dot(eyev), light.intensity))
+      ambientContribution(effective_colour) +
+        diffuseContribution(effective_colour, lightv.dot(normalv)) +
+        specularContribution(lightv.dot(normalv), reflectv.dot(eyev), light.intensity))
 
   }
 }
 
-object Material{
-  def defaultMaterial(): Material = new Material(Colour(1,1,1), 0.1, 0.9, 0.9, 200.0)
+object Material {
+  def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0)
 }

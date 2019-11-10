@@ -20,6 +20,6 @@ import org.scalatest.FunSuite
 class LightTest extends FunSuite {
   test("Light.test_creation") {
     val l: Light = new Light(Point(0, 0, 0), Colour(1, 1, 1))
-    assert(l.position === Point(0,0,0) && l.intensity === Colour(1,1,1))
+    assert(l.position === Point(0, 0, 0) && l.intensity === Colour(1, 1, 1))
   }
 }

@@ -24,8 +24,8 @@ class ComputationTest extends FunSuite {
     val i: Intersection = new Intersection(4, s)
 
     val comps: Computation = Computation.prepareComputations(i, r)
-    assert(comps.t === i.t && comps.shape === i.shape && comps.point === Point(0,0,-1)
-      && comps.eyev === Vector(0,0,-1) && comps.normalv === Vector(0,0,-1))
+    assert(comps.t === i.t && comps.shape === i.shape && comps.point === Point(0, 0, -1)
+      && comps.eyev === Vector(0, 0, -1) && comps.normalv === Vector(0, 0, -1))
   }
   test("Computation.test_outside_hit") {
     val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
@@ -41,7 +41,7 @@ class ComputationTest extends FunSuite {
     val i: Intersection = new Intersection(1, s)
 
     val comps: Computation = Computation.prepareComputations(i, r)
-    assert(comps.point === Point(0,0,1) && comps.eyev === Vector(0,0,-1)
-      && comps.inside && comps.normalv === Vector(0,0,-1))
+    assert(comps.point === Point(0, 0, 1) && comps.eyev === Vector(0, 0, -1)
+      && comps.inside && comps.normalv === Vector(0, 0, -1))
   }
 }

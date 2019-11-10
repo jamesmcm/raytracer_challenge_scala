@@ -17,9 +17,10 @@ package raytracer
 
 import cats.implicits._
 
-class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double){
+class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double) {
 
   def toTuple: (Double, Double, Double, Double) = (x, y, z, w)
+
   def toArray: Array[Double] = Array(x, y, z, w)
 
   final override def equals(that: Any): Boolean = {
@@ -45,16 +46,20 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double){
 
   def negate(): RTTuple = new RTTuple(-x, -y, -z, -w)
 
-  def magnitude(): Double = Math.sqrt(x*x  + y*y + z*z + w*w)
+  def magnitude(): Double = Math.sqrt(x * x + y * y + z * z + w * w)
 
   def normalise(): RTTuple = this / this.magnitude()
 
-  def dot(that: RTTuple): Double = x*that.x + y*that.y + z*that.z + w*that.w
-  def cross(that: RTTuple): RTTuple = Vector(y*that.z - z*that.y, z*that.x - x*that.z, x*that.y - y*that.x)
+  def dot(that: RTTuple): Double = x * that.x + y * that.y + z * that.z + w * that.w
+
+  def cross(that: RTTuple): RTTuple = Vector(y * that.z - z * that.y, z * that.x - x * that.z, x * that.y - y * that.x)
 
   def forceVector(): RTTuple = Vector(x, y, z)
+
   def forcePoint(): RTTuple = Point(x, y, z)
+
   def reflect(normal: RTTuple): RTTuple = this - normal * 2 * this.dot(normal)
+
   final override def toString: String = {
     "(" + x.toString + ", " + y.toString + ", " + z.toString + ", " + w.toString + ")"
   }

@@ -25,6 +25,6 @@ class Ray(val origin: RTTuple, val direction: RTTuple) {
   }
 }
 
-object Ray{
-  def apply(origin: RTTuple,  direction: RTTuple): Ray = new Ray(origin, direction)
+object Ray {
+  def apply(origin: RTTuple, direction: RTTuple): Ray = new Ray(origin, direction)
 }

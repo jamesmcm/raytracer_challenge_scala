@@ -19,7 +19,7 @@ import cats.implicits._
 
 import scala.reflect.ClassTag
 
-class Matrix (val m: Array[Array[Double]]) {
+class Matrix(val m: Array[Array[Double]]) {
 
   def apply(row: Int, column: Int): Double = {
     // Allow us to index with M(row)(column)
@@ -88,7 +88,7 @@ class Matrix (val m: Array[Array[Double]]) {
   def determinant: Double = {
     m.length match {
       case 2 => m(0)(0) * m(1)(1) - m(0)(1) * m(1)(0)
-      case _ =>  m(0).indices.map((x: Int) => m(0)(x) * cofactor(0, x)).sum
+      case _ => m(0).indices.map((x: Int) => m(0)(x) * cofactor(0, x)).sum
     }
   }
 
@@ -115,19 +115,24 @@ class Matrix (val m: Array[Array[Double]]) {
     // TODO: Avoid creating two Matrix objects here
     new Matrix(
       m.zipWithIndex.map((x: (Array[Double], Int)) => x._1.indices.map(
-      (y: Int) => cofactor(x._2, y) / determinant
-    ).toArray
-    )
+        (y: Int) => cofactor(x._2, y) / determinant
+      ).toArray
+      )
     ).transpose
   }
 
   def isInvertible: Boolean = !(determinant === 0)
 
   def rotateX(r: Double): Matrix = RotationX(r) * this
+
   def rotateY(r: Double): Matrix = RotationY(r) * this
+
   def rotateZ(r: Double): Matrix = RotationZ(r) * this
+
   def translate(x: Double, y: Double, z: Double): Matrix = Translation(x, y, z) * this
+
   def scale(x: Double, y: Double, z: Double): Matrix = Scaling(x, y, z) * this
+
   def shear(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix = Shearing(xy, xz, yx, yz, zx, zy) * this
 
   final override def hashCode: Int = m.##
@@ -154,8 +159,8 @@ object Matrix {
 
   def getIdentityMatrix(size: Int): Matrix = {
     new Matrix(
-      Array.fill(size)(Array.fill(size)(0:Double)).zipWithIndex.map(
-      (x: (Array[Double], Int)) => x._1.zipWithIndex.map((y: (Double, Int)) => if (y._2 === x._2) 1:Double else 0:Double))
+      Array.fill(size)(Array.fill(size)(0: Double)).zipWithIndex.map(
+        (x: (Array[Double], Int)) => x._1.zipWithIndex.map((y: (Double, Int)) => if (y._2 === x._2) 1: Double else 0: Double))
     )
   }
 }

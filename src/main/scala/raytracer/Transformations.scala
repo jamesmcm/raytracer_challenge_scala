@@ -59,12 +59,12 @@ object RotationX {
       Matrix.getIdentityMatrix(4).m.zipWithIndex.map(
         (a: (Array[Double], Int)) => (a._1.zipWithIndex.map(
           (b: (Double, Int)) => a._2 match {
-            case 1 =>  b._2 match {
+            case 1 => b._2 match {
               case 1 => math.cos(r)
               case 2 => -1 * math.sin(r)
               case _ => b._1
             }
-            case 2 =>  b._2 match {
+            case 2 => b._2 match {
               case 1 => math.sin(r)
               case 2 => math.cos(r)
               case _ => b._1
@@ -84,12 +84,12 @@ object RotationY {
       Matrix.getIdentityMatrix(4).m.zipWithIndex.map(
         (a: (Array[Double], Int)) => (a._1.zipWithIndex.map(
           (b: (Double, Int)) => a._2 match {
-            case 0 =>  b._2 match {
+            case 0 => b._2 match {
               case 0 => math.cos(r)
               case 2 => math.sin(r)
               case _ => b._1
             }
-            case 2 =>  b._2 match {
+            case 2 => b._2 match {
               case 0 => -1 * math.sin(r)
               case 2 => math.cos(r)
               case _ => b._1
@@ -109,12 +109,12 @@ object RotationZ {
       Matrix.getIdentityMatrix(4).m.zipWithIndex.map(
         (a: (Array[Double], Int)) => (a._1.zipWithIndex.map(
           (b: (Double, Int)) => a._2 match {
-            case 0 =>  b._2 match {
+            case 0 => b._2 match {
               case 0 => math.cos(r)
               case 1 => -math.sin(r)
               case _ => b._1
             }
-            case 1 =>  b._2 match {
+            case 1 => b._2 match {
               case 0 => math.sin(r)
               case 1 => math.cos(r)
               case _ => b._1
@@ -134,17 +134,17 @@ object Shearing {
       Matrix.getIdentityMatrix(4).m.zipWithIndex.map(
         (a: (Array[Double], Int)) => (a._1.zipWithIndex.map(
           (b: (Double, Int)) => a._2 match {
-            case 0 =>  b._2 match {
+            case 0 => b._2 match {
               case 1 => xy
               case 2 => xz
               case _ => b._1
             }
-            case 1 =>  b._2 match {
+            case 1 => b._2 match {
               case 0 => yx
               case 2 => yz
               case _ => b._1
             }
-            case 2 =>  b._2 match {
+            case 2 => b._2 match {
               case 0 => zx
               case 1 => zy
               case _ => b._1
@@ -165,7 +165,7 @@ object viewTransform {
     val left: RTTuple = forward.cross(upn)
     val true_up: RTTuple = left.cross(forward)
 
-    val orientation: Matrix = new Matrix(Array(left.toArray, true_up.toArray, forward.negate().toArray, Point(0,0,0).toArray))
+    val orientation: Matrix = new Matrix(Array(left.toArray, true_up.toArray, forward.negate().toArray, Point(0, 0, 0).toArray))
 
     orientation * Translation(-from.x, -from.y, -from.z)
   }

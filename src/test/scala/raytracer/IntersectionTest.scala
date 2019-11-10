@@ -60,11 +60,11 @@ class IntersectionTest extends FunSuite {
   }
   test("intersection.test_hit_shadow") {
     val s: Sphere = Sphere.unitSphere().setTransform(Translation(0, 0, 1))
-    val r: Ray = Ray(Point(0,0,-5), Vector(0,0,1))
+    val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
     val i1: Intersection = new Intersection(5, s)
     val comps: Computation = Computation.prepareComputations(i1, r)
 
-    assert(comps.over_point.z < -EPSILON/2 && comps.point.z > comps.over_point.z)
+    assert(comps.over_point.z < -EPSILON / 2 && comps.point.z > comps.over_point.z)
   }
 
 }

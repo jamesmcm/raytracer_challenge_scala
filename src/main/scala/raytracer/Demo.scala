@@ -21,14 +21,14 @@ object Demo {
     val pointList: List[RTTuple] = List.fill(12)(Point(0, radius, 0)).zipWithIndex.map(
       (x: (RTTuple, Int)) => RotationZ(x._2 * (math.Pi / 6)).tupleMult(x._1))
 
-    pointList.foreach((t: RTTuple) => canvas.writePixel((canvas.width/2) + math.round(t.x).toInt, (canvas.height/2) - math.round(t.y).toInt, Colour(1,0,0)))
+    pointList.foreach((t: RTTuple) => canvas.writePixel((canvas.width / 2) + math.round(t.x).toInt, (canvas.height / 2) - math.round(t.y).toInt, Colour(1, 0, 0)))
 
     stringToFile("clock.ppm", canvas.toPPM)
   }
 
   def castSphereSilhouette(canvas_size: Int): Unit = {
     val canvas: Canvas = Canvas(canvas_size, canvas_size)
-    val sphere: Sphere = Sphere.unitSphere().setTransform(Scaling(0.5,1,1))
+    val sphere: Sphere = Sphere.unitSphere().setTransform(Scaling(0.5, 1, 1))
     val ray_origin: RTTuple = Point(0, 0, -5)
     val wall_size: Double = 7.0
     val wall_z: Int = 10
@@ -39,10 +39,10 @@ object Demo {
 
     pixels.foreach(
       (pix: (Int, Int)) => {
-        val wall_target: RTTuple = Point(-half + pixel_size*pix._2, half - pixel_size * pix._1, wall_z)
+        val wall_target: RTTuple = Point(-half + pixel_size * pix._2, half - pixel_size * pix._1, wall_z)
         val ray: Ray = Ray(ray_origin, (wall_target - ray_origin).normalise())
         sphere.intersect(ray) match {
-          case xs if xs.nonEmpty => canvas.writePixel(pix._2, pix._1, Colour(1,0,0)); Unit
+          case xs if xs.nonEmpty => canvas.writePixel(pix._2, pix._1, Colour(1, 0, 0)); Unit
           case _ => Unit
         }
       }
@@ -66,7 +66,7 @@ object Demo {
 
     pixels.par.foreach(
       (pix: (Int, Int)) => {
-        val wall_target: RTTuple = Point(-half + pixel_size*pix._2, half - pixel_size * pix._1, wall_z)
+        val wall_target: RTTuple = Point(-half + pixel_size * pix._2, half - pixel_size * pix._1, wall_z)
         val ray: Ray = Ray(ray_origin, (wall_target - ray_origin).normalise())
         sphere.intersect(ray) match {
           case xs if xs.nonEmpty => canvas.writePixel(pix._2, pix._1,
@@ -75,7 +75,8 @@ object Demo {
               ray.direction.negate(),
               Intersection.hit(xs).shape.normalAt(ray.position(Intersection.hit(xs).t)),
               false
-            )); Unit
+            ));
+            Unit
           case _ => Unit
         }
       }
@@ -87,9 +88,9 @@ object Demo {
     val floorMaterial: Material = Material.defaultMaterial().setColour(Colour(1, 0.9, 0.9)).setSpecular(0)
     val floor: Sphere = Sphere.unitSphere().setTransform(Scaling(10, 0.01, 10)).setMaterial(floorMaterial)
     val left_wall: Sphere = Sphere.unitSphere().setTransform(Translation(0, 0, 5)
-      * RotationY(-math.Pi/4) * RotationX(math.Pi/2) * Scaling(10, 0.01, 10)).setMaterial(floorMaterial)
+      * RotationY(-math.Pi / 4) * RotationX(math.Pi / 2) * Scaling(10, 0.01, 10)).setMaterial(floorMaterial)
     val right_wall: Sphere = Sphere.unitSphere().setTransform(Translation(0, 0, 5)
-      * RotationY(math.Pi/4) * RotationX(math.Pi/2) * Scaling(10, 0.01, 10)).setMaterial(floorMaterial)
+      * RotationY(math.Pi / 4) * RotationX(math.Pi / 2) * Scaling(10, 0.01, 10)).setMaterial(floorMaterial)
 
     val middleMaterial: Material = Material.defaultMaterial().setColour(
       Colour(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3)
@@ -98,22 +99,23 @@ object Demo {
 
     val rightMaterial: Material = middleMaterial.setColour(Colour(0.5, 1, 0.1))
     val rightSphere: Sphere = Sphere.unitSphere().setTransform(
-      Translation(1.5, 0.5, -0.5)*Scaling(0.5, 0.5, 0.5)).setMaterial(rightMaterial)
+      Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5)).setMaterial(rightMaterial)
 
     val leftMaterial: Material = middleMaterial.setColour(Colour(1, 0.8, 0.1))
     val leftSphere: Sphere = Sphere.unitSphere().setTransform(
-      Translation(-1.5, 0.33, -0.75)*Scaling(0.33, 0.33, 0.33)).setMaterial(leftMaterial)
+      Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)).setMaterial(leftMaterial)
 
     val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
       List(floor, leftSphere, rightSphere, middleSphere, left_wall, right_wall))
 
-    val camera: Camera = Camera(800, 600, math.Pi/3).setTransform(viewTransform(Point(0, 1.5, -5),
+    val camera: Camera = Camera(800, 600, math.Pi / 3).setTransform(viewTransform(Point(0, 1.5, -5),
       Point(0, 1, 0), Vector(0, 1, 0)))
 
     val canvas: Canvas = camera.render(world)
     stringToFile("scene4.ppm", canvas.toPPM)
 
   }
+
   def planeScene(): Unit = {
     val floorMaterial: Material = Material.defaultMaterial().setColour(Colour(1, 0.9, 0.9)).setSpecular(0)
     val floor: Plane = Plane().setMaterial(floorMaterial)
@@ -125,16 +127,16 @@ object Demo {
 
     val rightMaterial: Material = middleMaterial.setColour(Colour(0.5, 1, 0.1))
     val rightSphere: Sphere = Sphere.unitSphere().setTransform(
-      Translation(1.5, 0.5, -0.5)*Scaling(0.5, 0.5, 0.5)).setMaterial(rightMaterial)
+      Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5)).setMaterial(rightMaterial)
 
     val leftMaterial: Material = middleMaterial.setColour(Colour(1, 0.8, 0.1))
     val leftSphere: Sphere = Sphere.unitSphere().setTransform(
-      Translation(-1.5, 0.33, -0.75)*Scaling(0.33, 0.33, 0.33)).setMaterial(leftMaterial)
+      Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)).setMaterial(leftMaterial)
 
     val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
       List(floor, leftSphere, rightSphere, middleSphere))
 
-    val camera: Camera = Camera(800, 600, math.Pi/3).setTransform(viewTransform(Point(0, 1.5, -5),
+    val camera: Camera = Camera(800, 600, math.Pi / 3).setTransform(viewTransform(Point(0, 1.5, -5),
       Point(0, 1, 0), Vector(0, 1, 0)))
 
     val canvas: Canvas = camera.render(world)
