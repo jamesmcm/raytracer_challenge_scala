@@ -31,7 +31,7 @@ class MaterialTest extends FunSuite {
     val normalv: RTTuple = Vector(0, 0, -1)
     val light: Light = Light.pointLight(Point(0, 0, -10), Colour(1, 1, 1))
 
-    val result: Colour = m.lighting(light, p, eyev, normalv, false)
+    val result: Colour = m.lighting(Sphere.unitSphere(), light, p, eyev, normalv, false)
     assert(result === Colour(1.9, 1.9, 1.9))
   }
   test("Material.test_lighting2") {
@@ -42,7 +42,7 @@ class MaterialTest extends FunSuite {
     val normalv: RTTuple = Vector(0, 0, -1)
     val light: Light = Light.pointLight(Point(0, 0, -10), Colour(1, 1, 1))
 
-    val result: Colour = m.lighting(light, p, eyev, normalv, false)
+    val result: Colour = m.lighting(Sphere.unitSphere(), light, p, eyev, normalv, false)
     assert(result === Colour(1.0, 1.0, 1.0))
   }
   test("Material.test_lighting3") {
@@ -53,7 +53,7 @@ class MaterialTest extends FunSuite {
     val normalv: RTTuple = Vector(0, 0, -1)
     val light: Light = Light.pointLight(Point(0, 10, -10), Colour(1, 1, 1))
 
-    val result: Colour = m.lighting(light, p, eyev, normalv, false)
+    val result: Colour = m.lighting(Sphere.unitSphere(), light, p, eyev, normalv, false)
     assert(result === Colour(0.7364, 0.7364, 0.7364))
   }
   test("Material.test_lighting4") {
@@ -64,7 +64,7 @@ class MaterialTest extends FunSuite {
     val normalv: RTTuple = Vector(0, 0, -1)
     val light: Light = Light.pointLight(Point(0, 10, -10), Colour(1, 1, 1))
 
-    val result: Colour = m.lighting(light, p, eyev, normalv, false)
+    val result: Colour = m.lighting(Sphere.unitSphere(), light, p, eyev, normalv, false)
     assert(result === Colour(1.6364, 1.6364, 1.6364))
   }
   test("Material.test_lighting5") {
@@ -75,7 +75,7 @@ class MaterialTest extends FunSuite {
     val normalv: RTTuple = Vector(0, 0, -1)
     val light: Light = Light.pointLight(Point(0, 0, 10), Colour(1, 1, 1))
 
-    val result: Colour = m.lighting(light, p, eyev, normalv, false)
+    val result: Colour = m.lighting(Sphere.unitSphere(), light, p, eyev, normalv, false)
     assert(result === Colour(0.1, 0.1, 0.1))
   }
   test("Material.test_lighting_shadow1") {
@@ -86,7 +86,7 @@ class MaterialTest extends FunSuite {
     val normalv: RTTuple = Vector(0, 0, -1)
     val light: Light = Light.pointLight(Point(0, 0, -10), Colour(1, 1, 1))
 
-    val result: Colour = m.lighting(light, p, eyev, normalv, true)
+    val result: Colour = m.lighting(Sphere.unitSphere(), light, p, eyev, normalv, true)
     assert(result === Colour(0.1, 0.1, 0.1))
   }
   test("Material.test_pattern1") {
@@ -97,8 +97,8 @@ class MaterialTest extends FunSuite {
     val normalv: RTTuple = Vector(0, 0, -1)
     val light: Light = Light.pointLight(Point(0, 0, -10), Colour(1, 1, 1))
 
-    val c1: Colour = m.lighting(light, Point(0.9, 0, 0), eyev, normalv, false)
-    val c2: Colour = m.lighting(light, Point(1.1, 0, 0), eyev, normalv, false)
+    val c1: Colour = m.lighting(Sphere.unitSphere(), light, Point(0.9, 0, 0), eyev, normalv, false)
+    val c2: Colour = m.lighting(Sphere.unitSphere(), light, Point(1.1, 0, 0), eyev, normalv, false)
 
     assert(c1 === Colour(1,1,1) && c2 === Colour(0,0,0))
   }

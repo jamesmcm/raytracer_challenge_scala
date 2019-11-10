@@ -48,5 +48,26 @@ class PatternTest extends FunSuite {
       p.colourAt(Point(-1.1,0,0)) === Colour(1,1,1)
     )
   }
+  test("Pattern.test_stripe_object_transform") {
+    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0))
+    val o: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+
+    val c: Colour = p.colourAtObject(o, Point(1.5,0,0))
+    assert(c === Colour(1,1,1))
+  }
+  test("Pattern.test_stripe_pattern_transform") {
+    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0)).setTransform(Scaling(2,2,2))
+    val o: Sphere = Sphere.unitSphere()
+
+    val c: Colour = p.colourAtObject(o, Point(1.5,0,0))
+    assert(c === Colour(1,1,1))
+  }
+  test("Pattern.test_stripe_object_pattern_transform") {
+    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0)).setTransform(Translation(0.5, 0, 0))
+    val o: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+
+    val c: Colour = p.colourAtObject(o, Point(2.5,0,0))
+    assert(c === Colour(1,1,1))
+  }
 
 }

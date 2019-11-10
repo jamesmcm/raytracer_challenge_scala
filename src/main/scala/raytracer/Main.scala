@@ -21,7 +21,8 @@ object Main extends App {
   // castSphereSilhouette(100)
   // Demo.lightSphere(2000)
   // Demo.firstScene()
-  Demo.planeScene()
+  // Demo.planeScene()
+  Demo.stripeScene()
 
 
 }

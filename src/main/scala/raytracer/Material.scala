@@ -58,18 +58,18 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
     if (light_dot_normal < 0 || reflect_dot_eye <= 0) Colour.black else light_intensity * specular * math.pow(reflect_dot_eye, shininess)
   }
 
-  def getColourFromPattern(p: RTTuple): Colour = {
+  def getColourFromPattern(obj: SpaceObject, p: RTTuple): Colour = {
     pattern match {
-      case Some(x) => x.colourAt(p)
+      case Some(x) => x.colourAtObject(obj, p)
       case None => colour
     }
   }
 
-  def lighting(light: Light, p: RTTuple, eyev: RTTuple, normalv: RTTuple, in_shadow: Boolean): Colour = {
+  def lighting(obj: SpaceObject, light: Light, p: RTTuple, eyev: RTTuple, normalv: RTTuple, in_shadow: Boolean): Colour = {
     val lightv: RTTuple = (light.position - p).normalise()
     val reflectv: RTTuple = lightv.negate().reflect(normalv)
 
-    val useColour: Colour = getColourFromPattern(p)
+    val useColour: Colour = getColourFromPattern(obj, p)
     val effective_colour: Colour = useColour ** light.intensity // Colour blend
 
     if (in_shadow) (ambientContribution(effective_colour)) else (

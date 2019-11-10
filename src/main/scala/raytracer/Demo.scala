@@ -70,7 +70,7 @@ object Demo {
         val ray: Ray = Ray(ray_origin, (wall_target - ray_origin).normalise())
         sphere.intersect(ray) match {
           case xs if xs.nonEmpty => canvas.writePixel(pix._2, pix._1,
-            Intersection.hit(xs).shape.material.lighting(light,
+            Intersection.hit(xs).shape.material.lighting(Intersection.hit(xs).shape, light,
               ray.position(Intersection.hit(xs).t),
               ray.direction.negate(),
               Intersection.hit(xs).shape.normalAt(ray.position(Intersection.hit(xs).t)),
@@ -142,5 +142,33 @@ object Demo {
     val canvas: Canvas = camera.render(world)
     stringToFile("scene5.ppm", canvas.toPPM)
   }
+
+  def stripeScene(): Unit = {
+    val floorMaterial: Material = Material.defaultMaterial().setColour(Colour(1, 0.9, 0.9)).setSpecular(0).setPattern(StripePattern(Colour(0,0,0), Colour(1,1,1)))
+    val floor: Plane = Plane().setMaterial(floorMaterial)
+
+    val middleMaterial: Material = Material.defaultMaterial().setColour(
+      Colour(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3).setPattern(StripePattern(Colour(0,0,0), Colour(1,1,1)).setTransform(RotationX(math.Pi/2)))
+    val middleSphere: Sphere = Sphere.unitSphere().setTransform(
+      Translation(-0.5, 1, 0.5)).setMaterial(middleMaterial)
+
+    val rightMaterial: Material = middleMaterial.setColour(Colour(0.5, 1, 0.1)).setPattern(StripePattern(Colour(0,0,0), Colour(1,1,1)).setTransform(RotationZ(math.Pi/2)))
+    val rightSphere: Sphere = Sphere.unitSphere().setTransform(
+      Translation(1.5, 0.5, -0.5) * Scaling(0.5, 0.5, 0.5)).setMaterial(rightMaterial)
+
+    val leftMaterial: Material = middleMaterial.setColour(Colour(1, 0.8, 0.1)).setPattern(StripePattern(Colour(0,0,0), Colour(1,1,1)).setTransform(RotationY(math.Pi/2)))
+    val leftSphere: Sphere = Sphere.unitSphere().setTransform(
+      Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)).setMaterial(leftMaterial)
+
+    val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
+      List(floor, leftSphere, rightSphere, middleSphere))
+
+    val camera: Camera = Camera(800, 600, math.Pi / 3).setTransform(viewTransform(Point(0, 1.5, -5),
+      Point(0, 1, 0), Vector(0, 1, 0)))
+
+    val canvas: Canvas = camera.render(world)
+    stringToFile("scene6.ppm", canvas.toPPM)
+  }
+
 
 }

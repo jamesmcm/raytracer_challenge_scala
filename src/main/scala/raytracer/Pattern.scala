@@ -17,20 +17,30 @@ package raytracer
 
 import cats.implicits._
 
-class StripePattern(val a: Colour, val b: Colour) extends Pattern {
+class StripePattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   def colourAt(p: RTTuple): Colour = {
     if (math.floor(p.x).toInt % 2 === 0) a else b
+  }
+  def setTransform(t: Matrix): StripePattern = {
+    new StripePattern(a, b, t)
   }
 }
 
 object StripePattern {
-  def apply(a: Colour, b: Colour): StripePattern = new StripePattern(a, b)
+  def apply(a: Colour, b: Colour): StripePattern = new StripePattern(a, b, Matrix.getIdentityMatrix(4))
 }
 
 abstract class Pattern(){
   // TODO: Nested patterns
   val a: Colour
   val b: Colour
+  val transform: Matrix
 
   def colourAt(p: RTTuple): Colour
+  def colourAtObject(o: SpaceObject, worldPoint: RTTuple): Colour = {
+    val objectPoint: RTTuple = o.transform.inverse.tupleMult(worldPoint)
+    val patternPoint: RTTuple = transform.inverse.tupleMult(objectPoint)
+
+    colourAt(patternPoint)
+  }
 }

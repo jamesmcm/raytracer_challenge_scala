@@ -32,7 +32,7 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
 
   def shadeHit(comps: Computation): Colour = {
     lights.par.map((l: Light) =>
-      comps.shape.material.lighting(l, comps.point, comps.eyev,
+      comps.shape.material.lighting(comps.shape, l, comps.point, comps.eyev,
         comps.normalv, isShadowed(comps.over_point, l))).reduce(_ + _)
   }
 
