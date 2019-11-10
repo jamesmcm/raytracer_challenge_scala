@@ -60,7 +60,7 @@ object World {
   def emptyWorld: World = new World(Array[Light](), Array[SpaceObject]())
 
   def defaultWorld: World = {
-    val m1: Material = new Material(Colour(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200.0)
+    val m1: Material = new Material(Colour(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200.0, None)
     val s1: Sphere = Sphere.unitSphere().setMaterial(m1)
     val s2: Sphere = Sphere.unitSphere().setTransform(Scaling(0.5, 0.5, 0.5))
     val light: Light = Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))

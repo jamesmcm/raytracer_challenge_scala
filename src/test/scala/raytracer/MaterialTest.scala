@@ -89,4 +89,17 @@ class MaterialTest extends FunSuite {
     val result: Colour = m.lighting(light, p, eyev, normalv, true)
     assert(result === Colour(0.1, 0.1, 0.1))
   }
+  test("Material.test_pattern1") {
+    val m: Material = Material.defaultMaterial().setDiffuse(0).setSpecular(0).setAmbient(1)
+      .setPattern((StripePattern(Colour(1,1,1), Colour(0,0,0))))
+
+    val eyev: RTTuple = Vector(0, 0, -1)
+    val normalv: RTTuple = Vector(0, 0, -1)
+    val light: Light = Light.pointLight(Point(0, 0, -10), Colour(1, 1, 1))
+
+    val c1: Colour = m.lighting(light, Point(0.9, 0, 0), eyev, normalv, false)
+    val c2: Colour = m.lighting(light, Point(1.1, 0, 0), eyev, normalv, false)
+
+    assert(c1 === Colour(1,1,1) && c2 === Colour(0,0,0))
+  }
 }

@@ -16,7 +16,7 @@
 package raytracer
 
 class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
-               val specular: Double, val shininess: Double) {
+               val specular: Double, val shininess: Double, val pattern: Option[Pattern]) {
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -34,15 +34,17 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
 
   final override def hashCode: Int = (colour, ambient, diffuse, specular, shininess).##
 
-  def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess)
+  def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess, pattern)
 
-  def setAmbient(x: Double): Material = new Material(colour, x, diffuse, specular, shininess)
+  def setAmbient(x: Double): Material = new Material(colour, x, diffuse, specular, shininess, pattern)
 
-  def setDiffuse(x: Double): Material = new Material(colour, ambient, x, specular, shininess)
+  def setDiffuse(x: Double): Material = new Material(colour, ambient, x, specular, shininess, pattern)
 
-  def setSpecular(x: Double): Material = new Material(colour, ambient, diffuse, x, shininess)
+  def setSpecular(x: Double): Material = new Material(colour, ambient, diffuse, x, shininess, pattern)
 
-  def setShininess(x: Double): Material = new Material(colour, ambient, diffuse, specular, x)
+  def setShininess(x: Double): Material = new Material(colour, ambient, diffuse, specular, x, pattern)
+
+  def setPattern(x: Pattern): Material = new Material(colour, ambient, diffuse, specular, shininess, Some(x))
 
   def ambientContribution(effective_colour: Colour): Colour = {
     effective_colour * ambient
@@ -56,10 +58,19 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
     if (light_dot_normal < 0 || reflect_dot_eye <= 0) Colour.black else light_intensity * specular * math.pow(reflect_dot_eye, shininess)
   }
 
+  def getColourFromPattern(p: RTTuple): Colour = {
+    pattern match {
+      case Some(x) => x.colourAt(p)
+      case None => colour
+    }
+  }
+
   def lighting(light: Light, p: RTTuple, eyev: RTTuple, normalv: RTTuple, in_shadow: Boolean): Colour = {
-    val effective_colour: Colour = colour ** light.intensity // Colour blend
     val lightv: RTTuple = (light.position - p).normalise()
     val reflectv: RTTuple = lightv.negate().reflect(normalv)
+
+    val useColour: Colour = getColourFromPattern(p)
+    val effective_colour: Colour = useColour ** light.intensity // Colour blend
 
     if (in_shadow) (ambientContribution(effective_colour)) else (
       ambientContribution(effective_colour) +
@@ -70,5 +81,5 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
 }
 
 object Material {
-  def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0)
+  def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0, None)
 }
