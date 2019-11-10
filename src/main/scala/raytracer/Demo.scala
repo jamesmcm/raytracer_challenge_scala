@@ -114,5 +114,31 @@ object Demo {
     stringToFile("scene4.ppm", canvas.toPPM)
 
   }
+  def planeScene(): Unit = {
+    val floorMaterial: Material = Material.defaultMaterial().setColour(Colour(1, 0.9, 0.9)).setSpecular(0)
+    val floor: Plane = Plane().setMaterial(floorMaterial)
+
+    val middleMaterial: Material = Material.defaultMaterial().setColour(
+      Colour(0.1, 1, 0.5)).setDiffuse(0.7).setSpecular(0.3)
+    val middleSphere: Sphere = Sphere.unitSphere().setTransform(
+      Translation(-0.5, 1, 0.5)).setMaterial(middleMaterial)
+
+    val rightMaterial: Material = middleMaterial.setColour(Colour(0.5, 1, 0.1))
+    val rightSphere: Sphere = Sphere.unitSphere().setTransform(
+      Translation(1.5, 0.5, -0.5)*Scaling(0.5, 0.5, 0.5)).setMaterial(rightMaterial)
+
+    val leftMaterial: Material = middleMaterial.setColour(Colour(1, 0.8, 0.1))
+    val leftSphere: Sphere = Sphere.unitSphere().setTransform(
+      Translation(-1.5, 0.33, -0.75)*Scaling(0.33, 0.33, 0.33)).setMaterial(leftMaterial)
+
+    val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
+      List(floor, leftSphere, rightSphere, middleSphere))
+
+    val camera: Camera = Camera(800, 600, math.Pi/3).setTransform(viewTransform(Point(0, 1.5, -5),
+      Point(0, 1, 0), Vector(0, 1, 0)))
+
+    val canvas: Canvas = camera.render(world)
+    stringToFile("scene5.ppm", canvas.toPPM)
+  }
 
 }

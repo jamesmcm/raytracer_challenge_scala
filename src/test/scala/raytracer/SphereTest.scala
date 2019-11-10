@@ -124,4 +124,13 @@ class SphereTest extends FunSuite {
 
     assert(s.material === m)
   }
+  test("Sphere.test_superclass") {
+    val m: Material = Material.defaultMaterial().setAmbient(1)
+    val s: Sphere = Sphere.unitSphere().setMaterial(m)
+
+    assert(s match {
+      case x: SpaceObject => true
+      case _ => false
+    })
+  }
 }

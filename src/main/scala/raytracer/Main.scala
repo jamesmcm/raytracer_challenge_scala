@@ -20,7 +20,8 @@ object Main extends App {
   // drawClock(200)
   // castSphereSilhouette(100)
   // Demo.lightSphere(2000)
-  Demo.firstScene()
+  // Demo.firstScene()
+  Demo.planeScene()
 
 
 }
