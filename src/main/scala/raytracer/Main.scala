@@ -22,7 +22,8 @@ object Main extends App {
   // Demo.lightSphere(2000)
   // Demo.firstScene()
   // Demo.planeScene()
-  Demo.stripeScene()
+  // Demo.stripeScene()
+  Demo.patternScene()
 
 
 }

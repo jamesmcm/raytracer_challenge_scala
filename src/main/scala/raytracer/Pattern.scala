@@ -30,6 +30,45 @@ object StripePattern {
   def apply(a: Colour, b: Colour): StripePattern = new StripePattern(a, b, Matrix.getIdentityMatrix(4))
 }
 
+class GradientPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
+  def colourAt(p: RTTuple): Colour = {
+    a + ((b-a) * (p.x - math.floor(p.x)))
+  }
+  def setTransform(t: Matrix): GradientPattern = {
+    new GradientPattern(a, b, t)
+  }
+}
+
+object GradientPattern {
+  def apply(a: Colour, b: Colour): GradientPattern = new GradientPattern(a, b, Matrix.getIdentityMatrix(4))
+}
+
+class RingPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
+  def colourAt(p: RTTuple): Colour = {
+    if (math.floor(math.sqrt(p.x*p.x + p.z*p.z)).toInt % 2 === 0) a else b
+  }
+  def setTransform(t: Matrix): RingPattern = {
+    new RingPattern(a, b, t)
+  }
+}
+
+object RingPattern {
+  def apply(a: Colour, b: Colour): RingPattern = new RingPattern(a, b, Matrix.getIdentityMatrix(4))
+}
+
+class CheckeredPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
+  def colourAt(p: RTTuple): Colour = {
+    if (math.floor((math.floor(p.x) + math.floor(p.y) + math.floor(p.z))).toInt % 2 === 0) a else b
+  }
+  def setTransform(t: Matrix): CheckeredPattern = {
+    new CheckeredPattern(a, b, t)
+  }
+}
+
+object CheckeredPattern {
+  def apply(a: Colour, b: Colour): CheckeredPattern = new CheckeredPattern(a, b, Matrix.getIdentityMatrix(4))
+}
+
 abstract class Pattern(){
   // TODO: Nested patterns
   val a: Colour

@@ -69,5 +69,42 @@ class PatternTest extends FunSuite {
     val c: Colour = p.colourAtObject(o, Point(2.5,0,0))
     assert(c === Colour(1,1,1))
   }
+  test("Pattern.test_gradient") {
+    val p: Pattern = GradientPattern(Colour(1,1,1), Colour(0,0,0))
 
+    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
+      p.colourAt(Point(0.25,0,0)) === Colour(0.75,0.75,0.75) &&
+      p.colourAt(Point(0.5,0,0)) === Colour(0.5,0.5,0.5) &&
+      p.colourAt(Point(0.75,0,0)) === Colour(0.25,0.25,0.25))
+  }
+
+  test("Pattern.test_ring") {
+    val p: Pattern = RingPattern(Colour(1,1,1), Colour(0,0,0))
+
+    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
+      p.colourAt(Point(1,0,0)) === Colour(0,0,0) &&
+      p.colourAt(Point(0,0,1)) === Colour(0,0,0) &&
+      p.colourAt(Point(0.708,0,0.708)) === Colour(0,0,0))
+  }
+  test("Pattern.test_checkered_x") {
+    val p: Pattern = CheckeredPattern(Colour(1,1,1), Colour(0,0,0))
+
+    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
+      p.colourAt(Point(0.99,0,0)) === Colour(1,1,1) &&
+      p.colourAt(Point(1.01,0,0)) === Colour(0,0,0))
+  }
+  test("Pattern.test_checkered_y") {
+    val p: Pattern = CheckeredPattern(Colour(1,1,1), Colour(0,0,0))
+
+    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
+      p.colourAt(Point(0,0.99,0)) === Colour(1,1,1) &&
+      p.colourAt(Point(0,1.01,0)) === Colour(0,0,0))
+  }
+  test("Pattern.test_checkered_z") {
+    val p: Pattern = CheckeredPattern(Colour(1,1,1), Colour(0,0,0))
+
+    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
+      p.colourAt(Point(0,0,0.99)) === Colour(1,1,1) &&
+      p.colourAt(Point(0,0,1.01)) === Colour(0,0,0))
+  }
 }
