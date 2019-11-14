@@ -16,7 +16,7 @@
 package raytracer
 
 class Computation(val t: Double, val shape: SpaceObject, val point: RTTuple, val eyev: RTTuple, val normalv: RTTuple,
-                  val inside: Boolean, val over_point: RTTuple) {
+                  val inside: Boolean, val over_point: RTTuple, val reflectv: RTTuple) {
 
 }
 
@@ -24,14 +24,15 @@ object Computation {
   def prepareComputations(intersection: Intersection, ray: Ray): Computation = {
     val normalv: RTTuple = intersection.shape.normalAt(ray.position(intersection.t))
     val eyev: RTTuple = ray.direction.negate()
+    // TODO: Refactor me to handle negation only once
     if (normalv.dot(eyev) < 0) {
       new Computation(intersection.t, intersection.shape,
         ray.position(intersection.t), eyev, normalv.negate(), true,
-        ray.position(intersection.t) + normalv.negate() * EPSILON)
+        ray.position(intersection.t) + normalv.negate() * EPSILON, ray.direction.reflect(normalv.negate()))
     } else {
       new Computation(intersection.t,
         intersection.shape, ray.position(intersection.t), eyev, normalv, false,
-        ray.position(intersection.t) + normalv * EPSILON)
+        ray.position(intersection.t) + normalv * EPSILON, ray.direction.reflect(normalv))
     }
   }
 }

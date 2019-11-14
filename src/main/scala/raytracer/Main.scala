@@ -23,8 +23,8 @@ object Main extends App {
   // Demo.firstScene()
   // Demo.planeScene()
   // Demo.stripeScene()
-  Demo.patternScene()
-
+  // Demo.patternScene()
+  Demo.reflectScene()
 
 }
 

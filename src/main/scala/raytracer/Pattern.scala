@@ -19,7 +19,7 @@ import cats.implicits._
 
 class StripePattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   def colourAt(p: RTTuple): Colour = {
-    if (math.floor(p.x).toInt % 2 === 0) a else b
+    if (math.floor(p.x + EPSILON).toInt % 2 === 0) a else b
   }
   def setTransform(t: Matrix): StripePattern = {
     new StripePattern(a, b, t)
@@ -32,7 +32,7 @@ object StripePattern {
 
 class GradientPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   def colourAt(p: RTTuple): Colour = {
-    a + ((b-a) * (p.x - math.floor(p.x)))
+    a + ((b-a) * (p.x - math.floor(p.x + EPSILON)))
   }
   def setTransform(t: Matrix): GradientPattern = {
     new GradientPattern(a, b, t)
@@ -45,7 +45,7 @@ object GradientPattern {
 
 class RingPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   def colourAt(p: RTTuple): Colour = {
-    if (math.floor(math.sqrt(p.x*p.x + p.z*p.z)).toInt % 2 === 0) a else b
+    if (math.floor(math.sqrt(p.x*p.x + p.z*p.z) + EPSILON).toInt % 2 === 0) a else b
   }
   def setTransform(t: Matrix): RingPattern = {
     new RingPattern(a, b, t)
@@ -58,7 +58,7 @@ object RingPattern {
 
 class CheckeredPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   def colourAt(p: RTTuple): Colour = {
-    if (math.floor((math.floor(p.x) + math.floor(p.y) + math.floor(p.z))).toInt % 2 === 0) a else b
+    if ((math.floor(p.x + EPSILON) + math.floor(p.y + EPSILON) + math.floor(p.z + EPSILON)).toInt % 2 === 0) a else b
   }
   def setTransform(t: Matrix): CheckeredPattern = {
     new CheckeredPattern(a, b, t)

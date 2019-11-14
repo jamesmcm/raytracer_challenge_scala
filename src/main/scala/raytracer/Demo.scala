@@ -188,13 +188,37 @@ object Demo {
       Translation(-1.5, 0.33, -0.75) * Scaling(0.33, 0.33, 0.33)).setMaterial(leftMaterial)
 
     val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
-      List(floor)) //, leftSphere, rightSphere, middleSphere))
+      List(floor, leftSphere, rightSphere, middleSphere))
 
     val camera: Camera = Camera(800, 600, math.Pi / 3).setTransform(viewTransform(Point(0, 1.5, -5),
       Point(0, 1, 0), Vector(0, 1, 0)))
 
     val canvas: Canvas = camera.render(world)
-    stringToFile("scene9.ppm", canvas.toPPM)
+    stringToFile("scene12.ppm", canvas.toPPM)
+  }
+  def reflectScene(): Unit = {
+    val floorMaterial: Material = Material.defaultMaterial().setSpecular(0).setReflective(0.5).setPattern(CheckeredPattern(Colour(0,0.8,0), Colour(1,1,1)))
+    val wallMaterial: Material = Material.defaultMaterial().setSpecular(0)
+    val floor: Plane = Plane().setMaterial(floorMaterial)
+    val left_wall: Sphere = Sphere.unitSphere().setTransform(Translation(0, 0, 5)
+      * RotationY(-math.Pi / 4) * RotationX(math.Pi / 2) * Scaling(10, 0.01, 10)).setMaterial(wallMaterial)
+    val right_wall: Sphere = Sphere.unitSphere().setTransform(Translation(0, 0, 5)
+      * RotationY(math.Pi / 4) * RotationX(math.Pi / 2) * Scaling(10, 0.01, 10)).setMaterial(wallMaterial)
+
+    val middleMaterial: Material = Material.defaultMaterial().setColour(
+      Colour(0.5, 0.5, 0.5)).setDiffuse(0.7).setSpecular(0.3).setReflective(1)
+    val middleSphere: Sphere = Sphere.unitSphere().setTransform(
+      Translation(-0.5, 1, 0.5)).setMaterial(middleMaterial)
+
+    val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
+      List(floor, middleSphere, left_wall, right_wall))
+
+    val camera: Camera = Camera(800, 600, math.Pi / 3).setTransform(viewTransform(Point(0, 1.5, -5),
+      Point(0, 1, 0), Vector(0, 1, 0)))
+
+    val canvas: Canvas = camera.render(world)
+    stringToFile("scene_reflect2.ppm", canvas.toPPM)
+
   }
 
 

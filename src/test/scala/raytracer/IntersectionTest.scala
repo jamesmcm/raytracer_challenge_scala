@@ -67,5 +67,14 @@ class IntersectionTest extends FunSuite {
     assert(comps.over_point.z < -EPSILON / 2 && comps.point.z > comps.over_point.z)
   }
 
+  test("intersection.test_reflection_vector") {
+    val s: Plane = Plane()
+    val r: Ray = Ray(Point(0, 1, -1), Vector(0, -1*math.sqrt(2)/2, math.sqrt(2)/2))
+    val i1: Intersection = new Intersection(math.sqrt(2), s)
+    val comps: Computation = Computation.prepareComputations(i1, r)
+
+    assert(comps.reflectv === Vector(0, math.sqrt(2)/2, math.sqrt(2)/2))
+  }
+
 }
 

@@ -102,4 +102,9 @@ class MaterialTest extends FunSuite {
 
     assert(c1 === Colour(1,1,1) && c2 === Colour(0,0,0))
   }
+  test("Material.test_reflectivity") {
+    val m: Material = Material.defaultMaterial()
+
+    assert(m.reflective === 0.0)
+  }
 }

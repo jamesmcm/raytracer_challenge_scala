@@ -16,7 +16,8 @@
 package raytracer
 
 class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
-               val specular: Double, val shininess: Double, val pattern: Option[Pattern]) {
+               val specular: Double, val shininess: Double, val pattern: Option[Pattern],
+               val reflective: Double) {
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -34,17 +35,19 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
 
   final override def hashCode: Int = (colour, ambient, diffuse, specular, shininess).##
 
-  def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess, pattern)
+  def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess, pattern, reflective)
 
-  def setAmbient(x: Double): Material = new Material(colour, x, diffuse, specular, shininess, pattern)
+  def setAmbient(x: Double): Material = new Material(colour, x, diffuse, specular, shininess, pattern, reflective)
 
-  def setDiffuse(x: Double): Material = new Material(colour, ambient, x, specular, shininess, pattern)
+  def setDiffuse(x: Double): Material = new Material(colour, ambient, x, specular, shininess, pattern, reflective)
 
-  def setSpecular(x: Double): Material = new Material(colour, ambient, diffuse, x, shininess, pattern)
+  def setSpecular(x: Double): Material = new Material(colour, ambient, diffuse, x, shininess, pattern, reflective)
 
-  def setShininess(x: Double): Material = new Material(colour, ambient, diffuse, specular, x, pattern)
+  def setShininess(x: Double): Material = new Material(colour, ambient, diffuse, specular, x, pattern, reflective)
 
-  def setPattern(x: Pattern): Material = new Material(colour, ambient, diffuse, specular, shininess, Some(x))
+  def setPattern(x: Pattern): Material = new Material(colour, ambient, diffuse, specular, shininess, Some(x), reflective)
+
+  def setReflective(x: Double): Material = new Material(colour, ambient, diffuse, specular, shininess, pattern, x)
 
   def ambientContribution(effective_colour: Colour): Colour = {
     effective_colour * ambient
@@ -81,5 +84,5 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
 }
 
 object Material {
-  def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0, None)
+  def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0, None, 0)
 }
