@@ -133,4 +133,10 @@ class SphereTest extends FunSuite {
       case _ => false
     })
   }
+  test("Sphere.test_glass_sphere") {
+
+    val s: Sphere = Sphere.glassSphere()
+
+    assert(s.transform === Matrix.getIdentityMatrix(4) && s.material.transparency === 1.0 && s.material.refractiveIndex === 1.5)
+  }
 }

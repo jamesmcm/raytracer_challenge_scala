@@ -29,10 +29,6 @@ class Sphere(val transform: Matrix, val material: Material) extends SpaceObject 
     }
   }
 
-  final def ===(that: Sphere): Boolean = {
-    transform === that.transform && material === that.material
-  }
-
   final override def hashCode: Int = (transform, material).##
 
 
@@ -63,6 +59,7 @@ class Sphere(val transform: Matrix, val material: Material) extends SpaceObject 
 
 object Sphere {
   def unitSphere(): Sphere = new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
+  def glassSphere(): Sphere = new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5))
 }
 
 // TODO: Move me
@@ -70,6 +67,17 @@ abstract class SpaceObject() {
   type T <: SpaceObject
   val material: Material
   val transform: Matrix
+  def equals(that: Any): Boolean
+
+  // def ===(that: SpaceObject): Boolean
+  final def ===(that: SpaceObject): Boolean = {
+    that match {
+      case that: T => transform === that.transform && material === that.material
+      case _ => false
+    }
+  }
+
+  def hashCode: Int
 
   def constructor(t: Matrix, m: Material): T
 

@@ -107,4 +107,9 @@ class MaterialTest extends FunSuite {
 
     assert(m.reflective === 0.0)
   }
+  test("Material.test_refraction") {
+    val m: Material = Material.defaultMaterial()
+
+    assert(m.transparency === 0.0 && m.refractiveIndex === 1.0)
+  }
 }

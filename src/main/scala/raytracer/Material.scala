@@ -17,7 +17,7 @@ package raytracer
 
 class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
                val specular: Double, val shininess: Double, val pattern: Option[Pattern],
-               val reflective: Double) {
+               val reflective: Double, val transparency: Double, val refractiveIndex: Double) {
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -35,19 +35,21 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
 
   final override def hashCode: Int = (colour, ambient, diffuse, specular, shininess).##
 
-  def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess, pattern, reflective)
+  def setColour(c: Colour): Material = new Material(c, ambient, diffuse, specular, shininess, pattern, reflective, transparency, refractiveIndex)
 
-  def setAmbient(x: Double): Material = new Material(colour, x, diffuse, specular, shininess, pattern, reflective)
+  def setAmbient(x: Double): Material = new Material(colour, x, diffuse, specular, shininess, pattern, reflective, transparency, refractiveIndex)
 
-  def setDiffuse(x: Double): Material = new Material(colour, ambient, x, specular, shininess, pattern, reflective)
+  def setDiffuse(x: Double): Material = new Material(colour, ambient, x, specular, shininess, pattern, reflective, transparency, refractiveIndex)
 
-  def setSpecular(x: Double): Material = new Material(colour, ambient, diffuse, x, shininess, pattern, reflective)
+  def setSpecular(x: Double): Material = new Material(colour, ambient, diffuse, x, shininess, pattern, reflective, transparency, refractiveIndex)
 
-  def setShininess(x: Double): Material = new Material(colour, ambient, diffuse, specular, x, pattern, reflective)
+  def setShininess(x: Double): Material = new Material(colour, ambient, diffuse, specular, x, pattern, reflective, transparency, refractiveIndex)
 
-  def setPattern(x: Pattern): Material = new Material(colour, ambient, diffuse, specular, shininess, Some(x), reflective)
+  def setPattern(x: Pattern): Material = new Material(colour, ambient, diffuse, specular, shininess, Some(x), reflective, transparency, refractiveIndex)
 
-  def setReflective(x: Double): Material = new Material(colour, ambient, diffuse, specular, shininess, pattern, x)
+  def setReflective(x: Double): Material = new Material(colour, ambient, diffuse, specular, shininess, pattern, x, transparency, refractiveIndex)
+  def setTransparency(x: Double): Material = new Material(colour, ambient, diffuse, specular, shininess, pattern, reflective, x, refractiveIndex)
+  def setRefractiveIndex(x: Double): Material = new Material(colour, ambient, diffuse, specular, shininess, pattern, reflective, transparency, x)
 
   def ambientContribution(effective_colour: Colour): Colour = {
     effective_colour * ambient
@@ -84,5 +86,5 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
 }
 
 object Material {
-  def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0, None, 0)
+  def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0, None, 0, transparency = 0.0, refractiveIndex = 1.0)
 }

@@ -20,16 +20,16 @@ class Plane(val transform: Matrix, val material: Material) extends SpaceObject {
 
   def constructor(t: Matrix, m: Material): T = new Plane(t, m)
 
-  final override def equals(that: Any): Boolean = {
-    that match {
-      case that: Plane => transform === that.transform && material === that.material
-      case _ => false
-    }
-  }
+   final override def equals(that: Any): Boolean = {
+     that match {
+       case that: Plane => transform === that.transform && material === that.material
+       case _ => false
+     }
+   }
 
-  final def ===(that: Plane): Boolean = {
-    transform === that.transform && material === that.material
-  }
+//   final def ===(that: Plane): Boolean = {
+//     transform === that.transform && material === that.material
+//   }
 
   final override def hashCode: Int = (transform, material).##
 

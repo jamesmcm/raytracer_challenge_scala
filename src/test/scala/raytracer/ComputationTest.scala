@@ -23,7 +23,7 @@ class ComputationTest extends FunSuite {
     val s: Sphere = Sphere.unitSphere()
     val i: Intersection = new Intersection(4, s)
 
-    val comps: Computation = Computation.prepareComputations(i, r)
+    val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
     assert(comps.t === i.t && comps.shape === i.shape && comps.point === Point(0, 0, -1)
       && comps.eyev === Vector(0, 0, -1) && comps.normalv === Vector(0, 0, -1))
   }
@@ -32,7 +32,7 @@ class ComputationTest extends FunSuite {
     val s: Sphere = Sphere.unitSphere()
     val i: Intersection = new Intersection(4, s)
 
-    val comps: Computation = Computation.prepareComputations(i, r)
+    val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
     assert(!comps.inside)
   }
   test("Computation.test_inside_hit") {
@@ -40,7 +40,7 @@ class ComputationTest extends FunSuite {
     val s: Sphere = Sphere.unitSphere()
     val i: Intersection = new Intersection(1, s)
 
-    val comps: Computation = Computation.prepareComputations(i, r)
+    val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
     assert(comps.point === Point(0, 0, 1) && comps.eyev === Vector(0, 0, -1)
       && comps.inside && comps.normalv === Vector(0, 0, -1))
   }
