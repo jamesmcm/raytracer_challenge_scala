@@ -107,4 +107,37 @@ class PatternTest extends FunSuite {
       p.colourAt(Point(0,0,0.99)) === Colour(1,1,1) &&
       p.colourAt(Point(0,0,1.01)) === Colour(0,0,0))
   }
+
+  test("Pattern.test_pattern_identity") {
+    val p: Pattern = TestPattern()
+
+    assert(p.transform === Matrix.getIdentityMatrix(4))
+  }
+  test("Pattern.test_creation_pattern_transform") {
+    val p: Pattern = TestPattern().setTransform(Translation(1,2,3))
+
+    assert(p.transform === Translation(1,2,3))
+  }
+  test("Pattern.test_object_transform") {
+    val p: Pattern = TestPattern()
+    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+    val c: Colour = p.colourAtObject(s, Point(2,3,4))
+
+    assert(c === Colour(1,1.5,2))
+  }
+  test("Pattern.test_pattern_transform") {
+    val p: Pattern = TestPattern().setTransform(Scaling(2,2,2))
+    val s: Sphere = Sphere.unitSphere()
+    val c: Colour = p.colourAtObject(s, Point(2,3,4))
+
+    assert(c === Colour(1,1.5,2))
+  }
+  test("Pattern.test_pattern_object_transform") {
+    val p: Pattern = TestPattern().setTransform(Translation(0.5, 1, 1.5))
+    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+    val c: Colour = p.colourAtObject(s, Point(2.5,3,3.5))
+
+    assert(c === Colour(0.75, 0.5, 0.25))
+  }
+
 }

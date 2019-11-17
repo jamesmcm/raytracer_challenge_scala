@@ -26,7 +26,8 @@ class Computation(val t: Double,
                   val over_point: RTTuple,
                   val reflectv: RTTuple,
                   val n1: Double,
-                  val n2: Double) {}
+                  val n2: Double,
+                  val under_point: RTTuple) {}
 
 object Computation {
 
@@ -75,7 +76,8 @@ object Computation {
         normalv.negate(),
         true,
         ray.position(intersection.t) + normalv.negate() * EPSILON,
-        ray.direction.reflect(normalv.negate()), n1, n2
+        ray.direction.reflect(normalv.negate()), n1, n2,
+        ray.position(intersection.t) - normalv.negate() * EPSILON
       )
     } else {
       new Computation(
@@ -86,7 +88,8 @@ object Computation {
         normalv,
         false,
         ray.position(intersection.t) + normalv * EPSILON,
-        ray.direction.reflect(normalv), n1, n2
+        ray.direction.reflect(normalv), n1, n2,
+        ray.position(intersection.t) - normalv * EPSILON
       )
     }
   }

@@ -17,6 +17,22 @@ package raytracer
 
 import cats.implicits._
 
+class TestPattern(val transform: Matrix) extends Pattern {
+  val a: Colour = Colour(0,0,0)
+  val b: Colour = Colour(0,0,0)
+
+  def colourAt(p: RTTuple): Colour = {
+    Colour(p.x, p.y, p.z)
+  }
+  def setTransform(t: Matrix): TestPattern = {
+    new TestPattern(t)
+  }
+}
+
+object TestPattern {
+  def apply(): TestPattern = new TestPattern(Matrix.getIdentityMatrix(4))
+}
+
 class StripePattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   def colourAt(p: RTTuple): Colour = {
     if (math.floor(p.x + EPSILON).toInt % 2 === 0) a else b

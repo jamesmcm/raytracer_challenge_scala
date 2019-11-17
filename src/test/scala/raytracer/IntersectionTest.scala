@@ -141,6 +141,15 @@ class IntersectionTest extends FunSuite {
 
     assert(comps.n1 === 1.5 && comps.n2 === 1.0)
   }
+  test("intersection.test_under_point") {
+    val a: Sphere = Sphere.glassSphere().setTransform(Translation(0,0,1))
+    val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
+    val i: Intersection = Intersection(5, a)
+    val xs: Seq[Intersection] = Intersection.intersections(i)
+    val comps: Computation = Computation.prepareComputations(i, r, xs)
+
+    assert(comps.under_point.z > EPSILON/2 && comps.point.z < comps.under_point.z)
+  }
 
 
 }

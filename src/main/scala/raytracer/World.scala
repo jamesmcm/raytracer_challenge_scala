@@ -31,24 +31,32 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
   }
 
   def shadeHit(comps: Computation, remaining: Int): Colour = {
-    lights.par.map((l: Light) =>
-      comps.shape.material.lighting(comps.shape, l, comps.point, comps.eyev,
-        comps.normalv, isShadowed(comps.over_point, l))).reduce(_ + _) + reflectedColour(comps, remaining)
+    lights.par
+      .map(
+        (l: Light) =>
+          comps.shape.material.lighting(comps.shape,
+                                        l,
+                                        comps.point,
+                                        comps.eyev,
+                                        comps.normalv,
+                                        isShadowed(comps.over_point, l)))
+      .reduce(_ + _) + reflectedColour(comps, remaining) + refractedColour(comps, remaining)
   }
 
   def colourAt(r: Ray, remaining: Int): Colour = {
     Intersection.hit(intersectWorld(r)) match {
       // TODO: Swap hack for Option
       case x: Intersection if x.t === 99999999 => Colour.black
-        // TODO wtf
-      case x: Intersection => shadeHit(Computation.prepareComputations(x, r, Intersection.intersections(x)), remaining)
+      // TODO wtf
+      case x: Intersection =>
+        shadeHit(Computation.prepareComputations(x, r, Intersection.intersections(x)), remaining)
     }
   }
 
   def isShadowed(p: RTTuple, l: Light): Boolean = {
     // Handle multiple lights
-    val v: RTTuple = l.position - p
-    val distance: Double = v.magnitude()
+    val v: RTTuple         = l.position - p
+    val distance: Double   = v.magnitude()
     val direction: RTTuple = v.normalise()
 
     val h: Intersection = Intersection.hit(intersectWorld(Ray(p, direction)))
@@ -57,10 +65,30 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
   }
 
   def reflectedColour(comps: Computation, remaining: Int): Colour = {
-    if (remaining < 1) Colour(0, 0, 0) else {
-      if (comps.shape.material.reflective === 0) Colour(0, 0, 0) else {
+    if (remaining < 1) { Colour(0, 0, 0) } else {
+      if (comps.shape.material.reflective === 0) { Colour(0, 0, 0) } else {
         val reflect_ray: Ray = Ray(comps.over_point, comps.reflectv)
-        colourAt(reflect_ray, remaining-1) * comps.shape.material.reflective
+        colourAt(reflect_ray, remaining - 1) * comps.shape.material.reflective
+      }
+    }
+  }
+
+  def refractedColour(comps: Computation, remaining: Int): Colour = {
+    if (remaining < 1) {
+      Colour(0, 0, 0)
+    } else {
+      if (comps.shape.material.transparency === 0) {
+        Colour(0, 0, 0)
+      } else {
+        val n_ratio: Double = comps.n1 / comps.n2
+        val cos_i: Double   = comps.eyev.dot(comps.normalv)
+        val sin2_t: Double  = (n_ratio * n_ratio) * (1 - (cos_i * cos_i))
+        if (sin2_t > 1) { Colour(0, 0, 0) } else {
+          val cos_t: Double = math.sqrt(1.0 - sin2_t)
+          val direction: RTTuple = comps.normalv * (n_ratio * cos_i - cos_t) - comps.eyev * n_ratio
+          val refract_ray: Ray = Ray(comps.under_point, direction)
+          colourAt(refract_ray, remaining - 1) * comps.shape.material.transparency
+        }
       }
     }
   }
@@ -71,8 +99,8 @@ object World {
 
   def defaultWorld: World = {
     val m1: Material = new Material(Colour(0.8, 1.0, 0.6), 0.1, 0.7, 0.2, 200.0, None, 0, 0, 1)
-    val s1: Sphere = Sphere.unitSphere().setMaterial(m1)
-    val s2: Sphere = Sphere.unitSphere().setTransform(Scaling(0.5, 0.5, 0.5))
+    val s1: Sphere   = Sphere.unitSphere().setMaterial(m1)
+    val s2: Sphere   = Sphere.unitSphere().setTransform(Scaling(0.5, 0.5, 0.5))
     val light: Light = Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))
     new World(Array[Light](light), Array[SpaceObject](s1, s2))
   }
