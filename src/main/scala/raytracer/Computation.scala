@@ -27,9 +27,27 @@ class Computation(val t: Double,
                   val reflectv: RTTuple,
                   val n1: Double,
                   val n2: Double,
-                  val under_point: RTTuple) {}
+                  val under_point: RTTuple) {
+
+  def schlick(): Double = {
+    val cos: Double = eyev.dot(normalv)
+    if (n1 > n2) {
+      val n: Double = n1 / n2
+      val sin2_t: Double = (n*n)*(1 - (cos * cos))
+      if (sin2_t > 1) (1.0) else {
+        val cos_t: Double = math.sqrt(1 - sin2_t)
+        val r0: Double = math.pow((n1 - n2)/ (n1 + n2), 2)
+        r0 + (1-r0) * math.pow((1-cos_t), 5)
+      }
+    } else{
+      val r0: Double = math.pow((n1 - n2)/ (n1 + n2), 2)
+      r0 + (1-r0) * math.pow((1-cos), 5)
+    }
+  }
+}
 
 object Computation {
+
 
   @tailrec
   def recurseRefract(hit: Intersection,

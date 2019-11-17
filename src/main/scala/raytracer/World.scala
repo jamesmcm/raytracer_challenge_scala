@@ -31,7 +31,7 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
   }
 
   def shadeHit(comps: Computation, remaining: Int): Colour = {
-    lights.par
+    val base: Colour = lights.par
       .map(
         (l: Light) =>
           comps.shape.material.lighting(comps.shape,
@@ -40,7 +40,14 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
                                         comps.eyev,
                                         comps.normalv,
                                         isShadowed(comps.over_point, l)))
-      .reduce(_ + _) + reflectedColour(comps, remaining) + refractedColour(comps, remaining)
+      .reduce(_ + _)
+
+    comps.shape.material match {
+      case m: Material if m.reflective > 0 && m.transparency > 0 =>
+        base + (reflectedColour(comps, remaining) * comps
+          .schlick()) + (refractedColour(comps, remaining) * (1 - comps.schlick()))
+      case _ => base + reflectedColour(comps, remaining) + refractedColour(comps, remaining)
+    }
   }
 
   def colourAt(r: Ray, remaining: Int): Colour = {
@@ -84,9 +91,9 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
         val cos_i: Double   = comps.eyev.dot(comps.normalv)
         val sin2_t: Double  = (n_ratio * n_ratio) * (1 - (cos_i * cos_i))
         if (sin2_t > 1) { Colour(0, 0, 0) } else {
-          val cos_t: Double = math.sqrt(1.0 - sin2_t)
+          val cos_t: Double      = math.sqrt(1.0 - sin2_t)
           val direction: RTTuple = comps.normalv * (n_ratio * cos_i - cos_t) - comps.eyev * n_ratio
-          val refract_ray: Ray = Ray(comps.under_point, direction)
+          val refract_ray: Ray   = Ray(comps.under_point, direction)
           colourAt(refract_ray, remaining - 1) * comps.shape.material.transparency
         }
       }

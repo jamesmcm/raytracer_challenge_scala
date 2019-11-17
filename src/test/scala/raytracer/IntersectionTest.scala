@@ -151,6 +151,30 @@ class IntersectionTest extends FunSuite {
     assert(comps.under_point.z > EPSILON/2 && comps.point.z < comps.under_point.z)
   }
 
+  test("intersection.test_schlick_total_internal_reflection") {
+    val a: Sphere = Sphere.glassSphere()
+    val r: Ray = Ray(Point(0, 0, math.sqrt(2)/2), Vector(0, 1, 0))
+    val xs: Seq[Intersection] = Intersection.intersections(Intersection(-math.sqrt(2)/2, a), Intersection(math.sqrt(2)/2, a))
+    val comps: Computation = Computation.prepareComputations(xs(1), r, xs)
+
+    assert(doubleEq(comps.schlick(), 1.0))
+  }
+  test("intersection.test_schlick_perpendicular") {
+    val a: Sphere = Sphere.glassSphere()
+    val r: Ray = Ray(Point(0, 0, 0), Vector(0, 1, 0))
+    val xs: Seq[Intersection] = Intersection.intersections(Intersection(-1, a), Intersection(1, a))
+    val comps: Computation = Computation.prepareComputations(xs(1), r, xs)
+
+    assert(doubleEq(comps.schlick(), 0.04 ))
+  }
+  test("intersection.test_schlick_small_angle") {
+    val a: Sphere = Sphere.glassSphere()
+    val r: Ray = Ray(Point(0, 0.99, -2), Vector(0, 0, 1))
+    val xs: Seq[Intersection] = Intersection.intersections(Intersection(1.8589, a))
+    val comps: Computation = Computation.prepareComputations(xs(0), r, xs)
+
+    assert(doubleEq(comps.schlick(), 0.48873 ))
+  }
 
 }
 

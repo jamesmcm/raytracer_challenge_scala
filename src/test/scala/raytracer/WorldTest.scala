@@ -272,4 +272,21 @@ class WorldTest extends FunSuite {
     val c: Colour          = w.shadeHit(comps, 5)
     assert(c === Colour(0.93642, 0.68642, 0.68642))
   }
+  test("World.fresnel_ray_colour_full") {
+    val floor: Plane = Plane().setTransform(Translation(0, -1, 0)).setMaterial(
+      Plane().material.setTransparency(0.5).setRefractiveIndex(1.5).setReflective(0.5)
+    )
+
+    val ball: Sphere = Sphere.unitSphere().setTransform(Translation(0, -3.5, -0.5)).setMaterial(
+      Material.defaultMaterial().setColour(Colour(1,0,0)).setAmbient(0.5)
+    )
+    val w: World = World.defaultWorld.setShapes( floor +: ball +:
+      World.defaultWorld.shapes)
+    val r: Ray                = Ray(Point(0, 0, -3), Vector(0, -math.sqrt(2)/2, math.sqrt(2)/2))
+    val xs: Seq[Intersection] = Intersection.intersections(Intersection(math.sqrt(2), floor))
+
+    val comps: Computation = Computation.prepareComputations(xs(0), r, xs)
+    val c: Colour          = w.shadeHit(comps, 5)
+    assert(c === Colour(0.93391, 0.69643, 0.69243))
+  }
 }
