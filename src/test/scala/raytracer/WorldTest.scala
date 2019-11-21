@@ -253,7 +253,7 @@ class WorldTest extends FunSuite {
 
      val comps: Computation = Computation.prepareComputations(xs(2), r, xs)
      val c: Colour          = w.refractedColour(comps, 5)
-     assert(c === Colour(0, 0.998885, 0.0472195))
+     assert(c === Colour(0, 0.99888, 0.047219))  // 0.04725
    }
   test("World.refracted_ray_colour_full") {
     val floor: Plane = Plane().setTransform(Translation(0, -1, 0)).setMaterial(

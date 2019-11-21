@@ -51,12 +51,13 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
   }
 
   def colourAt(r: Ray, remaining: Int): Colour = {
-    Intersection.hit(intersectWorld(r)) match {
+    val intersections: Seq[Intersection] = intersectWorld(r)
+    Intersection.hit(intersections) match {
       // TODO: Swap hack for Option
       case x: Intersection if x.t === 99999999 => Colour.black
       // TODO wtf
       case x: Intersection =>
-        shadeHit(Computation.prepareComputations(x, r, Intersection.intersections(x)), remaining)
+        shadeHit(Computation.prepareComputations(x, r, intersections), remaining)
     }
   }
 

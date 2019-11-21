@@ -243,11 +243,11 @@ object Demo {
     val world: World = World(List(Light.pointLight(Point(-10, 10, -10), Colour(1, 1, 1))),
       List(floor, middleSphere, left_wall, right_wall, leftSphere, rightSphere))
 
-    val camera: Camera = Camera(800, 600, math.Pi / 3).setTransform(viewTransform(Point(0, 1.5, -5),
+    val camera: Camera = Camera(400, 300, math.Pi / 3).setTransform(viewTransform(Point(0, 1.5, -5),
       Point(0, 1, 0), Vector(0, 1, 0)))
 
     val canvas: Canvas = camera.render(world)
-    stringToFile("scene_refract.ppm", canvas.toPPM)
+    stringToFile("scene_refract2.ppm", canvas.toPPM)
 
   }
 
