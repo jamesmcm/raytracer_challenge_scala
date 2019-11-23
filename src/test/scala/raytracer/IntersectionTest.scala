@@ -38,7 +38,7 @@ class IntersectionTest extends FunSuite {
     val i2: Intersection      = new Intersection(2, s)
     val xs: Seq[Intersection] = Intersection.intersections(i2, i1)
 
-    assert(Intersection.hit(xs) === i1)
+    assert(Intersection.hit(xs) === Some(i1))
   }
   test("intersection.test_hit2") {
     val s: Sphere             = Sphere.unitSphere()
@@ -46,7 +46,7 @@ class IntersectionTest extends FunSuite {
     val i2: Intersection      = new Intersection(1, s)
     val xs: Seq[Intersection] = Intersection.intersections(i2, i1)
 
-    assert(Intersection.hit(xs) === i2)
+    assert(Intersection.hit(xs) === Some(i2))
   }
   test("intersection.test_hit3") {
     val s: Sphere             = Sphere.unitSphere()
@@ -56,7 +56,7 @@ class IntersectionTest extends FunSuite {
     val i4: Intersection      = new Intersection(2, s)
     val xs: Seq[Intersection] = Intersection.intersections(i1, i2, i3, i4)
 
-    assert(Intersection.hit(xs) === i4)
+    assert(Intersection.hit(xs) === Some(i4))
   }
   test("intersection.test_hit_shadow") {
     val s: Sphere          = Sphere.unitSphere().setTransform(Translation(0, 0, 1))

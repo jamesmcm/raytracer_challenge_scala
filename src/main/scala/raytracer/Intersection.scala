@@ -37,10 +37,8 @@ object Intersection {
     is
   }
 
-  def hit(xs: Seq[Intersection]): Intersection = {
-    // TODO: Use better WartRemover hack - Option
+  def hit(xs: Seq[Intersection]): Option[Intersection] = {
     xs.filter(_.t > 0)
-      .foldLeft(new Intersection(99999999, Sphere.unitSphere()))(
-        (s: Intersection, x: Intersection) => if (x.t < s.t) x else s)
+      .reduceOption((s: Intersection, x: Intersection) => if (x.t < s.t) x else s)
   }
 }

@@ -78,22 +78,20 @@ object Demo {
         val wall_target: RTTuple =
           Point(-half + pixel_size * pix._2, half - pixel_size * pix._1, wall_z)
         val ray: Ray = Ray(ray_origin, (wall_target - ray_origin).normalise())
-        sphere.intersect(ray) match {
-          case xs if xs.nonEmpty =>
+        (Intersection.hit(sphere.intersect(ray)): Option[Intersection]) match {
+          case None => Unit
+          case Some(i: Intersection) =>
             canvas.writePixel(
               pix._2,
               pix._1,
-              Intersection
-                .hit(xs)
-                .shape
-                .material
+              i.shape.material
                 .lighting(
-                  Intersection.hit(xs).shape,
+                  i.shape,
                   light,
-                  ray.position(Intersection.hit(xs).t),
+                  ray.position(i.t),
                   ray.direction.negate(),
-                  Intersection.hit(xs).shape.normalAt(ray.position(Intersection.hit(xs).t)),
-                  false
+                  i.shape.normalAt(ray.position(i.t)),
+                  in_shadow = false
                 )
             );
             Unit
@@ -409,8 +407,8 @@ object Demo {
       .setMaterial(
         Material
           .defaultMaterial()
-          .setColour(Colour(0.1, 0.8, 0.2))
-          .setShininess(200)
+          .setColour(Colour(0.2, 0.2, 0.2))
+          .setReflective(1)
       )
 
     val ball3: Sphere = Sphere
@@ -459,7 +457,7 @@ object Demo {
         ))
 
     val canvas: Canvas = camera.render(world)
-    stringToFile("scene_refract12.ppm", canvas.toPPM)
+    stringToFile("scene_refract13.ppm", canvas.toPPM)
 
   }
 

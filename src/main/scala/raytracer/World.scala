@@ -53,10 +53,8 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
   def colourAt(r: Ray, remaining: Int): Colour = {
     val intersections: Seq[Intersection] = intersectWorld(r)
     Intersection.hit(intersections) match {
-      // TODO: Swap hack for Option
-      case x: Intersection if x.t === 99999999 => Colour.black
-      // TODO wtf
-      case x: Intersection =>
+      case None => Colour.black
+      case Some(x: Intersection) =>
         shadeHit(Computation.prepareComputations(x, r, intersections), remaining)
     }
   }
@@ -67,9 +65,12 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
     val distance: Double   = v.magnitude()
     val direction: RTTuple = v.normalise()
 
-    val h: Intersection = Intersection.hit(intersectWorld(Ray(p, direction)))
+    val h: Option[Intersection] = Intersection.hit(intersectWorld(Ray(p, direction)))
 
-    h.t < 99999999 && h.t < distance
+    h match {
+      case None                  => false
+      case Some(x: Intersection) => x.t < distance
+    }
   }
 
   def reflectedColour(comps: Computation, remaining: Int): Colour = {
