@@ -28,10 +28,11 @@ class Matrix(val m: Array[Array[Double]]) {
 
   final override def equals(that: Any): Boolean = {
     that match {
-      case that: Matrix if that.m.length === m.length && that.m(0).length === m(0).length => Matrix.mapMatrix(
-        (this zip that),
-        ((x: (Double, Double)) => doubleEq(x._1, x._2)))
-        .map((z: Array[Boolean]) => z.forall(identity)).reduce(_ && _)
+      case that: Matrix if that.m.length === m.length && that.m(0).length === m(0).length =>
+        Matrix
+          .mapMatrix((this zip that), ((x: (Double, Double)) => doubleEq(x._1, x._2)))
+          .map((z: Array[Boolean]) => z.forall(identity))
+          .reduce(_ && _)
 
       // .map((x: Array[(Double, Double)]) => x.map((y: (Double, Double)) => doubleEq(y._1, y._2)))
       // .map((z: Array[Boolean]) => z.forall(identity)).reduce(_ && _)
@@ -40,12 +41,12 @@ class Matrix(val m: Array[Array[Double]]) {
   }
 
   final def ===(that: Matrix): Boolean = {
-    if (that.m.length === m.length && that.m(0).length === m(0).length) (Matrix.mapMatrix(
-      (this zip that),
-      ((x: (Double, Double)) => doubleEq(x._1, x._2)))
-      .map((z: Array[Boolean]) => z.forall(identity)).reduce(_ && _)) else false
+    if (that.m.length === m.length && that.m(0).length === m(0).length)(Matrix
+      .mapMatrix((this zip that), ((x: (Double, Double)) => doubleEq(x._1, x._2)))
+      .map((z: Array[Boolean]) => z.forall(identity))
+      .reduce(_ && _))
+    else false
   }
-
 
   def zip(that: Matrix): Array[Array[(Double, Double)]] = {
     Matrix.zipMatrix(m, that.m)
@@ -67,7 +68,8 @@ class Matrix(val m: Array[Array[Double]]) {
           m.zipWithIndex.map((x: (Array[Double], Int)) => x._1.map((y: Double) => row(x._2))),
           that.m.map((x: Array[Double]) => x.zipWithIndex.map((y: (Double, Int)) => that.col(y._2)))
         ),
-        ((x: (Array[Double], Array[Double])) => Matrix.dotArray(x._1, x._2)))
+        ((x: (Array[Double], Array[Double])) => Matrix.dotArray(x._1, x._2))
+      )
     )
   }
 
@@ -77,7 +79,8 @@ class Matrix(val m: Array[Array[Double]]) {
 
   def tupleMult(that: RTTuple): RTTuple = {
     // TODO: Break up matrix multiplication function so we don't need to instantiate Matrix here
-    val args: Array[Double] = (this * (new Matrix(Array(Array(that.x), Array(that.y), Array(that.z), Array(that.w))))).m.flatten
+    val args: Array[Double] = (this * (new Matrix(
+      Array(Array(that.x), Array(that.y), Array(that.z), Array(that.w))))).m.flatten
     new RTTuple(args(0), args(1), args(2), args(3))
   }
 
@@ -95,8 +98,8 @@ class Matrix(val m: Array[Array[Double]]) {
   def submatrix(row: Int, col: Int): Matrix = {
     // Delete row and col
     new Matrix(
-      ((x: Array[Array[Double]]) => x.take(row) ++ x.drop(row + 1)) (
-        m.map((x: Array[Double]) => x.take(col) ++ x.drop(col + 1)))
+      ((x: Array[Array[Double]]) => x.take(row) ++ x.drop(row + 1))(m.map((x: Array[Double]) =>
+        x.take(col) ++ x.drop(col + 1)))
     )
   }
 
@@ -114,10 +117,13 @@ class Matrix(val m: Array[Array[Double]]) {
   def inverse: Matrix = {
     // TODO: Avoid creating two Matrix objects here
     new Matrix(
-      m.zipWithIndex.map((x: (Array[Double], Int)) => x._1.indices.map(
-        (y: Int) => cofactor(x._2, y) / determinant
-      ).toArray
-      )
+      m.zipWithIndex.map(
+        (x: (Array[Double], Int)) =>
+          x._1.indices
+            .map(
+              (y: Int) => cofactor(x._2, y) / determinant
+            )
+            .toArray)
     ).transpose
   }
 
@@ -133,16 +139,17 @@ class Matrix(val m: Array[Array[Double]]) {
 
   def scale(x: Double, y: Double, z: Double): Matrix = Scaling(x, y, z) * this
 
-  def shear(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix = Shearing(xy, xz, yx, yz, zx, zy) * this
+  def shear(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix =
+    Shearing(xy, xz, yx, yz, zx, zy) * this
 
   final override def hashCode: Int = m.##
 
 }
 
-
 object Matrix {
   def matrixFromString(s: String): Matrix = {
-    new Matrix(s.split("\n").map(_.filter(_ =!= ' ').split("\\|").filter(_ =!= "|").map(_.toDouble)))
+    new Matrix(
+      s.split("\n").map(_.filter(_ =!= ' ').split("\\|").filter(_ =!= "|").map(_.toDouble)))
   }
 
   def dotArray(a: Array[Double], b: Array[Double]): Double = {
@@ -159,8 +166,11 @@ object Matrix {
 
   def getIdentityMatrix(size: Int): Matrix = {
     new Matrix(
-      Array.fill(size)(Array.fill(size)(0: Double)).zipWithIndex.map(
-        (x: (Array[Double], Int)) => x._1.zipWithIndex.map((y: (Double, Int)) => if (y._2 === x._2) 1: Double else 0: Double))
+      Array
+        .fill(size)(Array.fill(size)(0: Double))
+        .zipWithIndex
+        .map((x: (Array[Double], Int)) =>
+          x._1.zipWithIndex.map((y: (Double, Int)) => if (y._2 === x._2) 1: Double else 0: Double))
     )
   }
 }

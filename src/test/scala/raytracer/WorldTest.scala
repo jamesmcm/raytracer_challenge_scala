@@ -218,54 +218,60 @@ class WorldTest extends FunSuite {
             .material
             .setTransparency(1.0)
             .setRefractiveIndex(1.5)) +: World.defaultWorld.shapes.drop(1))
-    val r: Ray                = Ray(Point(0, 0, math.sqrt(2)/2), Vector(0, 1, 0))
-    val xs: Seq[Intersection] = List(Intersection(-math.sqrt(2)/2, w.shapes(0)), Intersection(math.sqrt(2)/2, w.shapes(0)))
+    val r: Ray = Ray(Point(0, 0, math.sqrt(2) / 2), Vector(0, 1, 0))
+    val xs: Seq[Intersection] = List(Intersection(-math.sqrt(2) / 2, w.shapes(0)),
+                                     Intersection(math.sqrt(2) / 2, w.shapes(0)))
 
     val comps: Computation = Computation.prepareComputations(xs(1), r, xs)
     val c: Colour          = w.refractedColour(comps, 5)
     assert(c === Colour(0, 0, 0))
   }
-   test("World.refracted_ray_colour") {
-     val w: World = World.defaultWorld.setShapes(
-       World.defaultWorld
-         .shapes(0)
-         .setMaterial(
-           World.defaultWorld
-             .shapes(0)
-             .material
-             .setAmbient(1.0)
-             .setPattern(TestPattern())) +:
-         World.defaultWorld
-           .shapes(1)
-           .setMaterial(
-             World.defaultWorld
-               .shapes(1)
-               .material
-               .setTransparency(1.0)
-               .setRefractiveIndex(1.5))
-         +: World.defaultWorld.shapes.drop(2))
-     val r: Ray                = Ray(Point(0, 0, 0.1), Vector(0, 1, 0))
-     val xs: Seq[Intersection] = List(Intersection(-0.9899, w.shapes(0)),
-       Intersection(-0.4899, w.shapes(1)),
-       Intersection(0.4899, w.shapes(1)),
-       Intersection(0.9899, w.shapes(0))
-     )
+  test("World.refracted_ray_colour") {
+    val w: World = World.defaultWorld.setShapes(
+      World.defaultWorld
+        .shapes(0)
+        .setMaterial(
+          World.defaultWorld
+            .shapes(0)
+            .material
+            .setAmbient(1.0)
+            .setPattern(TestPattern())) +:
+        World.defaultWorld
+        .shapes(1)
+        .setMaterial(
+          World.defaultWorld
+            .shapes(1)
+            .material
+            .setTransparency(1.0)
+            .setRefractiveIndex(1.5))
+        +: World.defaultWorld.shapes.drop(2))
+    val r: Ray = Ray(Point(0, 0, 0.1), Vector(0, 1, 0))
+    val xs: Seq[Intersection] = List(Intersection(-0.9899, w.shapes(0)),
+                                     Intersection(-0.4899, w.shapes(1)),
+                                     Intersection(0.4899, w.shapes(1)),
+                                     Intersection(0.9899, w.shapes(0)))
 
-     val comps: Computation = Computation.prepareComputations(xs(2), r, xs)
-     val c: Colour          = w.refractedColour(comps, 5)
-     assert(c === Colour(0, 0.99888, 0.047219))  // 0.04725
-   }
+    val comps: Computation = Computation.prepareComputations(xs(2), r, xs)
+    val c: Colour          = w.refractedColour(comps, 5)
+    assert(c === Colour(0, 0.99888, 0.047219)) // 0.04725
+  }
   test("World.refracted_ray_colour_full") {
-    val floor: Plane = Plane().setTransform(Translation(0, -1, 0)).setMaterial(
-      Plane().material.setTransparency(0.5).setRefractiveIndex(1.5)
-    )
+    val floor: Plane = Plane()
+      .setTransform(Translation(0, -1, 0))
+      .setMaterial(
+        Plane().material.setTransparency(0.5).setRefractiveIndex(1.5)
+      )
 
-    val ball: Sphere = Sphere.unitSphere().setTransform(Translation(0, -3.5, -0.5)).setMaterial(
-      Material.defaultMaterial().setColour(Colour(1,0,0)).setAmbient(0.5)
-    )
-    val w: World = World.defaultWorld.setShapes( floor +: ball +:
-      World.defaultWorld.shapes)
-    val r: Ray                = Ray(Point(0, 0, -3), Vector(0, -math.sqrt(2)/2, math.sqrt(2)/2))
+    val ball: Sphere = Sphere
+      .unitSphere()
+      .setTransform(Translation(0, -3.5, -0.5))
+      .setMaterial(
+        Material.defaultMaterial().setColour(Colour(1, 0, 0)).setAmbient(0.5)
+      )
+    val w: World = World.defaultWorld.setShapes(
+      floor +: ball +:
+        World.defaultWorld.shapes)
+    val r: Ray                = Ray(Point(0, 0, -3), Vector(0, -math.sqrt(2) / 2, math.sqrt(2) / 2))
     val xs: Seq[Intersection] = Intersection.intersections(Intersection(math.sqrt(2), floor))
 
     val comps: Computation = Computation.prepareComputations(xs(0), r, xs)
@@ -273,16 +279,22 @@ class WorldTest extends FunSuite {
     assert(c === Colour(0.93642, 0.68642, 0.68642))
   }
   test("World.fresnel_ray_colour_full") {
-    val floor: Plane = Plane().setTransform(Translation(0, -1, 0)).setMaterial(
-      Plane().material.setTransparency(0.5).setRefractiveIndex(1.5).setReflective(0.5)
-    )
+    val floor: Plane = Plane()
+      .setTransform(Translation(0, -1, 0))
+      .setMaterial(
+        Plane().material.setTransparency(0.5).setRefractiveIndex(1.5).setReflective(0.5)
+      )
 
-    val ball: Sphere = Sphere.unitSphere().setTransform(Translation(0, -3.5, -0.5)).setMaterial(
-      Material.defaultMaterial().setColour(Colour(1,0,0)).setAmbient(0.5)
-    )
-    val w: World = World.defaultWorld.setShapes( floor +: ball +:
-      World.defaultWorld.shapes)
-    val r: Ray                = Ray(Point(0, 0, -3), Vector(0, -math.sqrt(2)/2, math.sqrt(2)/2))
+    val ball: Sphere = Sphere
+      .unitSphere()
+      .setTransform(Translation(0, -3.5, -0.5))
+      .setMaterial(
+        Material.defaultMaterial().setColour(Colour(1, 0, 0)).setAmbient(0.5)
+      )
+    val w: World = World.defaultWorld.setShapes(
+      floor +: ball +:
+        World.defaultWorld.shapes)
+    val r: Ray                = Ray(Point(0, 0, -3), Vector(0, -math.sqrt(2) / 2, math.sqrt(2) / 2))
     val xs: Seq[Intersection] = Intersection.intersections(Intersection(math.sqrt(2), floor))
 
     val comps: Computation = Computation.prepareComputations(xs(0), r, xs)

@@ -25,7 +25,8 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double) {
 
   final override def equals(that: Any): Boolean = {
     that match {
-      case that: RTTuple => doubleEq(that.x, x) && doubleEq(that.y, y) && doubleEq(that.z, z) && (that.w === w)
+      case that: RTTuple =>
+        doubleEq(that.x, x) && doubleEq(that.y, y) && doubleEq(that.z, z) && (that.w === w)
       case _ => false
     }
   }
@@ -52,7 +53,8 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double) {
 
   def dot(that: RTTuple): Double = x * that.x + y * that.y + z * that.z + w * that.w
 
-  def cross(that: RTTuple): RTTuple = Vector(y * that.z - z * that.y, z * that.x - x * that.z, x * that.y - y * that.x)
+  def cross(that: RTTuple): RTTuple =
+    Vector(y * that.z - z * that.y, z * that.x - x * that.z, x * that.y - y * that.x)
 
   def forceVector(): RTTuple = Vector(x, y, z)
 

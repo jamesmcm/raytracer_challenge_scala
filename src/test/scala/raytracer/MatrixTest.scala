@@ -26,8 +26,9 @@ class MatrixTest extends FunSuite {
          | 13.5 | 14.5 | 15.5 | 16.5 |""".stripMargin
 
     val m: Matrix = Matrix.matrixFromString(s)
-    assert(m.m(0)(0) === 1 && m.m(0)(3) === 4 && m.m(1)(0) === 5.5 && m.m(1)(2) === 7.5 &&
-      m.m(2)(2) === 11 && m.m(3)(0) === 13.5 && m.m(3)(2) === 15.5)
+    assert(
+      m.m(0)(0) === 1 && m.m(0)(3) === 4 && m.m(1)(0) === 5.5 && m.m(1)(2) === 7.5 &&
+        m.m(2)(2) === 11 && m.m(3)(0) === 13.5 && m.m(3)(2) === 15.5)
   }
   test("Matrix.test_construction2") {
     val s: String =
@@ -99,8 +100,8 @@ class MatrixTest extends FunSuite {
          | 40 | 58 | 110 | 102 |
          | 16 | 26 | 46 | 42 |""".stripMargin
 
-    val m1: Matrix = Matrix.matrixFromString(s1)
-    val m2: Matrix = Matrix.matrixFromString(s2)
+    val m1: Matrix   = Matrix.matrixFromString(s1)
+    val m2: Matrix   = Matrix.matrixFromString(s2)
     val mres: Matrix = Matrix.matrixFromString(res)
 
     assert((m1 * m2) === mres)
@@ -115,7 +116,7 @@ class MatrixTest extends FunSuite {
     val m1: Matrix = Matrix.matrixFromString(s1)
 
     val tuple1: RTTuple = Point(1, 2, 3)
-    val res: RTTuple = Point(18, 24, 33)
+    val res: RTTuple    = Point(18, 24, 33)
 
     assert((m1 tupleMult tuple1) === res)
   }
@@ -154,7 +155,7 @@ class MatrixTest extends FunSuite {
          | 3 | 0 | 5 | 5 |
          | 0 | 8 | 3 | 8 |""".stripMargin
 
-    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m1: Matrix   = Matrix.matrixFromString(s1)
     val mres: Matrix = Matrix.matrixFromString(res)
 
     assert(m1.transpose === mres)
@@ -181,7 +182,7 @@ class MatrixTest extends FunSuite {
       """| -3 | 2 |
          | 0 | 6 |""".stripMargin
 
-    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m1: Matrix   = Matrix.matrixFromString(s1)
     val mres: Matrix = Matrix.matrixFromString(res)
 
     assert(m1.submatrix(0, 2) === mres)
@@ -197,7 +198,7 @@ class MatrixTest extends FunSuite {
          | -8 | 8 | 6 |
          | -7 | -1 | 1 |""".stripMargin
 
-    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m1: Matrix   = Matrix.matrixFromString(s1)
     val mres: Matrix = Matrix.matrixFromString(res)
 
     assert(m1.submatrix(2, 1) === mres)
@@ -219,10 +220,11 @@ class MatrixTest extends FunSuite {
          | 6 | -1 | 5 |""".stripMargin
     val m1: Matrix = Matrix.matrixFromString(s1)
 
-    assert(m1.minor(0, 0) === -12 &&
-      m1.cofactor(0, 0) === -12 &&
-      m1.minor(1, 0) === 25 &&
-      m1.cofactor(1, 0) === -25)
+    assert(
+      m1.minor(0, 0) === -12 &&
+        m1.cofactor(0, 0) === -12 &&
+        m1.minor(1, 0) === 25 &&
+        m1.cofactor(1, 0) === -25)
   }
   test("Matrix.test_determinant1") {
     val s1: String =
@@ -230,8 +232,9 @@ class MatrixTest extends FunSuite {
          | -5 | 8 | -4 |
          | 2 | 6 | 4 |""".stripMargin
     val m1: Matrix = Matrix.matrixFromString(s1)
-    assert(m1.cofactor(0, 0) === 56 && m1.cofactor(0, 1) === 12 &&
-      m1.cofactor(0, 2) === -46 && m1.determinant === -196)
+    assert(
+      m1.cofactor(0, 0) === 56 && m1.cofactor(0, 1) === 12 &&
+        m1.cofactor(0, 2) === -46 && m1.determinant === -196)
   }
   test("Matrix.test_determinant2") {
     val s1: String =
@@ -240,8 +243,9 @@ class MatrixTest extends FunSuite {
          | 1 | 2 | -9 | 6 |
          | -6 | 7 | 7 | -9 |""".stripMargin
     val m1: Matrix = Matrix.matrixFromString(s1)
-    assert(m1.cofactor(0, 0) === 690 && m1.cofactor(0, 1) === 447 &&
-      m1.cofactor(0, 2) === 210 && m1.cofactor(0, 3) === 51 && m1.determinant === -4071)
+    assert(
+      m1.cofactor(0, 0) === 690 && m1.cofactor(0, 1) === 447 &&
+        m1.cofactor(0, 2) === 210 && m1.cofactor(0, 3) === 51 && m1.determinant === -4071)
   }
 
   test("Matrix.test_isinvertible1") {
@@ -274,15 +278,16 @@ class MatrixTest extends FunSuite {
          | -0.07895 | -0.22368 | -0.05263 |  0.19737 |
          | -0.52256 | -0.81391 | -0.30075 |  0.30639 |""".stripMargin
 
-    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m1: Matrix   = Matrix.matrixFromString(s1)
     val mres: Matrix = Matrix.matrixFromString(res)
-    val b: Matrix = m1.inverse
-    assert(m1.determinant === 532 &&
-      m1.cofactor(2, 3) === -160 &&
-      b(3, 2) === (-160.0 / 532) &&
-      m1.cofactor(3, 2) === 105 &&
-      b(2, 3) === (105.0 / 532) &&
-      b === mres)
+    val b: Matrix    = m1.inverse
+    assert(
+      m1.determinant === 532 &&
+        m1.cofactor(2, 3) === -160 &&
+        b(3, 2) === (-160.0 / 532) &&
+        m1.cofactor(3, 2) === 105 &&
+        b(2, 3) === (105.0 / 532) &&
+        b === mres)
   }
   test("Matrix.test_inverse2") {
     val s1: String =
@@ -296,7 +301,7 @@ class MatrixTest extends FunSuite {
          |  0.35897 |  0.35897 |  0.43590 |  0.92308 |
          | -0.69231 | -0.69231 | -0.76923 | -1.92308 |""".stripMargin
 
-    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m1: Matrix   = Matrix.matrixFromString(s1)
     val mres: Matrix = Matrix.matrixFromString(res)
     assert(m1.inverse === mres)
   }
@@ -312,7 +317,7 @@ class MatrixTest extends FunSuite {
          | -0.02901 | -0.14630 | -0.10926 |  0.12963 |
          |  0.17778 |  0.06667 | -0.26667 |  0.33333 |""".stripMargin
 
-    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m1: Matrix   = Matrix.matrixFromString(s1)
     val mres: Matrix = Matrix.matrixFromString(res)
     assert(m1.inverse === mres)
   }
@@ -330,7 +335,7 @@ class MatrixTest extends FunSuite {
 
     val m1: Matrix = Matrix.matrixFromString(s1)
     val m2: Matrix = Matrix.matrixFromString(s2)
-    val c: Matrix = m1 * m2
+    val c: Matrix  = m1 * m2
     assert(c * m2.inverse === m1)
   }
 
@@ -362,7 +367,7 @@ class MatrixTest extends FunSuite {
          | 0 | 1 | 0 | 0 |
          | 0 | 0 | 1 | 0 |
          | 0 | 0 | 0 | 1 |""".stripMargin
-    val m1: Matrix = Matrix.matrixFromString(s1)
+    val m1: Matrix      = Matrix.matrixFromString(s1)
     val tuple1: RTTuple = Point(1, 2, 3)
     assert(m1.tupleMult(tuple1).toTuple === (5, 2, 3, 1))
   }

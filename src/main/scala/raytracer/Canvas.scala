@@ -15,11 +15,10 @@
 
 package raytracer
 
-
 class Canvas(val width: Int, val height: Int) {
   // TODO: Avoid var
   var pixels: Array[Array[Colour]] = Array.fill(height)(Array.fill(width)(Colour(0, 0, 0)))
-  val maxcol: Int = 255
+  val maxcol: Int                  = 255
 
   def fillCanvas(c: Colour): Unit = {
     val _ = (0 until height).map((y: Int) => (0 until width).map((x: Int) => writePixel(x, y, c)))
@@ -36,19 +35,27 @@ class Canvas(val width: Int, val height: Int) {
   def scaleAndClamp(x: Double): Int = {
     math.round(x * maxcol).toInt match {
       case x if x > maxcol => maxcol
-      case x if x < 0 => 0
-      case x => x
+      case x if x < 0      => 0
+      case x               => x
     }
   }
 
   def toPPM: String = {
-    s"P3\n$width $height\n$maxcol\n" + pixels.map(
-      (x: Array[Colour]) => x.map(
-        (c: Colour) => Seq(c.red, c.green, c.blue).map(
-          scaleAndClamp
-        ).mkString(" ")
-      ).mkString(" ")
-    ).map(Canvas.cutLine70Chars).mkString("\n") + "\n"
+    s"P3\n$width $height\n$maxcol\n" + pixels
+      .map(
+        (x: Array[Colour]) =>
+          x.map(
+              (c: Colour) =>
+                Seq(c.red, c.green, c.blue)
+                  .map(
+                    scaleAndClamp
+                  )
+                  .mkString(" ")
+            )
+            .mkString(" ")
+      )
+      .map(Canvas.cutLine70Chars)
+      .mkString("\n") + "\n"
   }
 
 }
@@ -59,12 +66,18 @@ object Canvas {
   def replaceLastSpaceWithNewline(s: String): String = {
     // Only remove if >= 70 chars
     s.length match {
-      case x if x >= 70 => s.slice(0, s.length - (s.reverse.indexOf(" ") + 1)) + "\n" + s.slice(s.length - (s.reverse.indexOf(" ")), s.length)
+      case x if x >= 70 =>
+        s.slice(0, s.length - (s.reverse.indexOf(" ") + 1)) + "\n" + s.slice(
+          s.length - (s.reverse.indexOf(" ")),
+          s.length)
       case _ => s
     }
   }
 
   def cutLine70Chars(s: String): String = {
-    (0 to (s.length / 70)).map((x: Int) => s.slice(70 * x, 70 * (x + 1))).map(replaceLastSpaceWithNewline).mkString("")
+    (0 to (s.length / 70))
+      .map((x: Int) => s.slice(70 * x, 70 * (x + 1)))
+      .map(replaceLastSpaceWithNewline)
+      .mkString("")
   }
 }

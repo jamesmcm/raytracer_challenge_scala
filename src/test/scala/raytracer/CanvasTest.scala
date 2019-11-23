@@ -39,7 +39,7 @@ class CanvasTest extends FunSuite {
     assert(c.toPPM.split("\n").take(3).mkString("\n") === "P3\n5 3\n255")
   }
   test("Canvas.test_ppm_body") {
-    val c = new Canvas(5, 3)
+    val c    = new Canvas(5, 3)
     val col1 = Colour(1.5, 0, 0)
     val col2 = Colour(0, 0.5, 0)
     val col3 = Colour(-0.5, 0, 1)
@@ -47,17 +47,25 @@ class CanvasTest extends FunSuite {
     c.writePixel(0, 0, col1)
     c.writePixel(2, 1, col2)
     c.writePixel(4, 2, col3)
-    assert(c.toPPM.split("\n").slice(3, 6).mkString("\n") === "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255")
+    assert(
+      c.toPPM
+        .split("\n")
+        .slice(3, 6)
+        .mkString("\n") === "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 128 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0 0 0 0 0 0 255")
   }
   test("Canvas.test_remove_last_space") {
     assert(Canvas.replaceLastSpaceWithNewline("test string") === "test string")
   }
   test("Canvas.test_ppm_body_long") {
-    val c = new Canvas(10, 2)
+    val c    = new Canvas(10, 2)
     val col1 = Colour(1, 0.8, 0.6)
 
     c.fillCanvas(col1)
-    assert(c.toPPM.split("\n").slice(3, 7).mkString("\n") === "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153")
+    assert(
+      c.toPPM
+        .split("\n")
+        .slice(3, 7)
+        .mkString("\n") === "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153\n255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204\n153 255 204 153 255 204 153 255 204 153 255 204 153")
   }
   test("Canvas.test_ppm_newline") {
     val c = new Canvas(5, 3)

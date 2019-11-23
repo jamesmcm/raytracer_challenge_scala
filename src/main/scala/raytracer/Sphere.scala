@@ -25,19 +25,20 @@ class Sphere(val transform: Matrix, val material: Material) extends SpaceObject 
   final override def equals(that: Any): Boolean = {
     that match {
       case that: Sphere => transform === that.transform && material === that.material
-      case _ => false
+      case _            => false
     }
   }
 
   final override def hashCode: Int = (transform, material).##
 
-
   def localIntersect(r: Ray): Seq[Intersection] = {
     val (discriminant, a, b): (Double, Double, Double) = getDiscriminant(r)
     discriminant match {
       case x if x < 0 => List()
-      case _ => List(-b - math.sqrt(discriminant), -b + math.sqrt(discriminant)).map(_ / (2 * a)).map(
-        (t: Double) => new Intersection(t, this))
+      case _ =>
+        List(-b - math.sqrt(discriminant), -b + math.sqrt(discriminant))
+          .map(_ / (2 * a))
+          .map((t: Double) => new Intersection(t, this))
     }
   }
 
@@ -59,7 +60,9 @@ class Sphere(val transform: Matrix, val material: Material) extends SpaceObject 
 
 object Sphere {
   def unitSphere(): Sphere = new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
-  def glassSphere(): Sphere = new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5))
+  def glassSphere(): Sphere =
+    new Sphere(Matrix.getIdentityMatrix(4),
+               Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5))
 }
 
 // TODO: Move me
@@ -67,12 +70,14 @@ abstract class SpaceObject() {
   type T <: SpaceObject
   val material: Material
   val transform: Matrix
+  val transform_inverse: Matrix = transform.inverse
   def equals(that: Any): Boolean
 
   // def ===(that: SpaceObject): Boolean
   final def ===(that: SpaceObject): Boolean = {
     that match {
-      case that: T => transform === that.transform && material === that.material
+      case that: T =>
+        transform === that.transform && material === that.material // TODO: Fix me - type erasure
       case _ => false
     }
   }
@@ -84,15 +89,15 @@ abstract class SpaceObject() {
   def localNormalAt(p: RTTuple): RTTuple
 
   def normalAt(p: RTTuple): RTTuple = {
-    val localPoint: RTTuple = transform.inverse.tupleMult(p)
+    val localPoint: RTTuple = transform_inverse.tupleMult(p)
 
-    transform.inverse.transpose.tupleMult(localNormalAt(localPoint)).forceVector().normalise()
+    transform_inverse.transpose.tupleMult(localNormalAt(localPoint)).forceVector().normalise()
   }
 
   def localIntersect(r: Ray): Seq[Intersection]
 
   def intersect(r: Ray): Seq[Intersection] = {
-    localIntersect(r.transform(transform.inverse))
+    localIntersect(r.transform(transform_inverse))
   }
 
   def setMaterial(m: Material): T = constructor(transform, m)

@@ -383,10 +383,10 @@ object Demo {
 
     val west_wall: Plane = Plane()
       .setMaterial(wallMaterial)
-      .setTransform(Translation(-5, 0, 0) * RotationZ(1.5708) * RotationY(1.5708) )
+      .setTransform(Translation(-5, 0, 0) * RotationZ(1.5708) * RotationY(1.5708))
     val east_wall: Plane = Plane()
       .setMaterial(wallMaterial)
-      .setTransform(Translation(5, 0, 0) * RotationZ(1.5708)  * RotationY(1.5708) )
+      .setTransform(Translation(5, 0, 0) * RotationZ(1.5708) * RotationY(1.5708))
 
     val north_wall: Plane =
       Plane().setMaterial(wallMaterial).setTransform(Translation(0, 0, 5) * RotationX(1.5708))
@@ -439,11 +439,17 @@ object Demo {
           .setRefractiveIndex(1.57)
       )
 
-    val world: World = World(
-      List(Light.pointLight(Point(-4.9, 4.9, 1), Colour(1, 1, 1))),
-      List(glass_ball, ball1, ball2, ball3, floor,
-        ceiling, north_wall, east_wall,
-        south_wall, west_wall))
+    val world: World = World(List(Light.pointLight(Point(-4.9, 4.9, 1), Colour(1, 1, 1))),
+                             List(glass_ball,
+                                  ball1,
+                                  ball2,
+                                  ball3,
+                                  floor,
+                                  ceiling,
+                                  north_wall,
+                                  east_wall,
+                                  south_wall,
+                                  west_wall))
     val camera: Camera = Camera(1024, 768, 0.5)
       .setTransform(
         viewTransform(

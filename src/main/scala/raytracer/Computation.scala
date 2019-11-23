@@ -32,22 +32,22 @@ class Computation(val t: Double,
   def schlick(): Double = {
     val cos: Double = eyev.dot(normalv)
     if (n1 > n2) {
-      val n: Double = n1 / n2
-      val sin2_t: Double = (n*n)*(1 - (cos * cos))
-      if (sin2_t > 1) (1.0) else {
+      val n: Double      = n1 / n2
+      val sin2_t: Double = (n * n) * (1 - (cos * cos))
+      if (sin2_t > 1) (1.0)
+      else {
         val cos_t: Double = math.sqrt(1 - sin2_t)
-        val r0: Double = math.pow((n1 - n2)/ (n1 + n2), 2)
-        r0 + (1-r0) * math.pow((1-cos_t), 5)
+        val r0: Double    = math.pow((n1 - n2) / (n1 + n2), 2)
+        r0 + (1 - r0) * math.pow((1 - cos_t), 5)
       }
-    } else{
-      val r0: Double = math.pow((n1 - n2)/ (n1 + n2), 2)
-      r0 + (1-r0) * math.pow((1-cos), 5)
+    } else {
+      val r0: Double = math.pow((n1 - n2) / (n1 + n2), 2)
+      r0 + (1 - r0) * math.pow((1 - cos), 5)
     }
   }
 }
 
 object Computation {
-
 
   @tailrec
   def recurseRefract(hit: Intersection,
@@ -56,20 +56,21 @@ object Computation {
     xs.headOption match {
       case None => (99.0, 99.0)
       case Some(x: Intersection) if x === hit => {
-        var n1: Double = 1;
+        var n1: Double                      = 1;
         var containersNew: Seq[SpaceObject] = containers
         if (containers.isEmpty) { n1 = 1.0 } else {
           n1 = containers.reverse(0).material.refractiveIndex
         }
         if (containers.contains(x.shape)) {
-          containersNew =
-            containers.filterNot((z: SpaceObject) => z === x.shape)
-        } else {containersNew = containers :+ x.shape }
-        if (containersNew.isEmpty) {(n1, 1.0)} else {(n1, containersNew.reverse(0).material.refractiveIndex)}
+          containersNew = containers.filterNot((z: SpaceObject) => z === x.shape)
+        } else { containersNew = containers :+ x.shape }
+        if (containersNew.isEmpty) { (n1, 1.0) } else {
+          (n1, containersNew.reverse(0).material.refractiveIndex)
+        }
       }
       case Some(y: Intersection) => {
         if (containers.contains(y.shape)) {
-            recurseRefract(hit, xs.drop(1), containers.filterNot((z: SpaceObject) => z === y.shape))
+          recurseRefract(hit, xs.drop(1), containers.filterNot((z: SpaceObject) => z === y.shape))
         } else { recurseRefract(hit, xs.drop(1), containers :+ y.shape) }
       }
     }
@@ -81,7 +82,7 @@ object Computation {
     val normalv: RTTuple = intersection.shape.normalAt(ray.position(intersection.t))
     val eyev: RTTuple    = ray.direction.negate()
 
-    val hit: Intersection = intersection //Intersection.hit(xs) wtf
+    val hit: Intersection        = intersection //Intersection.hit(xs) wtf
     val (n1: Double, n2: Double) = recurseRefract(hit, xs, List())
 
     // TODO: Refactor me to handle negation only once
@@ -94,7 +95,9 @@ object Computation {
         normalv.negate(),
         true,
         ray.position(intersection.t) + normalv.negate() * EPSILON,
-        ray.direction.reflect(normalv.negate()), n1, n2,
+        ray.direction.reflect(normalv.negate()),
+        n1,
+        n2,
         ray.position(intersection.t) - normalv.negate() * EPSILON
       )
     } else {
@@ -106,7 +109,9 @@ object Computation {
         normalv,
         false,
         ray.position(intersection.t) + normalv * EPSILON,
-        ray.direction.reflect(normalv), n1, n2,
+        ray.direction.reflect(normalv),
+        n1,
+        n2,
         ray.position(intersection.t) - normalv * EPSILON
       )
     }

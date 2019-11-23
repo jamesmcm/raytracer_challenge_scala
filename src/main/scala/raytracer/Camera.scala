@@ -16,8 +16,9 @@
 package raytracer
 
 class Camera(val hsize: Int, val vsize: Int, val fov: Double, val transform: Matrix) {
-  val half_view: Double = math.tan(fov / 2)
-  val aspect: Double = hsize.toDouble / vsize.toDouble
+  val half_view: Double         = math.tan(fov / 2)
+  val aspect: Double            = hsize.toDouble / vsize.toDouble
+  val transform_inverse: Matrix = transform.inverse
 
   val (half_width: Double, half_height: Double) = Camera.calculateHalves(half_view, aspect)
 
@@ -32,8 +33,8 @@ class Camera(val hsize: Int, val vsize: Int, val fov: Double, val transform: Mat
     val world_x: Double = half_width - xoffset
     val world_y: Double = half_height - yoffset
 
-    val pixel: RTTuple = transform.inverse.tupleMult(Point(world_x, world_y, -1))
-    val origin: RTTuple = transform.inverse.tupleMult(Point(0, 0, 0))
+    val pixel: RTTuple     = transform_inverse.tupleMult(Point(world_x, world_y, -1))
+    val origin: RTTuple    = transform_inverse.tupleMult(Point(0, 0, 0))
     val direction: RTTuple = (pixel - origin).normalise()
     Ray(origin, direction)
   }
@@ -41,7 +42,8 @@ class Camera(val hsize: Int, val vsize: Int, val fov: Double, val transform: Mat
   def render(world: World): Canvas = {
     val c: Canvas = Canvas(hsize, vsize)
 
-    val pixels: Array[(Int, Int)] = (0 until vsize).flatMap((y: Int) => List(y).zipAll((0 until hsize), y, y)).toArray
+    val pixels: Array[(Int, Int)] =
+      (0 until vsize).flatMap((y: Int) => List(y).zipAll((0 until hsize), y, y)).toArray
 
     pixels.par.foreach((px: (Int, Int)) => {
       c.writePixel(px._2, px._1, world.colourAt(rayForPixel(px._2, px._1), 5))
@@ -52,7 +54,8 @@ class Camera(val hsize: Int, val vsize: Int, val fov: Double, val transform: Mat
 }
 
 object Camera {
-  def apply(hsize: Int, vsize: Int, fov: Double): Camera = new Camera(hsize, vsize, fov, Matrix.getIdentityMatrix(4))
+  def apply(hsize: Int, vsize: Int, fov: Double): Camera =
+    new Camera(hsize, vsize, fov, Matrix.getIdentityMatrix(4))
 
   def calculateHalves(half_view: Double, aspect: Double): (Double, Double) = {
     if (aspect >= 1) {

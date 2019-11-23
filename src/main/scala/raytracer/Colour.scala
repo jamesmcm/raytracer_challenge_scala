@@ -20,7 +20,8 @@ class Colour(val red: Double, val green: Double, val blue: Double) {
 
   final override def equals(that: Any): Boolean = {
     that match {
-      case that: Colour => doubleEq(that.red, red) && doubleEq(that.green, green) && doubleEq(that.blue, blue)
+      case that: Colour =>
+        doubleEq(that.red, red) && doubleEq(that.green, green) && doubleEq(that.blue, blue)
       case _ => false
     }
   }

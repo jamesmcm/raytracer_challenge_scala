@@ -19,38 +19,38 @@ import org.scalatest.FunSuite
 
 class RayTest extends FunSuite {
   test("Ray.test_creation") {
-    val origin: RTTuple = Point(1, 2, 3)
+    val origin: RTTuple    = Point(1, 2, 3)
     val direction: RTTuple = Vector(4, 5, 6)
-    val r: Ray = Ray(origin, direction)
+    val r: Ray             = Ray(origin, direction)
 
     assert(r.origin === origin && r.direction === direction)
   }
 
   test("Ray.test_position") {
-    val origin: RTTuple = Point(2, 3, 4)
+    val origin: RTTuple    = Point(2, 3, 4)
     val direction: RTTuple = Vector(1, 0, 0)
-    val r: Ray = Ray(origin, direction)
+    val r: Ray             = Ray(origin, direction)
 
-    assert(r.position(0) === Point(2, 3, 4) &&
-      r.position(1) === Point(3, 3, 4) &&
-      r.position(-1) === Point(1, 3, 4) &&
-      r.position(2.5) === Point(4.5, 3, 4))
+    assert(
+      r.position(0) === Point(2, 3, 4) &&
+        r.position(1) === Point(3, 3, 4) &&
+        r.position(-1) === Point(1, 3, 4) &&
+        r.position(2.5) === Point(4.5, 3, 4))
   }
 
   test("Ray.test_translate") {
-    val r: Ray = Ray(Point(1, 2, 3), Vector(0, 1, 0))
+    val r: Ray    = Ray(Point(1, 2, 3), Vector(0, 1, 0))
     val m: Matrix = Translation(3, 4, 5)
-    val r2: Ray = r.transform(m)
+    val r2: Ray   = r.transform(m)
 
     assert(r2.origin === Point(4, 6, 8) && r2.direction === Vector(0, 1, 0))
   }
   test("Ray.test_scale") {
-    val r: Ray = Ray(Point(1, 2, 3), Vector(0, 1, 0))
+    val r: Ray    = Ray(Point(1, 2, 3), Vector(0, 1, 0))
     val m: Matrix = Scaling(2, 3, 4)
-    val r2: Ray = r.transform(m)
+    val r2: Ray   = r.transform(m)
 
     assert(r2.origin === Point(2, 6, 12) && r2.direction === Vector(0, 3, 0))
   }
-
 
 }

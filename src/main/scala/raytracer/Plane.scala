@@ -20,34 +20,29 @@ class Plane(val transform: Matrix, val material: Material) extends SpaceObject {
 
   def constructor(t: Matrix, m: Material): T = new Plane(t, m)
 
-   final override def equals(that: Any): Boolean = {
-     that match {
-       case that: Plane => transform === that.transform && material === that.material
-       case _ => false
-     }
-   }
-
-//   final def ===(that: Plane): Boolean = {
-//     transform === that.transform && material === that.material
-//   }
+  final override def equals(that: Any): Boolean = {
+    that match {
+      case that: Plane => transform === that.transform && material === that.material
+      case _           => false
+    }
+  }
 
   final override def hashCode: Int = (transform, material).##
 
-
   def localIntersect(r: Ray): Seq[Intersection] = {
-    if (math.abs(r.direction.y) < EPSILON) (List[Intersection]()) else {
+    if (math.abs(r.direction.y) < EPSILON)(List[Intersection]())
+    else {
       val t: Double = -r.origin.y / r.direction.y
       List(new Intersection(t, this))
     }
   }
-
 
   def localNormalAt(p: RTTuple): RTTuple = {
     Vector(0, 1, 0)
   }
 }
 
-
 object Plane {
-  def apply(): Plane = new Plane(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
+  def apply(): Plane =
+    new Plane(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
 }

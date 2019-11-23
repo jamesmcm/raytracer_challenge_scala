@@ -28,4 +28,3 @@ object Main extends App {
   Demo.refractScene2()
 
 }
-

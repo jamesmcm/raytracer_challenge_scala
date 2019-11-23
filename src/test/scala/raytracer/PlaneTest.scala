@@ -19,42 +19,42 @@ import org.scalatest.FunSuite
 
 class PlaneTest extends FunSuite {
   test("Plane.test_normal") {
-    val p: Plane = Plane()
+    val p: Plane    = Plane()
     val n1: RTTuple = p.localNormalAt(Point(0, 0, 0))
     val n2: RTTuple = p.localNormalAt(Point(10, 0, -10))
     val n3: RTTuple = p.localNormalAt(Point(-5, 0, 150))
-    assert(n1 === Vector(0, 1, 0) && n2 === Vector(0, 1, 0) &&
-      n3 === Vector(0, 1, 0))
+    assert(
+      n1 === Vector(0, 1, 0) && n2 === Vector(0, 1, 0) &&
+        n3 === Vector(0, 1, 0))
   }
 
   test("Plane.test_parallel") {
     val p: Plane = Plane()
-    val r: Ray = Ray(Point(0, 10, 0), Vector(0, 0, 1))
+    val r: Ray   = Ray(Point(0, 10, 0), Vector(0, 0, 1))
 
     val xs: Seq[Intersection] = p.localIntersect(r)
     assert(xs.isEmpty)
   }
   test("Plane.test_coplanar") {
     val p: Plane = Plane()
-    val r: Ray = Ray(Point(0, 0, 0), Vector(0, 0, 1))
+    val r: Ray   = Ray(Point(0, 0, 0), Vector(0, 0, 1))
 
     val xs: Seq[Intersection] = p.localIntersect(r)
     assert(xs.isEmpty)
   }
   test("Plane.test_intersect_above") {
     val p: Plane = Plane()
-    val r: Ray = Ray(Point(0, 1, 0), Vector(0, -1, 0))
+    val r: Ray   = Ray(Point(0, 1, 0), Vector(0, -1, 0))
 
     val xs: Seq[Intersection] = p.localIntersect(r)
     assert(xs.length === 1 && xs(0).t === 1 && xs(0).shape === p)
   }
   test("Plane.test_intersect_below") {
     val p: Plane = Plane()
-    val r: Ray = Ray(Point(0, -1, 0), Vector(0, 1, 0))
+    val r: Ray   = Ray(Point(0, -1, 0), Vector(0, 1, 0))
 
     val xs: Seq[Intersection] = p.localIntersect(r)
     assert(xs.length === 1 && xs(0).t === 1 && xs(0).shape === p)
   }
-
 
 }

@@ -19,7 +19,7 @@ class Intersection(val t: Double, val shape: SpaceObject) {
   final override def equals(that: Any): Boolean = {
     that match {
       case that: Intersection => doubleEq(that.t, t) && that.shape === shape
-      case _ => false
+      case _                  => false
     }
   }
 
@@ -28,7 +28,6 @@ class Intersection(val t: Double, val shape: SpaceObject) {
   }
 
   final override def hashCode: Int = (t, shape).##
-
 
 }
 
@@ -40,6 +39,8 @@ object Intersection {
 
   def hit(xs: Seq[Intersection]): Intersection = {
     // TODO: Use better WartRemover hack - Option
-    xs.filter(_.t > 0).foldLeft(new Intersection(99999999, Sphere.unitSphere()))((s: Intersection, x: Intersection) => if (x.t < s.t) x else s)
+    xs.filter(_.t > 0)
+      .foldLeft(new Intersection(99999999, Sphere.unitSphere()))(
+        (s: Intersection, x: Intersection) => if (x.t < s.t) x else s)
   }
 }

@@ -15,97 +15,102 @@
 
 package raytracer
 
-
 import org.scalatest.FunSuite
 
 class PatternTest extends FunSuite {
   test("Pattern.test_create") {
-    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0))
-    assert(p.a === Colour(1,1,1) && p.b === Colour(0,0,0))
+    val p: Pattern = StripePattern(Colour(1, 1, 1), Colour(0, 0, 0))
+    assert(p.a === Colour(1, 1, 1) && p.b === Colour(0, 0, 0))
   }
 
   test("Pattern.test_stripe_y") {
-    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0))
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,1,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,2,0)) === Colour(1,1,1)
-    )
+    val p: Pattern = StripePattern(Colour(1, 1, 1), Colour(0, 0, 0))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 1, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 2, 0)) === Colour(1, 1, 1))
   }
   test("Pattern.test_stripe_z") {
-    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0))
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,0,1)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,0,2)) === Colour(1,1,1)
-    )
+    val p: Pattern = StripePattern(Colour(1, 1, 1), Colour(0, 0, 0))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 0, 1)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 0, 2)) === Colour(1, 1, 1))
   }
   test("Pattern.test_stripe_x") {
-    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0))
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0.9,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(1,0,0)) === Colour(0,0,0) &&
-      p.colourAt(Point(-0.1,0,0)) === Colour(0,0,0) &&
-      p.colourAt(Point(-1,0,0)) === Colour(0,0,0) &&
-      p.colourAt(Point(-1.1,0,0)) === Colour(1,1,1)
-    )
+    val p: Pattern = StripePattern(Colour(1, 1, 1), Colour(0, 0, 0))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0.9, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(1, 0, 0)) === Colour(0, 0, 0) &&
+        p.colourAt(Point(-0.1, 0, 0)) === Colour(0, 0, 0) &&
+        p.colourAt(Point(-1, 0, 0)) === Colour(0, 0, 0) &&
+        p.colourAt(Point(-1.1, 0, 0)) === Colour(1, 1, 1))
   }
   test("Pattern.test_stripe_object_transform") {
-    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0))
-    val o: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+    val p: Pattern = StripePattern(Colour(1, 1, 1), Colour(0, 0, 0))
+    val o: Sphere  = Sphere.unitSphere().setTransform(Scaling(2, 2, 2))
 
-    val c: Colour = p.colourAtObject(o, Point(1.5,0,0))
-    assert(c === Colour(1,1,1))
+    val c: Colour = p.colourAtObject(o, Point(1.5, 0, 0))
+    assert(c === Colour(1, 1, 1))
   }
   test("Pattern.test_stripe_pattern_transform") {
-    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0)).setTransform(Scaling(2,2,2))
-    val o: Sphere = Sphere.unitSphere()
+    val p: Pattern = StripePattern(Colour(1, 1, 1), Colour(0, 0, 0)).setTransform(Scaling(2, 2, 2))
+    val o: Sphere  = Sphere.unitSphere()
 
-    val c: Colour = p.colourAtObject(o, Point(1.5,0,0))
-    assert(c === Colour(1,1,1))
+    val c: Colour = p.colourAtObject(o, Point(1.5, 0, 0))
+    assert(c === Colour(1, 1, 1))
   }
   test("Pattern.test_stripe_object_pattern_transform") {
-    val p: Pattern = StripePattern(Colour(1,1,1), Colour(0,0,0)).setTransform(Translation(0.5, 0, 0))
-    val o: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+    val p: Pattern =
+      StripePattern(Colour(1, 1, 1), Colour(0, 0, 0)).setTransform(Translation(0.5, 0, 0))
+    val o: Sphere = Sphere.unitSphere().setTransform(Scaling(2, 2, 2))
 
-    val c: Colour = p.colourAtObject(o, Point(2.5,0,0))
-    assert(c === Colour(1,1,1))
+    val c: Colour = p.colourAtObject(o, Point(2.5, 0, 0))
+    assert(c === Colour(1, 1, 1))
   }
   test("Pattern.test_gradient") {
-    val p: Pattern = GradientPattern(Colour(1,1,1), Colour(0,0,0))
+    val p: Pattern = GradientPattern(Colour(1, 1, 1), Colour(0, 0, 0))
 
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0.25,0,0)) === Colour(0.75,0.75,0.75) &&
-      p.colourAt(Point(0.5,0,0)) === Colour(0.5,0.5,0.5) &&
-      p.colourAt(Point(0.75,0,0)) === Colour(0.25,0.25,0.25))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0.25, 0, 0)) === Colour(0.75, 0.75, 0.75) &&
+        p.colourAt(Point(0.5, 0, 0)) === Colour(0.5, 0.5, 0.5) &&
+        p.colourAt(Point(0.75, 0, 0)) === Colour(0.25, 0.25, 0.25))
   }
 
   test("Pattern.test_ring") {
-    val p: Pattern = RingPattern(Colour(1,1,1), Colour(0,0,0))
+    val p: Pattern = RingPattern(Colour(1, 1, 1), Colour(0, 0, 0))
 
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(1,0,0)) === Colour(0,0,0) &&
-      p.colourAt(Point(0,0,1)) === Colour(0,0,0) &&
-      p.colourAt(Point(0.708,0,0.708)) === Colour(0,0,0))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(1, 0, 0)) === Colour(0, 0, 0) &&
+        p.colourAt(Point(0, 0, 1)) === Colour(0, 0, 0) &&
+        p.colourAt(Point(0.708, 0, 0.708)) === Colour(0, 0, 0))
   }
   test("Pattern.test_checkered_x") {
-    val p: Pattern = CheckeredPattern(Colour(1,1,1), Colour(0,0,0))
+    val p: Pattern = CheckeredPattern(Colour(1, 1, 1), Colour(0, 0, 0))
 
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0.99,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(1.01,0,0)) === Colour(0,0,0))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0.99, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(1.01, 0, 0)) === Colour(0, 0, 0))
   }
   test("Pattern.test_checkered_y") {
-    val p: Pattern = CheckeredPattern(Colour(1,1,1), Colour(0,0,0))
+    val p: Pattern = CheckeredPattern(Colour(1, 1, 1), Colour(0, 0, 0))
 
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,0.99,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,1.01,0)) === Colour(0,0,0))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 0.99, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 1.01, 0)) === Colour(0, 0, 0))
   }
   test("Pattern.test_checkered_z") {
-    val p: Pattern = CheckeredPattern(Colour(1,1,1), Colour(0,0,0))
+    val p: Pattern = CheckeredPattern(Colour(1, 1, 1), Colour(0, 0, 0))
 
-    assert(p.colourAt(Point(0,0,0)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,0,0.99)) === Colour(1,1,1) &&
-      p.colourAt(Point(0,0,1.01)) === Colour(0,0,0))
+    assert(
+      p.colourAt(Point(0, 0, 0)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 0, 0.99)) === Colour(1, 1, 1) &&
+        p.colourAt(Point(0, 0, 1.01)) === Colour(0, 0, 0))
   }
 
   test("Pattern.test_pattern_identity") {
@@ -114,28 +119,28 @@ class PatternTest extends FunSuite {
     assert(p.transform === Matrix.getIdentityMatrix(4))
   }
   test("Pattern.test_creation_pattern_transform") {
-    val p: Pattern = TestPattern().setTransform(Translation(1,2,3))
+    val p: Pattern = TestPattern().setTransform(Translation(1, 2, 3))
 
-    assert(p.transform === Translation(1,2,3))
+    assert(p.transform === Translation(1, 2, 3))
   }
   test("Pattern.test_object_transform") {
     val p: Pattern = TestPattern()
-    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
-    val c: Colour = p.colourAtObject(s, Point(2,3,4))
+    val s: Sphere  = Sphere.unitSphere().setTransform(Scaling(2, 2, 2))
+    val c: Colour  = p.colourAtObject(s, Point(2, 3, 4))
 
-    assert(c === Colour(1,1.5,2))
+    assert(c === Colour(1, 1.5, 2))
   }
   test("Pattern.test_pattern_transform") {
-    val p: Pattern = TestPattern().setTransform(Scaling(2,2,2))
-    val s: Sphere = Sphere.unitSphere()
-    val c: Colour = p.colourAtObject(s, Point(2,3,4))
+    val p: Pattern = TestPattern().setTransform(Scaling(2, 2, 2))
+    val s: Sphere  = Sphere.unitSphere()
+    val c: Colour  = p.colourAtObject(s, Point(2, 3, 4))
 
-    assert(c === Colour(1,1.5,2))
+    assert(c === Colour(1, 1.5, 2))
   }
   test("Pattern.test_pattern_object_transform") {
     val p: Pattern = TestPattern().setTransform(Translation(0.5, 1, 1.5))
-    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
-    val c: Colour = p.colourAtObject(s, Point(2.5,3,3.5))
+    val s: Sphere  = Sphere.unitSphere().setTransform(Scaling(2, 2, 2))
+    val c: Colour  = p.colourAtObject(s, Point(2.5, 3, 3.5))
 
     assert(c === Colour(0.75, 0.5, 0.25))
   }

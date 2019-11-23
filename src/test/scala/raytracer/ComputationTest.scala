@@ -19,29 +19,31 @@ import org.scalatest.FunSuite
 
 class ComputationTest extends FunSuite {
   test("Computation.test_creation") {
-    val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
-    val s: Sphere = Sphere.unitSphere()
+    val r: Ray          = Ray(Point(0, 0, -5), Vector(0, 0, 1))
+    val s: Sphere       = Sphere.unitSphere()
     val i: Intersection = new Intersection(4, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
-    assert(comps.t === i.t && comps.shape === i.shape && comps.point === Point(0, 0, -1)
-      && comps.eyev === Vector(0, 0, -1) && comps.normalv === Vector(0, 0, -1))
+    assert(
+      comps.t === i.t && comps.shape === i.shape && comps.point === Point(0, 0, -1)
+        && comps.eyev === Vector(0, 0, -1) && comps.normalv === Vector(0, 0, -1))
   }
   test("Computation.test_outside_hit") {
-    val r: Ray = Ray(Point(0, 0, -5), Vector(0, 0, 1))
-    val s: Sphere = Sphere.unitSphere()
+    val r: Ray          = Ray(Point(0, 0, -5), Vector(0, 0, 1))
+    val s: Sphere       = Sphere.unitSphere()
     val i: Intersection = new Intersection(4, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
     assert(!comps.inside)
   }
   test("Computation.test_inside_hit") {
-    val r: Ray = Ray(Point(0, 0, 0), Vector(0, 0, 1))
-    val s: Sphere = Sphere.unitSphere()
+    val r: Ray          = Ray(Point(0, 0, 0), Vector(0, 0, 1))
+    val s: Sphere       = Sphere.unitSphere()
     val i: Intersection = new Intersection(1, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
-    assert(comps.point === Point(0, 0, 1) && comps.eyev === Vector(0, 0, -1)
-      && comps.inside && comps.normalv === Vector(0, 0, -1))
+    assert(
+      comps.point === Point(0, 0, 1) && comps.eyev === Vector(0, 0, -1)
+        && comps.inside && comps.normalv === Vector(0, 0, -1))
   }
 }

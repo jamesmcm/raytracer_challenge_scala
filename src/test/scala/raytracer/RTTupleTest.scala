@@ -43,13 +43,25 @@ class RTTupleTest extends FunSuite {
   }
 
   test("RTTuple.test_point_vec_add") {
-    assert((Vector(-2, 3, 1) + Point(3, -2, 5)).toTuple === Tuple4[Double, Double, Double, Int](1, 1, 6, 1))
+    assert(
+      (Vector(-2, 3, 1) + Point(3, -2, 5)).toTuple === Tuple4[Double, Double, Double, Int](1,
+                                                                                           1,
+                                                                                           6,
+                                                                                           1))
   }
   test("RTTuple.test_point_point_sub") {
-    assert((Point(3, 2, 1) - Point(5, 6, 7)).toTuple === Tuple4[Double, Double, Double, Int](-2, -4, -6, 0))
+    assert(
+      (Point(3, 2, 1) - Point(5, 6, 7)).toTuple === Tuple4[Double, Double, Double, Int](-2,
+                                                                                        -4,
+                                                                                        -6,
+                                                                                        0))
   }
   test("RTTuple.test_point_vector_sub") {
-    assert((Point(3, 2, 1) - Vector(5, 6, 7)).toTuple === Tuple4[Double, Double, Double, Int](-2, -4, -6, 1))
+    assert(
+      (Point(3, 2, 1) - Vector(5, 6, 7)).toTuple === Tuple4[Double, Double, Double, Int](-2,
+                                                                                         -4,
+                                                                                         -6,
+                                                                                         1))
   }
   test("RTTuple.test_vector_vector_sub") {
     assert((Vector(3, 2, 1) - Vector(5, 6, 7)) === Vector(-2, -4, -6))
@@ -120,6 +132,7 @@ class RTTupleTest extends FunSuite {
     assert(Vector(1, -1, 0).reflect(Vector(0, 1, 0)) === Vector(1, 1, 0))
   }
   test("RTTuple.test_reflect2") {
-    assert(Vector(0, -1, 0).reflect(Vector(math.sqrt(2) / 2, math.sqrt(2) / 2, 0)) === Vector(1, 0, 0))
+    assert(
+      Vector(0, -1, 0).reflect(Vector(math.sqrt(2) / 2, math.sqrt(2) / 2, 0)) === Vector(1, 0, 0))
   }
 }

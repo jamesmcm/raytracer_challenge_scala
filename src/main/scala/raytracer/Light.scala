@@ -19,7 +19,7 @@ class Light(val position: RTTuple, val intensity: Colour) {
   final override def equals(that: Any): Boolean = {
     that match {
       case that: Light => position === that.position && intensity === that.intensity
-      case _ => false
+      case _           => false
     }
   }
 
