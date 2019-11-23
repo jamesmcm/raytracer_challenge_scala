@@ -25,7 +25,7 @@ object Main extends App {
   // Demo.stripeScene()
   // Demo.patternScene()
   // Demo.reflectScene()
-  Demo.refractScene()
+  Demo.refractScene2()
 
 }
 

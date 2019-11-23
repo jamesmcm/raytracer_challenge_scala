@@ -87,4 +87,5 @@ class Material(val colour: Colour, val ambient: Double, val diffuse: Double,
 
 object Material {
   def defaultMaterial(): Material = new Material(Colour(1, 1, 1), 0.1, 0.9, 0.9, 200.0, None, 0, transparency = 0.0, refractiveIndex = 1.0)
+  def glass(): Material = Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5)
 }
