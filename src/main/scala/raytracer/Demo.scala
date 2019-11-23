@@ -401,14 +401,13 @@ object Demo {
           .setSpecular(0)
       )
 
-    val ball2: Sphere = Sphere
-      .unitSphere()
-      .setTransform(Translation(4.6, 0.4, 2.9) * Scaling(0.4, 0.4, 0.4))
+    val ball2: Cube = Cube()
+      .setTransform(Scaling(0.7, 0.7, 0.7) * Translation(4.6, 0.4, 2.9) * Scaling(0.4, 0.4, 0.4))
       .setMaterial(
         Material
           .defaultMaterial()
           .setColour(Colour(0.2, 0.2, 0.2))
-          .setReflective(1)
+          .setReflective(0.1)
       )
 
     val ball3: Sphere = Sphere
@@ -422,9 +421,8 @@ object Demo {
           .setSpecular(0.4)
       )
 
-    val glass_ball: Sphere = Sphere
-      .glassSphere()
-      .setTransform(Scaling(1, 1, 1) * Translation(0.25, 1, 0))
+    val glass_ball: Sphere = Sphere.glassSphere()
+      .setTransform(Scaling(0.7, 0.7, 0.7) * Translation(0.25, 1, 0))
       .setMaterial(
         Material
           .glass()
@@ -457,7 +455,7 @@ object Demo {
         ))
 
     val canvas: Canvas = camera.render(world)
-    stringToFile("scene_refract13.ppm", canvas.toPPM)
+    stringToFile("scene_refract20.ppm", canvas.toPPM)
 
   }
 
