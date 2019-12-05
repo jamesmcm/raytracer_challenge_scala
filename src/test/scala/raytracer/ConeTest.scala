@@ -37,7 +37,7 @@ class ConeTest extends FunSuite {
     val r: Ray = Ray(Point(1, 1, -5), Vector(-0.5,-1,1).normalise())
 
     val xs: Seq[Intersection] = c.localIntersect(r)
-    assert(xs.length === 2 && doubleEq(xs(0).t, 4.5506)  && doubleEq(xs(1).t, 49.44994))
+    assert(xs.length === 2 && doubleEq(xs(0).t, 4.55006)  && doubleEq(xs(1).t, 49.44994))
   }
   test("Cone.test_intersect_parallel") {
     val c: Cone    = Cone()

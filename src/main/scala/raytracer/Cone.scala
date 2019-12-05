@@ -48,15 +48,14 @@ class Cone(val transform: Matrix,
   }
 
   def intersectCaps(r: Ray): Seq[Intersection] = {
-    if ((!closed) || doubleEq(r.direction.y, 0)) List()
+    if ((!closed) || doubleEq(r.direction.y, 0))(List())
     else {
-
       ((minimum - r.origin.y) / r.direction.y, (maximum - r.origin.y) / r.direction.y) match {
         case (a, b) if Cone.checkCap(r, a, minimum) && Cone.checkCap(r, b, maximum) =>
           List(Intersection(a, this), Intersection(b, this))
         case (a, b) if Cone.checkCap(r, a, minimum) => List(Intersection(a, this))
         case (a, b) if Cone.checkCap(r, b, maximum) => List(Intersection(b, this))
-        case _                             => List()
+        case _                                      => List()
       }
     }
   }
@@ -66,7 +65,7 @@ class Cone(val transform: Matrix,
       : Double = r.direction.x * r.direction.x - r.direction.y * r.direction.y + r.direction.z * r.direction.z
     val b
       : Double    = 2 * r.origin.x * r.direction.x - 2 * r.origin.y * r.direction.y + 2 * r.origin.z * r.direction.z
-    val c: Double = r.origin.x * r.origin.x - r.origin.y * r.origin.y + r.origin.z * r.origin.z - 1
+    val c: Double = r.origin.x * r.origin.x - r.origin.y * r.origin.y + r.origin.z * r.origin.z
     (a, b) match {
       case (x, y) if doubleEq(x, 0) && doubleEq(y, 0) => intersectCaps(r)
       case (x, _) if doubleEq(x, 0)                   => List(Intersection(-c / (2 * b), this)) ++ intersectCaps(r)
@@ -99,8 +98,8 @@ class Cone(val transform: Matrix,
     else {
       if (dist < 1 && p.y <= minimum + EPSILON) Vector(0, -1, 0)
       else {
-        val y: Double = math.sqrt(p.x*p.x + p.z*p.z)
-        Vector(p.x, if (p.y>0) -y else y, p.z)
+        val y: Double = math.sqrt(p.x * p.x + p.z * p.z)
+        Vector(p.x, if (p.y > 0) -y else y, p.z)
       }
     }
   }
