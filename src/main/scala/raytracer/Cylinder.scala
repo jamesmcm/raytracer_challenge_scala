@@ -17,10 +17,16 @@ package raytracer
 
 import cats.implicits._
 
-class Cylinder(val transform: Matrix, val material: Material) extends SpaceObject {
+class Cylinder(val transform: Matrix,
+               val material: Material,
+               val minimum: Double,
+               val maximum: Double,
+               val closed: Boolean)
+    extends SpaceObject {
   type T = Cylinder
 
-  def constructor(t: Matrix, m: Material): T = new Cylinder(t, m)
+  def constructor(t: Matrix, m: Material): T =
+    new Cylinder(t, m, Double.NegativeInfinity, Double.PositiveInfinity, false)
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -31,28 +37,77 @@ class Cylinder(val transform: Matrix, val material: Material) extends SpaceObjec
 
   final override def hashCode: Int = (transform, material).##
 
+  def setMinimum(x: Double): Cylinder = {
+    new Cylinder(transform, material, x, maximum, closed)
+  }
+  def setMaximum(x: Double): Cylinder = {
+    new Cylinder(transform, material, minimum, x, closed)
+  }
+  def setClosed(x: Boolean): Cylinder = {
+    new Cylinder(transform, material, minimum, maximum, x)
+  }
+
+  def intersectCaps(r: Ray): Seq[Intersection] = {
+    if ((!closed) || doubleEq(r.direction.y, 0) ) List() else {
+
+      ((minimum - r.origin.y)/r.direction.y, (maximum - r.origin.y)/r.direction.y) match {
+        case (a, b) if Cylinder.checkCap(r, a) && Cylinder.checkCap(r, b) => List(Intersection(a, this), Intersection(b, this))
+        case (a, b) if Cylinder.checkCap(r, a)  => List(Intersection(a, this))
+        case (a, b) if Cylinder.checkCap(r, b)  => List(Intersection(b, this))
+        case _ => List()
+      }
+    }
+  }
+
   def localIntersect(r: Ray): Seq[Intersection] = {
     val a: Double = r.direction.x * r.direction.x + r.direction.z * r.direction.z
-    if (doubleEq(a, 0)) List()
+    if (doubleEq(a, 0)) (intersectCaps(r))
     else {
 
       val b: Double    = 2 * r.origin.x * r.direction.x + 2 * r.origin.z * r.direction.z
       val c: Double    = r.origin.x * r.origin.x + r.origin.z * r.origin.z - 1
       val disc: Double = (b * b) - 4 * a * c
-      if (disc < 0) List()
+      if (disc < 0) intersectCaps(r)
       else {
-        List(Intersection((-b - math.sqrt(disc)) / (2 * a), this),
-             Intersection((-b + math.sqrt(disc)) / (2 * a), this))
+        val t0: Double = (-b - math.sqrt(disc)) / (2 * a)
+        val t1: Double = (-b + math.sqrt(disc)) / (2 * a)
+
+        //TODO: Ensure left is smaller
+        (r.origin.y + t0 * r.direction.y, r.origin.y + t1 * r.direction.y) match {
+          case (a, b) if (a > minimum && a < maximum && b > minimum && b < maximum) =>
+            List(Intersection(t0, this), Intersection(t1, this))
+          case (a, b) if (a > minimum && a < maximum) => List(Intersection(t0, this)) ++ intersectCaps(r)
+          case (a, b) if (b > minimum && b < maximum) =>
+            List(Intersection(t1, this)) ++ intersectCaps(r)
+          case _ => intersectCaps(r)
+        }
       }
     }
   }
 
   def localNormalAt(p: RTTuple): RTTuple = {
-    Vector(p.x, 0, p.z)
+    val dist: Double = p.x*p.x + p.z*p.z
+
+    if (dist<1 && p.y >= maximum - EPSILON) Vector(0, 1, 0) else {
+      if (dist<1 && p.y <= minimum + EPSILON) Vector(0, -1, 0) else {
+        Vector(p.x, 0, p.z)
+      }
+    }
   }
 }
 
 object Cylinder {
   def apply(): Cylinder =
-    new Cylinder(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
+    new Cylinder(Matrix.getIdentityMatrix(4),
+                 Material.defaultMaterial(),
+                 Double.NegativeInfinity,
+                 Double.PositiveInfinity,
+                 false)
+
+  def checkCap(r: Ray, t: Double): Boolean = {
+    val x: Double = (r.origin.x + r.direction.x * t)
+    val z: Double = (r.origin.z + r.direction.z * t)
+
+    (x * x + z * z) <= 1
+  }
 }
