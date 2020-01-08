@@ -17,10 +17,10 @@ package raytracer
 
 import cats.implicits._
 
-class Cube(val transform: Matrix, val material: Material) extends SpaceObject {
+class Cube(val transform: Matrix, val material: Material, val shadow: Boolean) extends SpaceObject {
   type T = Cube
 
-  def constructor(t: Matrix, m: Material): T = new Cube(t, m)
+  def constructor(t: Matrix, m: Material, s: Boolean): T = new Cube(t, m, s)
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -76,5 +76,5 @@ object Cube {
   }
 
   def apply(): Cube =
-    new Cube(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
+    new Cube(Matrix.getIdentityMatrix(4), Material.defaultMaterial(), true)
 }

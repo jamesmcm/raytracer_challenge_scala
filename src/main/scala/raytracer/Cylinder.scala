@@ -21,12 +21,13 @@ class Cylinder(val transform: Matrix,
                val material: Material,
                val minimum: Double,
                val maximum: Double,
-               val closed: Boolean)
+               val closed: Boolean,
+               val shadow: Boolean)
     extends SpaceObject {
   type T = Cylinder
 
-  def constructor(t: Matrix, m: Material): T =
-    new Cylinder(t, m, Double.NegativeInfinity, Double.PositiveInfinity, false)
+  def constructor(t: Matrix, m: Material, s: Boolean): T =
+    new Cylinder(t, m, Double.NegativeInfinity, Double.PositiveInfinity, false, s)
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -38,13 +39,13 @@ class Cylinder(val transform: Matrix,
   final override def hashCode: Int = (transform, material).##
 
   def setMinimum(x: Double): Cylinder = {
-    new Cylinder(transform, material, x, maximum, closed)
+    new Cylinder(transform, material, x, maximum, closed, shadow)
   }
   def setMaximum(x: Double): Cylinder = {
-    new Cylinder(transform, material, minimum, x, closed)
+    new Cylinder(transform, material, minimum, x, closed, shadow)
   }
   def setClosed(x: Boolean): Cylinder = {
-    new Cylinder(transform, material, minimum, maximum, x)
+    new Cylinder(transform, material, minimum, maximum, x, shadow)
   }
 
   def intersectCaps(r: Ray): Seq[Intersection] = {
@@ -102,7 +103,7 @@ object Cylinder {
                  Material.defaultMaterial(),
                  Double.NegativeInfinity,
                  Double.PositiveInfinity,
-                 false)
+                 false, shadow=true)
 
   def checkCap(r: Ray, t: Double): Boolean = {
     val x: Double = (r.origin.x + r.direction.x * t)

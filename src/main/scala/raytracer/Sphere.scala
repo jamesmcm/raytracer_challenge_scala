@@ -15,12 +15,12 @@
 
 package raytracer
 
-class Sphere(val transform: Matrix, val material: Material) extends SpaceObject {
+class Sphere(val transform: Matrix, val material: Material, val shadow: Boolean) extends SpaceObject {
   // Note origin and radius always assumed as unit sphere
   // Use setTransform for transformations
   type T = Sphere
 
-  def constructor(t: Matrix, m: Material): T = new Sphere(t, m)
+  def constructor(t: Matrix, m: Material, s: Boolean): T = new Sphere(t, m, s)
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -59,10 +59,10 @@ class Sphere(val transform: Matrix, val material: Material) extends SpaceObject 
 }
 
 object Sphere {
-  def unitSphere(): Sphere = new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
+  def unitSphere(): Sphere = new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial(), true)
   def glassSphere(): Sphere =
     new Sphere(Matrix.getIdentityMatrix(4),
-               Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5))
+               Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5), false)
 }
 
 // TODO: Move me
@@ -70,6 +70,7 @@ abstract class SpaceObject() {
   type T <: SpaceObject
   val material: Material
   val transform: Matrix
+  val shadow: Boolean
   val transform_inverse: Matrix = transform.inverse
   def equals(that: Any): Boolean
 
@@ -84,7 +85,7 @@ abstract class SpaceObject() {
 
   def hashCode: Int
 
-  def constructor(t: Matrix, m: Material): T
+  def constructor(t: Matrix, m: Material, s: Boolean): T
 
   def localNormalAt(p: RTTuple): RTTuple
 
@@ -100,7 +101,9 @@ abstract class SpaceObject() {
     localIntersect(r.transform(transform_inverse))
   }
 
-  def setMaterial(m: Material): T = constructor(transform, m)
+  def setMaterial(m: Material): T = constructor(transform, m, shadow)
 
-  def setTransform(m: Matrix): T = constructor(m, material)
+  def setShadow(b: Boolean): T = constructor(transform, material, b)
+
+  def setTransform(m: Matrix): T = constructor(m, material, shadow)
 }

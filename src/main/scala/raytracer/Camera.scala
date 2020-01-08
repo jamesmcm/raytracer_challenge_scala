@@ -46,7 +46,7 @@ class Camera(val hsize: Int, val vsize: Int, val fov: Double, val transform: Mat
       (0 until vsize).flatMap((y: Int) => List(y).zipAll((0 until hsize), y, y)).toArray
 
     pixels.par.foreach((px: (Int, Int)) => {
-      c.writePixel(px._2, px._1, world.colourAt(rayForPixel(px._2, px._1), 40025))
+      c.writePixel(px._2, px._1, world.colourAt(rayForPixel(px._2, px._1), 15))
     })
 
     c

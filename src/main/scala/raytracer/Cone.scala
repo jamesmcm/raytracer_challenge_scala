@@ -21,12 +21,13 @@ class Cone(val transform: Matrix,
            val material: Material,
            val minimum: Double,
            val maximum: Double,
-           val closed: Boolean)
+           val closed: Boolean,
+           val shadow: Boolean)
     extends SpaceObject {
   type T = Cone
 
-  def constructor(t: Matrix, m: Material): T =
-    new Cone(t, m, Double.NegativeInfinity, Double.PositiveInfinity, false)
+  def constructor(t: Matrix, m: Material, s: Boolean): T =
+    new Cone(t, m, Double.NegativeInfinity, Double.PositiveInfinity, false, s)
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -38,13 +39,13 @@ class Cone(val transform: Matrix,
   final override def hashCode: Int = (transform, material).##
 
   def setMinimum(x: Double): Cone = {
-    new Cone(transform, material, x, maximum, closed)
+    new Cone(transform, material, x, maximum, closed, shadow)
   }
   def setMaximum(x: Double): Cone = {
-    new Cone(transform, material, minimum, x, closed)
+    new Cone(transform, material, minimum, x, closed, shadow)
   }
   def setClosed(x: Boolean): Cone = {
-    new Cone(transform, material, minimum, maximum, x)
+    new Cone(transform, material, minimum, maximum, x, shadow)
   }
 
   def intersectCaps(r: Ray): Seq[Intersection] = {
@@ -111,7 +112,7 @@ object Cone {
              Material.defaultMaterial(),
              Double.NegativeInfinity,
              Double.PositiveInfinity,
-             false)
+             false, true)
 
   def checkCap(r: Ray, t: Double, y: Double): Boolean = {
     val x: Double = (r.origin.x + r.direction.x * t)

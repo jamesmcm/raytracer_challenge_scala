@@ -69,7 +69,7 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
 
     h match {
       case None                  => false
-      case Some(x: Intersection) => x.t < distance
+      case Some(x: Intersection) => x.t < distance && x.shape.shadow
     }
   }
 

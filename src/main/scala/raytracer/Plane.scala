@@ -15,10 +15,10 @@
 
 package raytracer
 
-class Plane(val transform: Matrix, val material: Material) extends SpaceObject {
+class Plane(val transform: Matrix, val material: Material, val shadow: Boolean) extends SpaceObject {
   type T = Plane
 
-  def constructor(t: Matrix, m: Material): T = new Plane(t, m)
+  def constructor(t: Matrix, m: Material, s: Boolean): T = new Plane(t, m, s)
 
   final override def equals(that: Any): Boolean = {
     that match {
@@ -44,5 +44,5 @@ class Plane(val transform: Matrix, val material: Material) extends SpaceObject {
 
 object Plane {
   def apply(): Plane =
-    new Plane(Matrix.getIdentityMatrix(4), Material.defaultMaterial())
+    new Plane(Matrix.getIdentityMatrix(4), Material.defaultMaterial(), true)
 }
