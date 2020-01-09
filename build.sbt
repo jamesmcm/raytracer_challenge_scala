@@ -5,14 +5,24 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "com.example"
 ThisBuild / organizationName := "example"
 
+val circeVersion = "0.12.3"
+val lift_json = "net.liftweb" %% "lift-json" % "3.3.0"
+
 lazy val root = (project in file("."))
   .settings(
     name := "raytracer_challenge",
     libraryDependencies += scalaTest % Test,
-    wartremoverErrors ++= Warts.allBut(Wart.Var, Wart.Overloading),
+    wartremoverErrors ++= Warts.allBut(Wart.Var, Wart.Overloading, Wart.OptionPartial),
     wartremoverWarnings ++= Warts.all,
     scalacOptions += "-Ypartial-unification",
-    libraryDependencies += "org.typelevel" %% "cats-core" % "2.0.0-M1"
+    libraryDependencies += "org.typelevel" %% "cats-core"  % "2.0.0-M1",
+    libraryDependencies += "io.circe"      %% "circe-yaml" % "0.10.0",
+    libraryDependencies ++= Seq(
+      "io.circe" %% "circe-core",
+      "io.circe" %% "circe-generic",
+      "io.circe" %% "circe-parser"
+    ).map(_ % circeVersion),
+    libraryDependencies += lift_json
   )
 
 // Uncomment the following for publishing to Sonatype.

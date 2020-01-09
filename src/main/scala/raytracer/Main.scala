@@ -26,6 +26,7 @@ object Main extends App {
   // Demo.patternScene()
   // Demo.reflectScene()
   // Demo.refractScene2()
-  Demo.tableScene()
+  // Demo.tableScene()
+  YAMLScene.parseYAML("scenes/tables.yaml")
 
 }
