@@ -22,6 +22,7 @@ import io.circe._
 import io.circe.Json
 import net.liftweb.json.DefaultFormats
 import net.liftweb.json._
+import cats.implicits._
 
 final case class JSONPattern(
     typed: String,
@@ -30,7 +31,7 @@ final case class JSONPattern(
 )
 
 final case class JSONMaterial(
-    colors: Option[List[Double]],
+    color: Option[List[Double]],
     ambient: Option[Double],
     diffuse: Option[Double],
     specular: Option[Double],
@@ -44,12 +45,101 @@ final case class JSONMaterial(
 final case class JSONItem(
     add: String,
     transform: Option[List[List[String]]],
+    at: Option[List[Double]],
+    intensity: Option[List[Double]],
     material: Option[JSONMaterial],
+    width: Option[Int],
+    height: Option[Int],
+    field_of_view: Option[Double],
+    from: Option[List[Double]],
+    to: Option[List[Double]],
+    up: Option[List[Double]],
     shadow: Option[Boolean]
 )
 
 object YAMLScene {
-  def parseYAML(filename: String): Unit = {
+
+  def listToTuple[T](l: Option[List[T]]): (T, T, T) = {
+    (l.getOrElse(List())(0), l.getOrElse(List())(1), l.getOrElse(List())(2))
+  }
+
+  def getMaterial(mat: Option[JSONMaterial]): Material = {
+    mat match {
+      case None => Material.defaultMaterial()
+      case Some(m) => {
+
+        var outm: Material = Material.defaultMaterial()
+        m.ambient match {
+          case None            => {}
+          case Some(x: Double) => outm = outm.setAmbient(x)
+        }
+        m.diffuse match {
+          case None            => {}
+          case Some(x: Double) => outm = outm.setDiffuse(x)
+        }
+        m.specular match {
+          case None            => {}
+          case Some(x: Double) => outm = outm.setSpecular(x)
+        }
+        m.shininess match {
+          case None            => {}
+          case Some(x: Double) => outm = outm.setShininess(x)
+        }
+        m.reflective match {
+          case None            => {}
+          case Some(x: Double) => outm = outm.setReflective(x)
+        }
+        m.transparency match {
+          case None            => {}
+          case Some(x: Double) => outm = outm.setTransparency(x)
+        }
+        m.refractive_index match {
+          case None            => {}
+          case Some(x: Double) => outm = outm.setRefractiveIndex(x)
+        }
+        m.color match {
+          case None                  => {}
+          case Some(x: List[Double]) => outm = outm.setColour(Colour(x(0), x(1), x(2)))
+        }
+        m.pattern match {
+          case None                 => {}
+          case Some(x: JSONPattern) => outm = outm.setPattern(getPattern(x))
+        }
+        outm
+      }
+    }
+  }
+
+  def getTransform(t: Option[List[List[String]]]): Matrix = {
+    t match {
+      case None => Matrix.getIdentityMatrix(4)
+      case Some(x) =>
+        x.map((z: List[String]) =>
+            z(0) match {
+              case "scale"     => Scaling(z(1).toDouble, z(2).toDouble, z(3).toDouble)
+              case "translate" => Translation(z(1).toDouble, z(2).toDouble, z(3).toDouble)
+              case "rotate-y"  => RotationY(z(1).toDouble)
+              case "rotate-x"  => RotationX(z(1).toDouble)
+              case "rotate-z"  => RotationZ(z(1).toDouble)
+          })
+          .reverse
+          .foldLeft(Matrix.getIdentityMatrix(4))((x: Matrix, y: Matrix) => x * y)
+    }
+  }
+
+  def getPattern(p: JSONPattern): Pattern = {
+    val pattern: Pattern = p.typed match {
+      case "stripes" =>
+        StripePattern(Colour(p.colors(0)(0), p.colors(0)(1), p.colors(0)(2)),
+                      Colour(p.colors(1)(0), p.colors(1)(1), p.colors(1)(2)))
+      case "checkers" =>
+        CheckeredPattern(Colour(p.colors(0)(0), p.colors(0)(1), p.colors(0)(2)),
+                         Colour(p.colors(1)(0), p.colors(1)(1), p.colors(1)(2)))
+    }
+    pattern.setTransform(getTransform(p.transform))
+  }
+
+  def parseYAMLToScene(filename: String): (Camera, World) = {
     implicit val formats: DefaultFormats.type = DefaultFormats
 
     val bufferedSource     = Source.fromFile(filename)
@@ -61,14 +151,38 @@ object YAMLScene {
 
     val json     = parse(jsonString)
     val elements = (json).children
+    var lights: List[Light]     = List()
+    var camera: Camera          = Camera(0, 0, 0)
+    var objs: List[SpaceObject] = List()
     for (acct <- elements) {
-      val m = acct.extract[JSONItem]
-      println(s"add: ${m.add}, transform: ${m.transform}, transform: ${m.material}")
+      val m                       = acct.extract[JSONItem]
+      println(s"add: ${m.add}: ${m}")
       // Pattern match
+      m match {
+        case m if m.add === "camera" => {
+          val from = listToTuple(m.from); val to = listToTuple(m.to); val up = listToTuple(m.up);
+          camera = Camera(m.width.getOrElse(0), m.height.getOrElse(0), m.field_of_view.getOrElse(0));
+          camera = camera.setTransform(
+            viewTransform(Point(from._1, from._2, from._3),
+                          Point(to._1, to._2, to._3),
+                          Vector(up._1, up._2, up._3)))
+        }
+        case m if m.add === "light" => {
+          val t = listToTuple(m.at); val i = listToTuple(m.intensity);
+          lights = lights :+ Light.pointLight(Point(t._1, t._2, t._3),
+                                              intensity = Colour(i._1, i._2, i._3))
+        }
+        case m if m.add === "cube" => {
+          objs = objs :+ Cube()
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+        }
+      }
       // Instantiate
-      // Add to scene
-      // Render
     }
+    val world: World = World(lights, objs)
+    (camera, world)
   }
 
 }

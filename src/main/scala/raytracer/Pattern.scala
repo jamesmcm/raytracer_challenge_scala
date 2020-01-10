@@ -18,6 +18,7 @@ package raytracer
 import cats.implicits._
 
 class TestPattern(val transform: Matrix) extends Pattern {
+  type T = TestPattern
   val a: Colour = Colour(0, 0, 0)
   val b: Colour = Colour(0, 0, 0)
 
@@ -34,6 +35,7 @@ object TestPattern {
 }
 
 class StripePattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
+  type T = StripePattern
   def colourAt(p: RTTuple): Colour = {
     if (math.floor(p.x + EPSILON).toInt % 2 === 0) a else b
   }
@@ -48,6 +50,7 @@ object StripePattern {
 }
 
 class GradientPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
+  type T = GradientPattern
   def colourAt(p: RTTuple): Colour = {
     a + ((b - a) * (p.x - math.floor(p.x + EPSILON)))
   }
@@ -62,6 +65,7 @@ object GradientPattern {
 }
 
 class RingPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
+  type T = RingPattern
   def colourAt(p: RTTuple): Colour = {
     if (math.floor(math.sqrt(p.x * p.x + p.z * p.z) + EPSILON).toInt % 2 === 0) a else b
   }
@@ -75,6 +79,7 @@ object RingPattern {
 }
 
 class CheckeredPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
+  type T = CheckeredPattern
   def colourAt(p: RTTuple): Colour = {
     if ((math.floor(p.x + EPSILON) + math.floor(p.y + EPSILON) + math.floor(p.z + EPSILON)).toInt % 2 === 0)
       a
@@ -92,12 +97,14 @@ object CheckeredPattern {
 
 abstract class Pattern() {
   // TODO: Nested patterns
+  type T <: Pattern
   val a: Colour
   val b: Colour
   val transform: Matrix
 
   val transform_inverse: Matrix = transform.inverse
 
+  def setTransform(t: Matrix): T
   def colourAt(p: RTTuple): Colour
   def colourAtObject(o: SpaceObject, worldPoint: RTTuple): Colour = {
     val objectPoint: RTTuple  = o.transform_inverse.tupleMult(worldPoint)
