@@ -1,0 +1,67 @@
+# ======================================================
+# the camera
+# ======================================================
+
+- add: camera
+  width: 400
+  height: 200
+  field_of_view: 0.314
+  from: [8, 3.5, -9]
+  to: [0, 0.3, 0]
+  up: [0, 1, 0]
+
+# ======================================================
+# light sources
+# ======================================================
+
+- add: light
+  at: [1, 6.9, -4.9]
+  intensity: [1, 1, 1]
+
+# ======================================================
+# describe the elements of the scene
+# ======================================================
+
+# floor
+- add: plane
+  material:
+    pattern:
+      typed: checkers
+      colors:
+        - [0.5, 0.5, 0.5]
+        - [0.75, 0.75, 0.75]
+      transform:
+        - [scale, 0.25, 0.25, 0.25]
+        - [rotate-y, 0.3]
+    ambient: 0.2
+    diffuse: 0.9
+    specular: 0
+
+- add: cylinder
+  min: 0
+  max: 0.75
+  closed: true
+  transform:
+    - [scale, 0.5, 1, 0.5]
+    - [translate, -1, 0, 1]
+  material:
+    color: [0, 0, 0.6]
+    diffuse: 0.1
+    specular: 0.9
+    shininess: 300
+    reflective: 0.9
+
+- add: cone
+  min: -0.75
+  max: 0.0
+  closed: true
+  transform:
+    - [scale, 0.5, 1, 0.5]
+    - [translate, -2, 0.75, -0.4]
+  material:
+    color: [0, 0, 0]
+    diffuse: 0
+    specular: 1
+    ambient: 0
+    shininess: 300
+    reflective: 1

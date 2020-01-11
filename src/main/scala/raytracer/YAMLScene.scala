@@ -54,7 +54,10 @@ final case class JSONItem(
     from: Option[List[Double]],
     to: Option[List[Double]],
     up: Option[List[Double]],
-    shadow: Option[Boolean]
+    shadow: Option[Boolean],
+    min: Option[Double],
+    max: Option[Double],
+    closed: Option[Boolean],
 )
 
 object YAMLScene {
@@ -149,13 +152,13 @@ object YAMLScene {
     val myjson: Json       = io.circe.yaml.parser.parse(yamlString).getOrElse(Json.Null)
     val jsonString: String = myjson.spaces2
 
-    val json     = parse(jsonString)
-    val elements = (json).children
+    val json                    = parse(jsonString)
+    val elements                = (json).children
     var lights: List[Light]     = List()
     var camera: Camera          = Camera(0, 0, 0)
     var objs: List[SpaceObject] = List()
     for (acct <- elements) {
-      val m                       = acct.extract[JSONItem]
+      val m = acct.extract[JSONItem]
       println(s"add: ${m.add}: ${m}")
       // Pattern match
       m match {
@@ -177,6 +180,39 @@ object YAMLScene {
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+        }
+        case m if m.add === "plane" => {
+          objs = objs :+ Plane()
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+        }
+        case m if m.add === "cylinder" => {
+          objs = objs :+ Cylinder()
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+            .setClosed(m.closed match { case None => true; case Some(x: Boolean) => x; })
+            .setMaximum(m.max match {
+              case None => Double.PositiveInfinity; case Some(x: Double) => x;
+            })
+            .setMinimum(m.min match {
+              case None => Double.NegativeInfinity; case Some(x: Double) => x;
+            })
+        }
+
+        case m if m.add === "cone" => {
+          objs = objs :+ Cone()
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+            .setClosed(m.closed match { case None => true; case Some(x: Boolean) => x; })
+            .setMaximum(m.max match {
+              case None => Double.PositiveInfinity; case Some(x: Double) => x;
+            })
+            .setMinimum(m.min match {
+              case None => Double.NegativeInfinity; case Some(x: Double) => x;
+            })
         }
       }
       // Instantiate

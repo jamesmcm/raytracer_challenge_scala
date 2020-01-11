@@ -1,4 +1,3 @@
-
 # ======================================================
 # cylinders.yml
 #
@@ -61,6 +60,21 @@
     specular: 0.9
     shininess: 300
     reflective: 0.9
+
+- add: cone
+  min: -0.75
+  max: 0.0
+  closed: true
+  transform:
+    - [scale, 0.5, 1, 0.5]
+    - [translate, -2, 0.75, -0.4]
+  material:
+    color: [0, 0, 0]
+    diffuse: 0
+    specular: 1
+    ambient: 0
+    shininess: 300
+    reflective: 1
 
 # concentric cylinders
 

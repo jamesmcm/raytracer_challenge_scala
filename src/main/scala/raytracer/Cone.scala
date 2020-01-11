@@ -112,7 +112,8 @@ object Cone {
              Material.defaultMaterial(),
              Double.NegativeInfinity,
              Double.PositiveInfinity,
-             false, true)
+             false,
+             true)
 
   def checkCap(r: Ray, t: Double, y: Double): Boolean = {
     val x: Double = (r.origin.x + r.direction.x * t)
