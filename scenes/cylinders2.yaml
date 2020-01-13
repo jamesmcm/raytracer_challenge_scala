@@ -37,6 +37,15 @@
     diffuse: 0.9
     specular: 0
 
+- add: plane
+  transform:
+    - [translate, 0, 5, 0]
+  material:
+    color: [1, 0, 1]
+    ambient: 0.2
+    diffuse: 0.9
+    specular: 0
+
 - add: cylinder
   min: 0
   max: 0.75
