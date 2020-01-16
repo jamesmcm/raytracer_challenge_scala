@@ -15,7 +15,8 @@
 
 package raytracer
 
-class Sphere(val transform: Matrix, val material: Material, val shadow: Boolean) extends SpaceObject {
+class Sphere(val transform: Matrix, val material: Material, val shadow: Boolean)
+    extends SpaceObject {
   // Note origin and radius always assumed as unit sphere
   // Use setTransform for transformations
   type T = Sphere
@@ -59,56 +60,10 @@ class Sphere(val transform: Matrix, val material: Material, val shadow: Boolean)
 }
 
 object Sphere {
-  def unitSphere(): Sphere = new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial(), true)
+  def unitSphere(): Sphere =
+    new Sphere(Matrix.getIdentityMatrix(4), Material.defaultMaterial(), true)
   def glassSphere(): Sphere =
     new Sphere(Matrix.getIdentityMatrix(4),
-               Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5), false)
-}
-
-// TODO: Move me
-abstract class SpaceObject() {
-  type T <: SpaceObject
-  val material: Material
-  val transform: Matrix
-  val shadow: Boolean
-  val transform_inverse: Matrix = transform.inverse
-  def equals(that: Any): Boolean
-
-  var parent: Option[SpaceObject] = None
-
-  final def ===(that: SpaceObject): Boolean = {
-    that match {
-      case that: T =>
-        transform === that.transform && material === that.material // TODO: Fix me - type erasure
-      case _ => false
-    }
-  }
-
-  def setParent(p: SpaceObject): Unit = {
-    parent = Some(p)
-  }
-
-  def hashCode: Int
-
-  def constructor(t: Matrix, m: Material, s: Boolean): T
-
-  def localNormalAt(p: RTTuple): RTTuple
-
-  def normalAt(p: RTTuple): RTTuple = {
-    val localPoint: RTTuple = transform_inverse.tupleMult(p)
-
-    transform_inverse.transpose.tupleMult(localNormalAt(localPoint)).forceVector().normalise()
-  }
-
-  def localIntersect(r: Ray): Seq[Intersection]
-
-  def intersect(r: Ray): Seq[Intersection] = {
-    localIntersect(r.transform(transform_inverse))
-  }
-
-  def setMaterial(m: Material): T = constructor(transform, m, shadow)
-
-  def setShadow(b: Boolean): T = constructor(transform, material, b)
-
-  def setTransform(m: Matrix): T = constructor(m, material, shadow)
+               Material.defaultMaterial().setTransparency(1.0).setRefractiveIndex(1.5),
+               false)
 }
