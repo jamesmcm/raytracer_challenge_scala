@@ -58,7 +58,7 @@ class Group(val transform: Matrix,
   }
 
   def localNormalAt(p: RTTuple): RTTuple = {
-    Vector(0, 0, 0)
+    throw new UnsupportedOperationException("Tried to call localNormalAt() on group")
   }
 
   def addChild(c: SpaceObject): Group = {

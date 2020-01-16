@@ -62,4 +62,28 @@ class GroupTest extends FunSuite {
 
     assert(xs.length === 2)
   }
+  test("Group.test_world_to_object") {
+    val s: Sphere = Sphere.unitSphere().setTransform(Translation(5, 0, 0))
+    val g2: Group    = Group().setTransform(Scaling(2,2,2)).addChild(s)
+    val g1: Group    = Group().setTransform(RotationY(math.Pi/2.0)).addChild(g2)
+
+    val p: RTTuple = s.worldToObject(Point(-2, 0, -10))
+    assert(p === Point(0, 0, -1))
+  }
+  test("Group.normal_object_to_world") {
+    val s: Sphere = Sphere.unitSphere().setTransform(Translation(5, 0, 0))
+    val g2: Group    = Group().setTransform(Scaling(1,2,3)).addChild(s)
+    val g1: Group    = Group().setTransform(RotationY(math.Pi/2.0)).addChild(g2)
+
+    val n: RTTuple = s.normalToWorld(Vector(math.sqrt(3)/3, math.sqrt(3)/3, math.sqrt(3)/3))
+    assert(n === Vector(0.285714, 0.4285714, -0.857142))
+  }
+  test("Group.normal_at_child") {
+    val s: Sphere = Sphere.unitSphere().setTransform(Translation(5, 0, 0))
+    val g2: Group    = Group().setTransform(Scaling(1,2,3)).addChild(s)
+    val g1: Group    = Group().setTransform(RotationY(math.Pi/2.0)).addChild(g2)
+
+    val n: RTTuple = s.normalAt(Point(1.7321, 1.1547, -5.5774))
+    assert(n === Vector(0.2857037, 0.428543, -0.85716))
+  }
 }

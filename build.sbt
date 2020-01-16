@@ -6,13 +6,19 @@ ThisBuild / organization := "com.example"
 ThisBuild / organizationName := "example"
 
 val circeVersion = "0.12.3"
-val lift_json = "net.liftweb" %% "lift-json" % "3.3.0"
+val lift_json    = "net.liftweb" %% "lift-json" % "3.3.0"
 
 lazy val root = (project in file("."))
   .settings(
     name := "raytracer_challenge",
     libraryDependencies += scalaTest % Test,
-    wartremoverErrors ++= Warts.allBut(Wart.Var, Wart.Overloading, Wart.OptionPartial, Wart.Any, Wart.Equals),
+    wartremoverErrors ++= Warts.allBut(Wart.Var,
+                                       Wart.Overloading,
+                                       Wart.OptionPartial,
+                                       Wart.Any,
+                                       Wart.Equals,
+                                       Wart.Recursion,
+                                       Wart.Throw),
     wartremoverWarnings ++= Warts.all,
     scalacOptions += "-Ypartial-unification",
     libraryDependencies += "org.typelevel" %% "cats-core"  % "2.0.0-M1",

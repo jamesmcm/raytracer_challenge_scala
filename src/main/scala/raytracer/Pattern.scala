@@ -107,7 +107,7 @@ abstract class Pattern() {
   def setTransform(t: Matrix): T
   def colourAt(p: RTTuple): Colour
   def colourAtObject(o: SpaceObject, worldPoint: RTTuple): Colour = {
-    val objectPoint: RTTuple  = o.transform_inverse.tupleMult(worldPoint)
+    val objectPoint: RTTuple  = o.worldToObject(worldPoint)
     val patternPoint: RTTuple = transform_inverse.tupleMult(objectPoint)
 
     colourAt(patternPoint)

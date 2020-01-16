@@ -15,6 +15,8 @@
 
 package raytracer
 
+import scala.annotation.tailrec
+
 abstract class SpaceObject() {
   type T <: SpaceObject
   val material: Material
@@ -44,9 +46,9 @@ abstract class SpaceObject() {
   def localNormalAt(p: RTTuple): RTTuple
 
   def normalAt(p: RTTuple): RTTuple = {
-    val localPoint: RTTuple = transform_inverse.tupleMult(p)
+    val localPoint: RTTuple = worldToObject(p)
 
-    transform_inverse.transpose.tupleMult(localNormalAt(localPoint)).forceVector().normalise()
+    normalToWorld(localNormalAt(localPoint))
   }
 
   def localIntersect(r: Ray): Seq[Intersection]
@@ -60,4 +62,16 @@ abstract class SpaceObject() {
   def setShadow(b: Boolean): T = constructor(transform, material, b)
 
   def setTransform(m: Matrix): T = constructor(m, material, shadow)
+
+  def worldToObject(p: RTTuple): RTTuple = {
+    //TODO: Unbounded recursion - could overflow stack
+    val p2: RTTuple = if (parent.isEmpty) p else parent.get.worldToObject(p)
+    transform_inverse.tupleMult(p2)
+  }
+
+  @tailrec
+  final def normalToWorld(n: RTTuple): RTTuple = {
+    val x: RTTuple = transform_inverse.transpose.tupleMult(n).forceVector().normalise()
+    if (parent.isEmpty) x else parent.get.normalToWorld(x)
+  }
 }
