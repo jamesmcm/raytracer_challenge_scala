@@ -74,13 +74,18 @@ abstract class SpaceObject() {
   val transform_inverse: Matrix = transform.inverse
   def equals(that: Any): Boolean
 
-  // def ===(that: SpaceObject): Boolean
+  var parent: Option[SpaceObject] = None
+
   final def ===(that: SpaceObject): Boolean = {
     that match {
       case that: T =>
         transform === that.transform && material === that.material // TODO: Fix me - type erasure
       case _ => false
     }
+  }
+
+  def setParent(p: SpaceObject): Unit = {
+    parent = Some(p)
   }
 
   def hashCode: Int

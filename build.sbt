@@ -12,7 +12,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "raytracer_challenge",
     libraryDependencies += scalaTest % Test,
-    wartremoverErrors ++= Warts.allBut(Wart.Var, Wart.Overloading, Wart.OptionPartial, Wart.Any),
+    wartremoverErrors ++= Warts.allBut(Wart.Var, Wart.Overloading, Wart.OptionPartial, Wart.Any, Wart.Equals),
     wartremoverWarnings ++= Warts.all,
     scalacOptions += "-Ypartial-unification",
     libraryDependencies += "org.typelevel" %% "cats-core"  % "2.0.0-M1",
