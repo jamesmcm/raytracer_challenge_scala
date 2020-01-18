@@ -86,4 +86,53 @@ class GroupTest extends FunSuite {
     val n: RTTuple = s.normalAt(Point(1.7321, 1.1547, -5.5774))
     assert(n === Vector(0.2857037, 0.428543, -0.85716))
   }
+  test("Group.bounds_unit_sphere") {
+    val s: Sphere = Sphere.unitSphere()
+    val g2: Group    = Group().addChild(s).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-1, -1, -1), Point(1, 1, 1))))
+  }
+  test("Group.bounds_unit_sphere_transform1") {
+    val s: Sphere = Sphere.unitSphere().setTransform(Scaling(2,2,2))
+    val g2: Group    = Group().addChild(s).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-2, -2, -2), Point(2, 2, 2))))
+  }
+  test("Group.bounds_unit_sphere_group_transform1") {
+    val s: Sphere = Sphere.unitSphere()
+    val g2: Group    = Group().addChild(s).setTransform(Scaling(2,2,2)).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-2, -2, -2), Point(2, 2, 2))))
+  }
+  test("Group.bounds_unit_cube") {
+    val s: Cube = Cube()
+    val g2: Group    = Group().addChild(s).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-1, -1, -1), Point(1, 1, 1))))
+  }
+  test("Group.bounds_unit_cube_transform") {
+    val s: Cube = Cube().setTransform(Scaling(5, 1, 1))
+    val g2: Group    = Group().addChild(s).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-5, -1, -1), Point(5, 1, 1))))
+  }
+  test("Group.bounds_unit_cube_transform_rotate") {
+    val s: Cube = Cube().setTransform(RotationZ(math.Pi/2.0) * Scaling(5, 1, 1))
+    val g2: Group    = Group().addChild(s).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-1, -5, -1), Point(1, 5, 1))))
+  }
+  test("Group.bounds_unit_cube_transform_rotate_group") {
+    val s: Cube = Cube()
+    val g2: Group    = Group().addChild(s).setTransform(RotationZ(math.Pi/2.0) * Scaling(5, 1, 1)).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-1, -5, -1), Point(1, 5, 1))))
+  }
+  test("Group.bounds_unit_sphere_translate") {
+    val s: Sphere = Sphere.unitSphere()
+    val s2: Sphere = Sphere.unitSphere().setTransform(Translation(5,0,0))
+    val g2: Group    = Group().addChild(s).addChild(s2).setBounds()
+
+    assert(g2.stored_bounds === Some((Point(-1, -1, -1), Point(6, 1, 1))))
+  }
 }

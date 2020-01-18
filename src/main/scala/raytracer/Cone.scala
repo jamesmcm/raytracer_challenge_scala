@@ -104,6 +104,10 @@ class Cone(val transform: Matrix,
       }
     }
   }
+
+  def bounds: (RTTuple, RTTuple) = {
+    (Point(-1, minimum, -1), Point(1, maximum, 1))
+  }
 }
 
 object Cone {

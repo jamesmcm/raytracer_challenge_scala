@@ -55,6 +55,10 @@ class Cube(val transform: Matrix, val material: Material, val shadow: Boolean) e
       case _ => Vector(0, 0, p.z)
     }
   }
+
+  def bounds: (RTTuple, RTTuple) = {
+    (Point(-1, -1, -1), Point(1, 1, 1))
+  }
 }
 
 object Cube {

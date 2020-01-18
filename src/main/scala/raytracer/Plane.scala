@@ -40,6 +40,9 @@ class Plane(val transform: Matrix, val material: Material, val shadow: Boolean) 
   def localNormalAt(p: RTTuple): RTTuple = {
     Vector(0, 1, 0)
   }
+  def bounds: (RTTuple, RTTuple) = {
+    (Point(Double.NegativeInfinity, -EPSILON, Double.NegativeInfinity), Point(Double.PositiveInfinity, EPSILON, Double.PositiveInfinity))
+  }
 }
 
 object Plane {

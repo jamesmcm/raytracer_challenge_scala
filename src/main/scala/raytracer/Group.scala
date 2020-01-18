@@ -20,13 +20,19 @@ import cats.implicits._
 class Group(val transform: Matrix,
             val material: Material,
             val shadow: Boolean,
-            val objs: List[SpaceObject])
+            val objs: List[SpaceObject],
+            val stored_bounds: Option[(RTTuple, RTTuple)]
+)
     extends SpaceObject {
   type T = Group
 
-  def constructor(t: Matrix, m: Material, s: Boolean): T = new Group(t, m, s, objs)
-  def constructor(t: Matrix, m: Material, s: Boolean, objs: List[SpaceObject]): T = {
-    val newgroup: Group = new Group(t, m, s, objs)
+  def constructor(t: Matrix, m: Material, s: Boolean): T = new Group(t, m, s, objs, None)
+  def constructor(t: Matrix,
+                  m: Material,
+                  s: Boolean,
+                  objs: List[SpaceObject],
+                  b: Option[(RTTuple, RTTuple)]): T = {
+    val newgroup: Group = new Group(t, m, s, objs, b)
     objs.foreach((x: SpaceObject) => x.setParent(newgroup))
     newgroup
   }
@@ -46,15 +52,21 @@ class Group(val transform: Matrix,
   }
 
   def setChildren(o: List[SpaceObject]): Group = {
-    constructor(transform, material, shadow, o)
+    constructor(transform, material, shadow, o, stored_bounds)
   }
 
   override final def setTransform(m: Matrix): Group = {
-    constructor(m, material, shadow, objs)
+    constructor(m, material, shadow, objs, stored_bounds)
   }
 
   def localIntersect(r: Ray): Seq[Intersection] = {
-    objs.flatMap((x: SpaceObject) => x.intersect(r)).sortBy((z: Intersection) => z.t)
+    if (stored_bounds.isDefined) {
+      if (boundsIntersect(r)) {
+        objs.flatMap((x: SpaceObject) => x.intersect(r)).sortBy((z: Intersection) => z.t)
+      } else { List() }
+    } else {
+      objs.flatMap((x: SpaceObject) => x.intersect(r)).sortBy((z: Intersection) => z.t)
+    }
   }
 
   def localNormalAt(p: RTTuple): RTTuple = {
@@ -62,7 +74,7 @@ class Group(val transform: Matrix,
   }
 
   def addChild(c: SpaceObject): Group = {
-    val newgroup: Group = constructor(transform, material, shadow, objs :+ c)
+    val newgroup: Group = constructor(transform, material, shadow, objs :+ c, stored_bounds)
     c.setParent(newgroup)
     newgroup
   }
@@ -70,9 +82,72 @@ class Group(val transform: Matrix,
   def contains(c: SpaceObject): Boolean = {
     objs.contains(c)
   }
+
+  def setBounds(): Group = {
+    constructor(transform, material, shadow, objs, Some(bounds))
+  }
+
+  def bounds: (RTTuple, RTTuple) = {
+    val vertices: List[(Double, Double, Double)] = objs.flatMap((x: SpaceObject) =>
+      List(x.transform.tupleMult(x.bounds._1), x.transform.tupleMult(x.bounds._2)))
+      .map((x: RTTuple) => (x.x, x.y, x.z))
+
+    val xs: List[Double] = vertices.map((x: (Double, Double, Double)) => x._1 )
+    val ys: List[Double] = vertices.map((x: (Double, Double, Double)) => x._2 )
+    val zs: List[Double] = vertices.map((x: (Double, Double, Double)) => x._3 )
+
+    val bounding_vertices: List[RTTuple] = List(
+      Point(xs.min, ys.min, zs.min),
+      Point(xs.max, ys.min, zs.min),
+      Point(xs.min, ys.max, zs.min),
+      Point(xs.max, ys.max, zs.min),
+      Point(xs.min, ys.min, zs.max),
+      Point(xs.max, ys.min, zs.max),
+      Point(xs.min, ys.max, zs.max),
+      Point(xs.max, ys.max, zs.max),
+    ).map((x: RTTuple) => transform.tupleMult(x))
+
+    val xs2: List[Double] = bounding_vertices.map((x: RTTuple) => x.x )
+    val ys2: List[Double] = bounding_vertices.map((x: RTTuple) => x.y )
+    val zs2: List[Double] = bounding_vertices.map((x: RTTuple) => x.z )
+
+    (Point(xs2.min, ys2.min, zs2.min), Point(xs2.max, ys2.max, zs2.max))
+  }
+
+  def boundsIntersect(r: Ray): Boolean = {
+    val xpair: (Double, Double) = Group.checkAxis(r.origin.x, r.direction.x, stored_bounds.get._1.x, stored_bounds.get._2.x)
+    val ypair: (Double, Double) = Group.checkAxis(r.origin.y, r.direction.y, stored_bounds.get._1.y, stored_bounds.get._2.y)
+    val zpair: (Double, Double) = Group.checkAxis(r.origin.z, r.direction.z, stored_bounds.get._1.z, stored_bounds.get._2.z)
+
+    val tmin: Double =
+      List(xpair._1, ypair._1, zpair._1).foldLeft(Double.NegativeInfinity)((x: Double, y: Double) =>
+        if (x >= y) x else y)
+    val tmax: Double =
+      List(xpair._2, ypair._2, zpair._2).foldLeft(Double.PositiveInfinity)((x: Double, y: Double) =>
+        if (x <= y) x else y)
+
+    if (tmin > tmax) false else true
+  }
 }
 
 object Group {
   def apply(): Group =
-    new Group(Matrix.getIdentityMatrix(4), Material.defaultMaterial(), true, List())
+    new Group(Matrix.getIdentityMatrix(4), Material.defaultMaterial(), true, List(), None)
+
+  def checkAxis(origin: Double, direction: Double, minaxis: Double, maxaxis: Double): (Double, Double) = {
+    val tmin_numerator: Double = minaxis - origin
+    val tmax_numerator: Double = maxaxis - origin
+
+    if (math.abs(direction) >= EPSILON) {
+      leftSmaller(tmin_numerator / direction, tmax_numerator / direction)
+    } else {
+      leftSmaller(tmin_numerator * Double.PositiveInfinity,
+        tmax_numerator * Double.PositiveInfinity)
+    }
+
+  }
+
+  def leftSmaller(t: (Double, Double)): (Double, Double) = {
+    if (t._1 > t._2) (t._2, t._1) else t
+  }
 }

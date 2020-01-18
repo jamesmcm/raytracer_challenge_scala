@@ -57,6 +57,9 @@ class Sphere(val transform: Matrix, val material: Material, val shadow: Boolean)
     (p - Point(0, 0, 0))
   }
 
+  def bounds: (RTTuple, RTTuple) = {
+    (Point(-1, -1, -1), Point(1, 1, 1))
+  }
 }
 
 object Sphere {

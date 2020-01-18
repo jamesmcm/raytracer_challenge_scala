@@ -43,6 +43,8 @@ abstract class SpaceObject() {
 
   def constructor(t: Matrix, m: Material, s: Boolean): T
 
+  def bounds: (RTTuple, RTTuple) // Untransformed
+
   def localNormalAt(p: RTTuple): RTTuple
 
   def normalAt(p: RTTuple): RTTuple = {
@@ -68,7 +70,6 @@ abstract class SpaceObject() {
     val p2: RTTuple = if (parent.isEmpty) p else parent.get.worldToObject(p)
     transform_inverse.tupleMult(p2)
   }
-
   @tailrec
   final def normalToWorld(n: RTTuple): RTTuple = {
     val x: RTTuple = transform_inverse.transpose.tupleMult(n).forceVector().normalise()
