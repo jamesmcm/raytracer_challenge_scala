@@ -102,7 +102,7 @@ class GroupTest extends FunSuite {
     val s: Sphere = Sphere.unitSphere()
     val g2: Group    = Group().addChild(s).setTransform(Scaling(2,2,2)).setBounds()
 
-    assert(g2.stored_bounds === Some((Point(-2, -2, -2), Point(2, 2, 2))))
+    assert(g2.stored_bounds === Some((Point(-1, -1, -1), Point(1, 1, 1))))
   }
   test("Group.bounds_unit_cube") {
     val s: Cube = Cube()
@@ -126,7 +126,7 @@ class GroupTest extends FunSuite {
     val s: Cube = Cube()
     val g2: Group    = Group().addChild(s).setTransform(RotationZ(math.Pi/2.0) * Scaling(5, 1, 1)).setBounds()
 
-    assert(g2.stored_bounds === Some((Point(-1, -5, -1), Point(1, 5, 1))))
+    assert(g2.stored_bounds === Some((Point(-1, -1, -1), Point(1, 1, 1))))
   }
   test("Group.bounds_unit_sphere_translate") {
     val s: Sphere = Sphere.unitSphere()

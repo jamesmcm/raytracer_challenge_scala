@@ -102,7 +102,7 @@ class Group(val transform: Matrix,
           Point(x._1.x, x._2.y, x._2.z),
           Point(x._2.x, x._2.y, x._2.z),
         ).map((p: RTTuple) => s.transform.tupleMult(p))
-      }).map((x: RTTuple) => transform.tupleMult(x))
+      }) // .map((x: RTTuple) => transform.tupleMult(x))
 
     val xs2: List[Double] = vertices.map((x: RTTuple) => x.x )
     val ys2: List[Double] = vertices.map((x: RTTuple) => x.y )

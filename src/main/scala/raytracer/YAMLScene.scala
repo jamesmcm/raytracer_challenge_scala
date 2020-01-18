@@ -59,6 +59,7 @@ final case class JSONItem(
     max: Option[Double],
     closed: Option[Boolean],
     bounds: Option[Boolean],
+    // objs: Option[List[JSONItem]], TODO: groups
 )
 
 object YAMLScene {
