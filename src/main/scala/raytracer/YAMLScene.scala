@@ -58,6 +58,7 @@ final case class JSONItem(
     min: Option[Double],
     max: Option[Double],
     closed: Option[Boolean],
+    bounds: Option[Boolean],
 )
 
 object YAMLScene {
@@ -213,6 +214,24 @@ object YAMLScene {
             .setMinimum(m.min match {
               case None => Double.NegativeInfinity; case Some(x: Double) => x;
             })
+        }
+
+        case m if m.add === "hexagon_ring" => {
+          val hex: Group = HexagonRing.hexagon(getMaterial(m.material))
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+
+          val useBounds: Boolean = m.bounds match { case None => false; case Some(x: Boolean) => x; }
+
+          objs = objs :+ (if (useBounds) hex.setBounds() else hex)
+        }
+
+        case m if m.add === "sphere" => {
+          objs = objs :+ Sphere.unitSphere()
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
         }
       }
       // Instantiate

@@ -15,20 +15,28 @@
 
 package raytracer
 
-object Main extends App {
-  // ParticleEnvironment.drawParticleTest()
-  // drawClock(200)
-  // castSphereSilhouette(100)
-  // Demo.lightSphere(2000)
-  // Demo.firstScene()
-  // Demo.planeScene()
-  // Demo.stripeScene()
-  // Demo.patternScene()
-  // Demo.reflectScene()
-  // Demo.refractScene2()
-  // Demo.tableScene()
-  val (cam: Camera, w: World) = YAMLScene.parseYAMLToScene("scenes/hexagon_ring_bounds.yaml")
-  val canvas: Canvas = cam.render(w)
-  stringToFile("yamltest.ppm", canvas.toPPM)
+object HexagonRing {
 
+  def hexagonCorner(m: Material): Sphere = {
+    Sphere.unitSphere().setMaterial(m).setTransform(Translation(0,0,-1) * Scaling(0.25, 0.25, 0.25))
+  }
+
+  def hexagonEdge(m: Material): Cylinder = {
+    Cylinder().setMinimum(0).setMaximum(1).setMaterial(m)
+      .setTransform(
+        Translation(0, 0, -1)*
+    RotationY(-math.Pi / 6.0) *
+    RotationZ(-math.Pi / 2.0) *
+    Scaling(0.25, 1, 0.25)
+    )
+  }
+
+  def hexagonSide(m: Material): Group = {
+    Group().addChild(hexagonCorner(m)).addChild(hexagonEdge(m))
+  }
+
+  def hexagon(m: Material): Group = {
+    val g: Group = Group()
+    (0 to 5).foldLeft(g)((acc: Group, x: Int) => acc.addChild(hexagonSide(m).setTransform(RotationY(x*math.Pi / 3.0))))
+  }
 }

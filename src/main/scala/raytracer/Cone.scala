@@ -27,7 +27,10 @@ class Cone(val transform: Matrix,
   type T = Cone
 
   def constructor(t: Matrix, m: Material, s: Boolean): T =
-    new Cone(t, m, Double.NegativeInfinity, Double.PositiveInfinity, false, s)
+    new Cone(t, m, minimum, maximum, closed, s)
+
+  def constructor(t: Matrix, m: Material, min: Double, max: Double, c: Boolean, s: Boolean): T =
+    new Cone(t, m, min, max, c, s)
 
   final override def equals(that: Any): Boolean = {
     that match {

@@ -27,7 +27,10 @@ class Cylinder(val transform: Matrix,
   type T = Cylinder
 
   def constructor(t: Matrix, m: Material, s: Boolean): T =
-    new Cylinder(t, m, Double.NegativeInfinity, Double.PositiveInfinity, false, s)
+    new Cylinder(t, m, minimum, maximum, closed, s)
+
+  def constructor(t: Matrix, m: Material, min: Double, max: Double, c: Boolean, s: Boolean): T =
+    new Cylinder(t, m, min, max, c, s)
 
   final override def equals(that: Any): Boolean = {
     that match {

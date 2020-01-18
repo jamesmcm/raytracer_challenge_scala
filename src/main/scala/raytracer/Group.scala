@@ -26,6 +26,8 @@ class Group(val transform: Matrix,
     extends SpaceObject {
   type T = Group
 
+  // TODO: Override setMaterial - apply to all children
+
   def constructor(t: Matrix, m: Material, s: Boolean): T = new Group(t, m, s, objs, None)
   def constructor(t: Matrix,
                   m: Material,
@@ -88,28 +90,23 @@ class Group(val transform: Matrix,
   }
 
   def bounds: (RTTuple, RTTuple) = {
-    val vertices: List[(Double, Double, Double)] = objs.flatMap((x: SpaceObject) =>
-      List(x.transform.tupleMult(x.bounds._1), x.transform.tupleMult(x.bounds._2)))
-      .map((x: RTTuple) => (x.x, x.y, x.z))
+    val vertices: List[RTTuple] = objs.flatMap((s: SpaceObject) => {
+        val x = s.bounds;
+        List(
+          Point(x._1.x, x._1.y, x._1.z),
+          Point(x._2.x, x._1.y, x._1.z),
+          Point(x._1.x, x._2.y, x._1.z),
+          Point(x._2.x, x._2.y, x._1.z),
+          Point(x._1.x, x._1.y, x._2.z),
+          Point(x._2.x, x._1.y, x._2.z),
+          Point(x._1.x, x._2.y, x._2.z),
+          Point(x._2.x, x._2.y, x._2.z),
+        ).map((p: RTTuple) => s.transform.tupleMult(p))
+      }).map((x: RTTuple) => transform.tupleMult(x))
 
-    val xs: List[Double] = vertices.map((x: (Double, Double, Double)) => x._1 )
-    val ys: List[Double] = vertices.map((x: (Double, Double, Double)) => x._2 )
-    val zs: List[Double] = vertices.map((x: (Double, Double, Double)) => x._3 )
-
-    val bounding_vertices: List[RTTuple] = List(
-      Point(xs.min, ys.min, zs.min),
-      Point(xs.max, ys.min, zs.min),
-      Point(xs.min, ys.max, zs.min),
-      Point(xs.max, ys.max, zs.min),
-      Point(xs.min, ys.min, zs.max),
-      Point(xs.max, ys.min, zs.max),
-      Point(xs.min, ys.max, zs.max),
-      Point(xs.max, ys.max, zs.max),
-    ).map((x: RTTuple) => transform.tupleMult(x))
-
-    val xs2: List[Double] = bounding_vertices.map((x: RTTuple) => x.x )
-    val ys2: List[Double] = bounding_vertices.map((x: RTTuple) => x.y )
-    val zs2: List[Double] = bounding_vertices.map((x: RTTuple) => x.z )
+    val xs2: List[Double] = vertices.map((x: RTTuple) => x.x )
+    val ys2: List[Double] = vertices.map((x: RTTuple) => x.y )
+    val zs2: List[Double] = vertices.map((x: RTTuple) => x.z )
 
     (Point(xs2.min, ys2.min, zs2.min), Point(xs2.max, ys2.max, zs2.max))
   }
