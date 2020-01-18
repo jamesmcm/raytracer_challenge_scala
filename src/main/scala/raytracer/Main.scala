@@ -27,7 +27,7 @@ object Main extends App {
   // Demo.reflectScene()
   // Demo.refractScene2()
   // Demo.tableScene()
-  val (cam: Camera, w: World) = YAMLScene.parseYAMLToScene("scenes/hexagon_ring_bounds.yaml")
+  val (cam: Camera, w: World) = YAMLScene.parseYAMLToScene("scenes/triangles.yaml")
   val canvas: Canvas = cam.render(w)
   stringToFile("yamltest.ppm", canvas.toPPM)
 

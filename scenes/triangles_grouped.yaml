@@ -31,25 +31,36 @@
 - add: group
   bounds: true
   children:
-    - add: sphere
+    - add: triangle
+      p1: [0, 1, 0]
+      p2: [-1, 0, 0]
+      p3: [1, 0, 0]
       transform:
-        - [translate, -0.5, 1, 0.5]
+        - [translate, -0.5, 0, 0.5]
       material:
         color: [0.1, 1, 0.5]
         diffuse: 0.7
         specular: 0.3
-    - add: sphere
+    - add: triangle
+      p1: [0, 1, 0]
+      p2: [-1, 0, 0]
+      p3: [1, 0, 0]
       transform:
         - [scale, 0.5, 0.5, 0.5]
-        - [translate, 1.5, 0.5, -0.5]
+        - [translate, 1.5, 0, -0.5]
+        - [rotate-y, 0.6]
       material:
         color: [0.5, 1, 0.1]
         diffuse: 0.7
         specular: 0.3
-    - add: sphere
+    - add: triangle
+      p1: [0, 1, 0]
+      p2: [-1, 0, 0]
+      p3: [1, 0, 0]
       transform:
         - [scale, 0.33, 0.33, 0.33]
-        - [translate, -1.5, 0.33, -0.75]
+        - [translate, -2.75, 0, -0.95]
+        - [rotate-y, 1.14]
       material:
         color: [1, 0.8, 0.1]
         diffuse: 0.7

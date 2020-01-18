@@ -59,6 +59,9 @@ final case class JSONItem(
     max: Option[Double],
     closed: Option[Boolean],
     bounds: Option[Boolean],
+    p1: Option[List[Double]],
+    p2: Option[List[Double]],
+    p3: Option[List[Double]],
     // objs: Option[List[JSONItem]], TODO: groups
 )
 
@@ -230,6 +233,20 @@ object YAMLScene {
 
         case m if m.add === "sphere" => {
           objs = objs :+ Sphere.unitSphere()
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+        }
+        case m if m.add === "triangle" => {
+          val p1: List[Double] = m.p1.get
+          val p2: List[Double] = m.p2.get
+          val p3: List[Double] = m.p3.get
+
+          objs = objs :+ Triangle(
+            Point(p1(0), p1(1), p1(2)),
+            Point(p2(0), p2(1), p2(2)),
+            Point(p3(0), p3(1), p3(2))
+          )
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
