@@ -62,6 +62,7 @@ final case class JSONItem(
     p1: Option[List[Double]],
     p2: Option[List[Double]],
     p3: Option[List[Double]],
+    filename: Option[String],
     // objs: Option[List[JSONItem]], TODO: groups
 )
 
@@ -250,6 +251,16 @@ object YAMLScene {
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+        }
+        case m if m.add === "object" => {
+          val parser: ObjParser = new ObjParser
+          val ignored_lines: Int = parser.parse(m.filename.get)
+          val g: Group = parser.toGroup().setBounds()
+          objs = objs :+ g
+            .setTransform(getTransform(m.transform))
+            .setMaterial(getMaterial(m.material))
+            .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
+          // TODO: Material will have no effect on Group - need to apply recursively
         }
       }
       // Instantiate

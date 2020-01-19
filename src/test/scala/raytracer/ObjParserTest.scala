@@ -47,4 +47,52 @@ class ObjParserTest extends FunSuite {
       p.vertices(3) === t2.points._3
     )
   }
+  test("ObjParser.test_faces_triangulation") {
+    val p: ObjParser = new ObjParser
+    val ignored_lines: Int = p.parse("obj/triangulation_test.obj")
+    val t1: Triangle = p.defaultGroup.objs(0).asInstanceOf[Triangle]
+    val t2: Triangle = p.defaultGroup.objs(1).asInstanceOf[Triangle]
+    val t3: Triangle = p.defaultGroup.objs(2).asInstanceOf[Triangle]
+
+    assert(ignored_lines === 1 &&
+      p.vertices(0) === t1.points._1 &&
+      p.vertices(1) === t1.points._2 &&
+      p.vertices(2) === t1.points._3 &&
+      p.vertices(0) === t2.points._1 &&
+      p.vertices(2) === t2.points._2 &&
+      p.vertices(3) === t2.points._3 &&
+      p.vertices(0) === t3.points._1 &&
+      p.vertices(3) === t3.points._2 &&
+      p.vertices(4) === t3.points._3
+    )
+  }
+  test("ObjParser.test_groups") {
+    val p: ObjParser = new ObjParser
+    val ignored_lines: Int = p.parse("obj/groups_test.obj")
+    val t1: Triangle = p.groups("FirstGroup").objs(0).asInstanceOf[Triangle]
+    val t2: Triangle = p.groups("SecondGroup").objs(0).asInstanceOf[Triangle]
+
+    assert(ignored_lines === 1 &&
+      p.vertices(0) === t1.points._1 &&
+      p.vertices(1) === t1.points._2 &&
+      p.vertices(2) === t1.points._3 &&
+      p.vertices(0) === t2.points._1 &&
+      p.vertices(2) === t2.points._2 &&
+      p.vertices(3) === t2.points._3
+    )
+  }
+  test("ObjParser.test_groups_output") {
+    val p: ObjParser = new ObjParser
+    val ignored_lines: Int = p.parse("obj/groups_test.obj")
+    val g: Group = p.toGroup()
+
+    assert(ignored_lines === 1 &&
+      p.vertices(0) === (g.objs(0)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._1 &&
+      p.vertices(1) === (g.objs(0)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._2 &&
+      p.vertices(2) === (g.objs(0)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._3 &&
+      p.vertices(0) === (g.objs(1)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._1 &&
+      p.vertices(2) === (g.objs(1)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._2 &&
+      p.vertices(3) === (g.objs(1)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._3
+    )
+  }
 }
