@@ -27,6 +27,11 @@ class Group(val transform: Matrix,
   type T = Group
 
   // TODO: Override setMaterial - apply to all children
+  override def setMaterial(m: Material): T = {
+    val newgroup: Group = setChildren(objs.map((x: SpaceObject) => x.setMaterial(m)))
+    objs.foreach((x: SpaceObject) => x.setParent(newgroup))
+    newgroup
+  }
 
   def constructor(t: Matrix, m: Material, s: Boolean): T = new Group(t, m, s, objs, None)
   def constructor(t: Matrix,
