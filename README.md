@@ -56,9 +56,11 @@ See examples in the [scenes](scenes/) directory for usage.
 
 ## Possible future work
 
-* Add the "define" statement to the YAML parser, so it can render all example YAML scenes. 
+* Add the "define" statement to the YAML parser, so it can render all example YAML scenes
+* Add "group" statement to the YAML parser to allow for manual definition of groups within scenes (for bounding boxes)
 * Finish Constructive Solid Geometry chapter
 * Finish [Texture Mapping](http://www.raytracerchallenge.com/bonus/texture-mapping.html) bonus chapter
+* Add super-sampling option for anti-aliasing
 * Fix WartRemover Wart warnings
 * Add UV mapping to patterns (to correctly render surface patterns on spheres and cubes)
 * Add a Perlin noise pattern
