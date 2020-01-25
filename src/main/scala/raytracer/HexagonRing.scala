@@ -18,17 +18,23 @@ package raytracer
 object HexagonRing {
 
   def hexagonCorner(m: Material): Sphere = {
-    Sphere.unitSphere().setMaterial(m).setTransform(Translation(0,0,-1) * Scaling(0.25, 0.25, 0.25))
+    Sphere
+      .unitSphere()
+      .setMaterial(m)
+      .setTransform(Translation(0, 0, -1) * Scaling(0.25, 0.25, 0.25))
   }
 
   def hexagonEdge(m: Material): Cylinder = {
-    Cylinder().setMinimum(0).setMaximum(1).setMaterial(m)
+    Cylinder()
+      .setMinimum(0)
+      .setMaximum(1)
+      .setMaterial(m)
       .setTransform(
-        Translation(0, 0, -1)*
-    RotationY(-math.Pi / 6.0) *
-    RotationZ(-math.Pi / 2.0) *
-    Scaling(0.25, 1, 0.25)
-    )
+        Translation(0, 0, -1) *
+          RotationY(-math.Pi / 6.0) *
+          RotationZ(-math.Pi / 2.0) *
+          Scaling(0.25, 1, 0.25)
+      )
   }
 
   def hexagonSide(m: Material): Group = {
@@ -37,6 +43,7 @@ object HexagonRing {
 
   def hexagon(m: Material): Group = {
     val g: Group = Group()
-    (0 to 5).foldLeft(g)((acc: Group, x: Int) => acc.addChild(hexagonSide(m).setTransform(RotationY(x*math.Pi / 3.0))))
+    (0 to 5).foldLeft(g)((acc: Group, x: Int) =>
+      acc.addChild(hexagonSide(m).setTransform(RotationY(x * math.Pi / 3.0))))
   }
 }

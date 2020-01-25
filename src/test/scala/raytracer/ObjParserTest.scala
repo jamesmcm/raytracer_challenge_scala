@@ -20,71 +20,71 @@ import org.scalatest.FunSuite
 class ObjParserTest extends FunSuite {
   test("ObjParser.test_nonsense") {
     val p: ObjParser = new ObjParser
-    assert(p.parse("obj/badtest.obj")  === 5)
+    assert(p.parse("obj/badtest.obj") === 5)
   }
 
   test("ObjParser.test_vertices") {
     val p: ObjParser = new ObjParser
-    assert(p.parse("obj/vertices_test.obj")  === 0 &&
-      p.vertices(0) === Point(-1,1,0) &&
-      p.vertices(1) === Point(-1,0.5,0) &&
-      p.vertices(2) === Point(1,0,0) &&
-      p.vertices(3) === Point(1,1,0)
-    )
+    assert(
+      p.parse("obj/vertices_test.obj") === 0 &&
+        p.vertices(0) === Point(-1, 1, 0) &&
+        p.vertices(1) === Point(-1, 0.5, 0) &&
+        p.vertices(2) === Point(1, 0, 0) &&
+        p.vertices(3) === Point(1, 1, 0))
   }
   test("ObjParser.test_faces_triangles") {
-    val p: ObjParser = new ObjParser
+    val p: ObjParser       = new ObjParser
     val ignored_lines: Int = p.parse("obj/faces_triangle_test.obj")
-    val t1: Triangle = p.defaultGroup.objs(0).asInstanceOf[Triangle]
-    val t2: Triangle = p.defaultGroup.objs(1).asInstanceOf[Triangle]
+    val t1: Triangle       = p.defaultGroup.objs(0).asInstanceOf[Triangle]
+    val t2: Triangle       = p.defaultGroup.objs(1).asInstanceOf[Triangle]
 
-    assert(ignored_lines === 1 &&
-      p.vertices(0) === t1.points._1 &&
-      p.vertices(1) === t1.points._2 &&
-      p.vertices(2) === t1.points._3 &&
-      p.vertices(0) === t2.points._1 &&
-      p.vertices(2) === t2.points._2 &&
-      p.vertices(3) === t2.points._3
-    )
+    assert(
+      ignored_lines === 1 &&
+        p.vertices(0) === t1.points._1 &&
+        p.vertices(1) === t1.points._2 &&
+        p.vertices(2) === t1.points._3 &&
+        p.vertices(0) === t2.points._1 &&
+        p.vertices(2) === t2.points._2 &&
+        p.vertices(3) === t2.points._3)
   }
   test("ObjParser.test_faces_triangulation") {
-    val p: ObjParser = new ObjParser
+    val p: ObjParser       = new ObjParser
     val ignored_lines: Int = p.parse("obj/triangulation_test.obj")
-    val t1: Triangle = p.defaultGroup.objs(0).asInstanceOf[Triangle]
-    val t2: Triangle = p.defaultGroup.objs(1).asInstanceOf[Triangle]
-    val t3: Triangle = p.defaultGroup.objs(2).asInstanceOf[Triangle]
+    val t1: Triangle       = p.defaultGroup.objs(0).asInstanceOf[Triangle]
+    val t2: Triangle       = p.defaultGroup.objs(1).asInstanceOf[Triangle]
+    val t3: Triangle       = p.defaultGroup.objs(2).asInstanceOf[Triangle]
 
-    assert(ignored_lines === 1 &&
-      p.vertices(0) === t1.points._1 &&
-      p.vertices(1) === t1.points._2 &&
-      p.vertices(2) === t1.points._3 &&
-      p.vertices(0) === t2.points._1 &&
-      p.vertices(2) === t2.points._2 &&
-      p.vertices(3) === t2.points._3 &&
-      p.vertices(0) === t3.points._1 &&
-      p.vertices(3) === t3.points._2 &&
-      p.vertices(4) === t3.points._3
-    )
+    assert(
+      ignored_lines === 1 &&
+        p.vertices(0) === t1.points._1 &&
+        p.vertices(1) === t1.points._2 &&
+        p.vertices(2) === t1.points._3 &&
+        p.vertices(0) === t2.points._1 &&
+        p.vertices(2) === t2.points._2 &&
+        p.vertices(3) === t2.points._3 &&
+        p.vertices(0) === t3.points._1 &&
+        p.vertices(3) === t3.points._2 &&
+        p.vertices(4) === t3.points._3)
   }
   test("ObjParser.test_groups") {
-    val p: ObjParser = new ObjParser
+    val p: ObjParser       = new ObjParser
     val ignored_lines: Int = p.parse("obj/groups_test.obj")
-    val t1: Triangle = p.groups("FirstGroup").objs(0).asInstanceOf[Triangle]
-    val t2: Triangle = p.groups("SecondGroup").objs(0).asInstanceOf[Triangle]
+    val t1: Triangle       = p.groups("FirstGroup").objs(0).asInstanceOf[Triangle]
+    val t2: Triangle       = p.groups("SecondGroup").objs(0).asInstanceOf[Triangle]
 
-    assert(ignored_lines === 1 &&
-      p.vertices(0) === t1.points._1 &&
-      p.vertices(1) === t1.points._2 &&
-      p.vertices(2) === t1.points._3 &&
-      p.vertices(0) === t2.points._1 &&
-      p.vertices(2) === t2.points._2 &&
-      p.vertices(3) === t2.points._3
-    )
+    assert(
+      ignored_lines === 1 &&
+        p.vertices(0) === t1.points._1 &&
+        p.vertices(1) === t1.points._2 &&
+        p.vertices(2) === t1.points._3 &&
+        p.vertices(0) === t2.points._1 &&
+        p.vertices(2) === t2.points._2 &&
+        p.vertices(3) === t2.points._3)
   }
   test("ObjParser.test_groups_output") {
-    val p: ObjParser = new ObjParser
+    val p: ObjParser       = new ObjParser
     val ignored_lines: Int = p.parse("obj/groups_test.obj")
-    val g: Group = p.toGroup()
+    val g: Group           = p.toGroup()
 
     assert(ignored_lines === 1 &&
       p.vertices(0) === (g.objs(0)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._1 &&
@@ -92,65 +92,64 @@ class ObjParserTest extends FunSuite {
       p.vertices(2) === (g.objs(0)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._3 &&
       p.vertices(0) === (g.objs(1)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._1 &&
       p.vertices(2) === (g.objs(1)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._2 &&
-      p.vertices(3) === (g.objs(1)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._3
-    )
+      p.vertices(3) === (g.objs(1)).asInstanceOf[Group].objs(0).asInstanceOf[Triangle].points._3)
   }
   test("ObjParser.test_vertex_normals") {
-    val p: ObjParser = new ObjParser
+    val p: ObjParser       = new ObjParser
     val ignored_lines: Int = p.parse("obj/vertex_normal_test.obj")
 
-    assert(ignored_lines === 0 &&
-      p.normals(0) === Vector(0,0,1) &&
-      p.normals(1) === Vector(0.707, 0, -0.707) &&
-      p.normals(2) === Vector(1, 2, 3)
-    )
+    assert(
+      ignored_lines === 0 &&
+        p.normals(0) === Vector(0, 0, 1) &&
+        p.normals(1) === Vector(0.707, 0, -0.707) &&
+        p.normals(2) === Vector(1, 2, 3))
   }
 
   test("ObjParser.test_face_normals") {
-    val p: ObjParser = new ObjParser
+    val p: ObjParser       = new ObjParser
     val ignored_lines: Int = p.parse("obj/faces_normal_test.obj")
-    val g: Group = p.toGroup()
+    val g: Group           = p.toGroup()
 
     val t1: SmoothTriangle = g.objs(0).asInstanceOf[SmoothTriangle]
     val t2: SmoothTriangle = g.objs(1).asInstanceOf[SmoothTriangle]
 
-    assert(ignored_lines === 2 &&
-      p.vertices(0) === t1.points._1 &&
-      p.vertices(1) === t1.points._2 &&
-      p.vertices(2) === t1.points._3 &&
-      p.normals(2) === t1.normals._1 &&
-      p.normals(0) === t1.normals._2 &&
-      p.normals(1) === t1.normals._3 &&
-      t2 === t1
-    )
+    assert(
+      ignored_lines === 2 &&
+        p.vertices(0) === t1.points._1 &&
+        p.vertices(1) === t1.points._2 &&
+        p.vertices(2) === t1.points._3 &&
+        p.normals(2) === t1.normals._1 &&
+        p.normals(0) === t1.normals._2 &&
+        p.normals(1) === t1.normals._3 &&
+        t2 === t1)
   }
 
   test("ObjParser.test_faces_triangulation_normal") {
-    val p: ObjParser = new ObjParser
+    val p: ObjParser       = new ObjParser
     val ignored_lines: Int = p.parse("obj/normal_triangulation_test.obj")
     val t1: SmoothTriangle = p.defaultGroup.objs(0).asInstanceOf[SmoothTriangle]
     val t2: SmoothTriangle = p.defaultGroup.objs(1).asInstanceOf[SmoothTriangle]
     val t3: SmoothTriangle = p.defaultGroup.objs(2).asInstanceOf[SmoothTriangle]
 
-    assert(ignored_lines === 2 &&
-      p.vertices(0) === t1.points._1 &&
-      p.vertices(1) === t1.points._2 &&
-      p.vertices(2) === t1.points._3 &&
-      p.vertices(0) === t2.points._1 &&
-      p.vertices(2) === t2.points._2 &&
-      p.vertices(3) === t2.points._3 &&
-      p.vertices(0) === t3.points._1 &&
-      p.vertices(3) === t3.points._2 &&
-      p.vertices(4) === t3.points._3 &&
-      p.normals(0) === t1.normals._1 &&
-      p.normals(1) === t1.normals._2 &&
-      p.normals(2) === t1.normals._3 &&
-      p.normals(0) === t2.normals._1 &&
-      p.normals(2) === t2.normals._2 &&
-      p.normals(3) === t2.normals._3 &&
-      p.normals(0) === t3.normals._1 &&
-      p.normals(3) === t3.normals._2 &&
-      p.normals(4) === t3.normals._3
-    )
+    assert(
+      ignored_lines === 2 &&
+        p.vertices(0) === t1.points._1 &&
+        p.vertices(1) === t1.points._2 &&
+        p.vertices(2) === t1.points._3 &&
+        p.vertices(0) === t2.points._1 &&
+        p.vertices(2) === t2.points._2 &&
+        p.vertices(3) === t2.points._3 &&
+        p.vertices(0) === t3.points._1 &&
+        p.vertices(3) === t3.points._2 &&
+        p.vertices(4) === t3.points._3 &&
+        p.normals(0) === t1.normals._1 &&
+        p.normals(1) === t1.normals._2 &&
+        p.normals(2) === t1.normals._3 &&
+        p.normals(0) === t2.normals._1 &&
+        p.normals(2) === t2.normals._2 &&
+        p.normals(3) === t2.normals._3 &&
+        p.normals(0) === t3.normals._1 &&
+        p.normals(3) === t3.normals._2 &&
+        p.normals(4) === t3.normals._3)
   }
 }

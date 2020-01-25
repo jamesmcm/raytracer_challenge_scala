@@ -15,7 +15,8 @@
 
 package raytracer
 
-class Plane(val transform: Matrix, val material: Material, val shadow: Boolean) extends SpaceObject {
+class Plane(val transform: Matrix, val material: Material, val shadow: Boolean)
+    extends SpaceObject {
   type T = Plane
 
   def constructor(t: Matrix, m: Material, s: Boolean): T = new Plane(t, m, s)
@@ -41,7 +42,8 @@ class Plane(val transform: Matrix, val material: Material, val shadow: Boolean) 
     Vector(0, 1, 0)
   }
   def bounds: (RTTuple, RTTuple) = {
-    (Point(Double.NegativeInfinity, -EPSILON, Double.NegativeInfinity), Point(Double.PositiveInfinity, EPSILON, Double.PositiveInfinity))
+    (Point(Double.NegativeInfinity, -EPSILON, Double.NegativeInfinity),
+     Point(Double.PositiveInfinity, EPSILON, Double.PositiveInfinity))
   }
 }
 

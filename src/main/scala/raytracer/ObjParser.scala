@@ -24,7 +24,7 @@ class ObjParser {
   var normals: List[RTTuple]                 = List()
   var curgroup: String                       = ""
   var groups: mutable.HashMap[String, Group] = new mutable.HashMap()
-  val regex: scala.util.matching.Regex = "\\s+".r
+  val regex: scala.util.matching.Regex       = "\\s+".r
 
   def parse(filename: String): Int = {
     var ignored_lines: Int = 0
@@ -36,12 +36,22 @@ class ObjParser {
           line.lift(1) match {
             case Some(' ') => {
               val x: IndexedSeq[Double] =
-                line.replaceAll("\\s+", " ").split(' ').drop(1).map((x: String) => x.toDouble).toIndexedSeq
+                line
+                  .replaceAll("\\s+", " ")
+                  .split(' ')
+                  .drop(1)
+                  .map((x: String) => x.toDouble)
+                  .toIndexedSeq
               vertices = vertices :+ Point(x(0), x(1), x(2))
             }
             case Some('n') => {
               val x: IndexedSeq[Double] =
-                line.replaceAll("\\s+", " ").split(' ').drop(1).map((x: String) => x.toDouble).toIndexedSeq
+                line
+                  .replaceAll("\\s+", " ")
+                  .split(' ')
+                  .drop(1)
+                  .map((x: String) => x.toDouble)
+                  .toIndexedSeq
               normals = normals :+ Vector(x(0), x(1), x(2))
             }
             case _ => {
@@ -54,7 +64,8 @@ class ObjParser {
             case x if x == 4 => {
               if (line.contains('/')) {
                 val x: IndexedSeq[(Int, Int)] =
-                  line.replaceAll("\\s+", " ")
+                  line
+                    .replaceAll("\\s+", " ")
                     .split(' ')
                     .drop(1)
                     .map((x: String) => (x.split('/')(0).toInt - 1, x.split('/')(2).toInt - 1))
@@ -78,7 +89,12 @@ class ObjParser {
                 }
               } else {
                 val x: IndexedSeq[Int] =
-                  line.replaceAll("\\s+", " ").split(' ').drop(1).map((x: String) => x.toInt - 1).toIndexedSeq
+                  line
+                    .replaceAll("\\s+", " ")
+                    .split(' ')
+                    .drop(1)
+                    .map((x: String) => x.toInt - 1)
+                    .toIndexedSeq
                 if (curgroup.isEmpty) {
                   defaultGroup =
                     defaultGroup.addChild(Triangle(vertices(x(0)), vertices(x(1)), vertices(x(2))))
@@ -91,7 +107,8 @@ class ObjParser {
             case x if x > 4 => {
               if (line.contains('/')) {
                 val x: IndexedSeq[(Int, Int)] =
-                  line.replaceAll("\\s+", " ")
+                  line
+                    .replaceAll("\\s+", " ")
                     .split(' ')
                     .drop(1)
                     .map((x: String) => (x.split('/')(0).toInt - 1, x.split('/')(2).toInt - 1))
@@ -129,7 +146,12 @@ class ObjParser {
 
               } else {
                 val x: IndexedSeq[Int] =
-                  line.replaceAll("\\s+", " ").split(' ').drop(1).map((x: String) => x.toInt - 1).toIndexedSeq
+                  line
+                    .replaceAll("\\s+", " ")
+                    .split(' ')
+                    .drop(1)
+                    .map((x: String) => x.toInt - 1)
+                    .toIndexedSeq
                 val startindex: Int = x(0)
                 if (curgroup.isEmpty) {
                   defaultGroup = x

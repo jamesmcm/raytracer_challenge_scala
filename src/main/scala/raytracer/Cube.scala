@@ -47,12 +47,13 @@ class Cube(val transform: Matrix, val material: Material, val shadow: Boolean) e
   }
 
   def localNormalAt(p: RTTuple, hit: Intersection): RTTuple = {
-    val maxc: Double = List(math.abs(p.x), math.abs(p.y), math.abs(p.z)).foldLeft(Double.NegativeInfinity)((x: Double, y:Double) => if (x>= y) x else y )
+    val maxc: Double = List(math.abs(p.x), math.abs(p.y), math.abs(p.z))
+      .foldLeft(Double.NegativeInfinity)((x: Double, y: Double) => if (x >= y) x else y)
 
     maxc match {
       case z if z === math.abs(p.x) => Vector(p.x, 0, 0)
       case z if z === math.abs(p.y) => Vector(0, p.y, 0)
-      case _ => Vector(0, 0, p.z)
+      case _                        => Vector(0, 0, p.z)
     }
   }
 

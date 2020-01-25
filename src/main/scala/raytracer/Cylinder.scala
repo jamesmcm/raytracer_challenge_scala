@@ -52,20 +52,22 @@ class Cylinder(val transform: Matrix,
   }
 
   def intersectCaps(r: Ray): Seq[Intersection] = {
-    if ((!closed) || doubleEq(r.direction.y, 0) ) List() else {
+    if ((!closed) || doubleEq(r.direction.y, 0)) List()
+    else {
 
-      ((minimum - r.origin.y)/r.direction.y, (maximum - r.origin.y)/r.direction.y) match {
-        case (a, b) if Cylinder.checkCap(r, a) && Cylinder.checkCap(r, b) => List(Intersection(a, this), Intersection(b, this))
-        case (a, b) if Cylinder.checkCap(r, a)  => List(Intersection(a, this))
-        case (a, b) if Cylinder.checkCap(r, b)  => List(Intersection(b, this))
-        case _ => List()
+      ((minimum - r.origin.y) / r.direction.y, (maximum - r.origin.y) / r.direction.y) match {
+        case (a, b) if Cylinder.checkCap(r, a) && Cylinder.checkCap(r, b) =>
+          List(Intersection(a, this), Intersection(b, this))
+        case (a, b) if Cylinder.checkCap(r, a) => List(Intersection(a, this))
+        case (a, b) if Cylinder.checkCap(r, b) => List(Intersection(b, this))
+        case _                                 => List()
       }
     }
   }
 
   def localIntersect(r: Ray): Seq[Intersection] = {
     val a: Double = r.direction.x * r.direction.x + r.direction.z * r.direction.z
-    if (doubleEq(a, 0)) (intersectCaps(r))
+    if (doubleEq(a, 0))(intersectCaps(r))
     else {
 
       val b: Double    = 2 * r.origin.x * r.direction.x + 2 * r.origin.z * r.direction.z
@@ -80,7 +82,8 @@ class Cylinder(val transform: Matrix,
         (r.origin.y + t0 * r.direction.y, r.origin.y + t1 * r.direction.y) match {
           case (a, b) if (a > minimum && a < maximum && b > minimum && b < maximum) =>
             List(Intersection(t0, this), Intersection(t1, this))
-          case (a, b) if (a > minimum && a < maximum) => List(Intersection(t0, this)) ++ intersectCaps(r)
+          case (a, b) if (a > minimum && a < maximum) =>
+            List(Intersection(t0, this)) ++ intersectCaps(r)
           case (a, b) if (b > minimum && b < maximum) =>
             List(Intersection(t1, this)) ++ intersectCaps(r)
           case _ => intersectCaps(r)
@@ -90,10 +93,12 @@ class Cylinder(val transform: Matrix,
   }
 
   def localNormalAt(p: RTTuple, hit: Intersection): RTTuple = {
-    val dist: Double = p.x*p.x + p.z*p.z
+    val dist: Double = p.x * p.x + p.z * p.z
 
-    if (dist<1 && p.y >= maximum - EPSILON) Vector(0, 1, 0) else {
-      if (dist<1 && p.y <= minimum + EPSILON) Vector(0, -1, 0) else {
+    if (dist < 1 && p.y >= maximum - EPSILON) Vector(0, 1, 0)
+    else {
+      if (dist < 1 && p.y <= minimum + EPSILON) Vector(0, -1, 0)
+      else {
         Vector(p.x, 0, p.z)
       }
     }
@@ -109,7 +114,8 @@ object Cylinder {
                  Material.defaultMaterial(),
                  Double.NegativeInfinity,
                  Double.PositiveInfinity,
-                 false, shadow=true)
+                 false,
+                 shadow = true)
 
   def checkCap(r: Ray, t: Double): Boolean = {
     val x: Double = (r.origin.x + r.direction.x * t)

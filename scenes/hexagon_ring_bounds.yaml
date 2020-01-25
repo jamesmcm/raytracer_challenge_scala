@@ -37,6 +37,8 @@
     color: [0.1, 1, 0.5]
     diffuse: 0.7
     specular: 0.3
+    transparency: 0.8
+    refractive_index: 1.5
 
 - add: hexagon_ring
   bounds: true
@@ -48,6 +50,7 @@
     color: [0.5, 1, 0.1]
     diffuse: 0.7
     specular: 0.3
+    reflective: 0.9
 
 - add: hexagon_ring
   bounds: true
@@ -59,3 +62,5 @@
     color: [1, 0.8, 0.1]
     diffuse: 0.7
     specular: 0.3
+    transparency: 0.4
+    refractive_index: 1.5

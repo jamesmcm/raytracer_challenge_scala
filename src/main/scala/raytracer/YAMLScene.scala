@@ -165,7 +165,7 @@ object YAMLScene {
     var objs: List[SpaceObject] = List()
     for (acct <- elements) {
       val m = acct.extract[JSONItem]
-      println(s"add: ${m.add}: ${m}")
+      // DEBUG: println(s"add: ${m.add}: ${m}")
       // Pattern match
       m match {
         case m if m.add === "camera" => {
@@ -222,18 +222,22 @@ object YAMLScene {
         }
 
         case m if m.add === "hexagon_ring" => {
-          val hex: Group = HexagonRing.hexagon(getMaterial(m.material))
+          val hex: Group = HexagonRing
+            .hexagon(getMaterial(m.material))
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
 
-          val useBounds: Boolean = m.bounds match { case None => false; case Some(x: Boolean) => x; }
+          val useBounds: Boolean = m.bounds match {
+            case None => false; case Some(x: Boolean) => x;
+          }
 
           objs = objs :+ (if (useBounds) hex.setBounds() else hex)
         }
 
         case m if m.add === "sphere" => {
-          objs = objs :+ Sphere.unitSphere()
+          objs = objs :+ Sphere
+            .unitSphere()
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
@@ -247,20 +251,18 @@ object YAMLScene {
             Point(p1(0), p1(1), p1(2)),
             Point(p2(0), p2(1), p2(2)),
             Point(p3(0), p3(1), p3(2))
-          )
-            .setTransform(getTransform(m.transform))
+          ).setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
         }
         case m if m.add === "object" => {
-          val parser: ObjParser = new ObjParser
+          val parser: ObjParser  = new ObjParser
           val ignored_lines: Int = parser.parse(m.filename.get)
-          val g: Group = parser.toGroup().setBounds()
+          val g: Group           = parser.toGroup().setBounds()
           objs = objs :+ g
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
-          // TODO: Material will have no effect on Group - need to apply recursively
         }
       }
       // Instantiate

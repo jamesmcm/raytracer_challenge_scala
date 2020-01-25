@@ -90,14 +90,16 @@ class SphereTest extends FunSuite {
   }
 
   test("Sphere.test_normal4") {
-    val s: Sphere  = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3), Intersection(0, s))
+    val s: Sphere = Sphere.unitSphere()
+    val n: RTTuple =
+      s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3), Intersection(0, s))
 
     assert(n === Vector(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3))
   }
   test("Sphere.test_normal5") {
-    val s: Sphere  = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3), Intersection(0, s))
+    val s: Sphere = Sphere.unitSphere()
+    val n: RTTuple =
+      s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3), Intersection(0, s))
 
     assert(n === n.normalise())
   }

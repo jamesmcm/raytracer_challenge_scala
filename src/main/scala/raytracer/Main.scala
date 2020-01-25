@@ -16,19 +16,12 @@
 package raytracer
 
 object Main extends App {
-  // ParticleEnvironment.drawParticleTest()
-  // drawClock(200)
-  // castSphereSilhouette(100)
-  // Demo.lightSphere(2000)
-  // Demo.firstScene()
-  // Demo.planeScene()
-  // Demo.stripeScene()
-  // Demo.patternScene()
-  // Demo.reflectScene()
-  // Demo.refractScene2()
-  // Demo.tableScene()
-  val (cam: Camera, w: World) = YAMLScene.parseYAMLToScene("scenes/teapot.yaml")
-  val canvas: Canvas = cam.render(w)
-  stringToFile("yamltest.ppm", canvas.toPPM)
+  if (args.length < 2 || args.length > 2) {
+    println("Usage: sbt run scene.yaml output.ppm")
+    System.exit(1)
+  }
+  val (cam: Camera, w: World) = YAMLScene.parseYAMLToScene(args(0))
+  val canvas: Canvas          = cam.render(w)
+  stringToFile(args(1), canvas.toPPM)
 
 }

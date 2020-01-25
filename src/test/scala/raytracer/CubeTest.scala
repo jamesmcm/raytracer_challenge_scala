@@ -19,92 +19,92 @@ import org.scalatest.FunSuite
 
 class CubeTest extends FunSuite {
   test("Cube.test_intersect1") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(5, 0.5, 0), Vector(-1,0,0))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(5, 0.5, 0), Vector(-1, 0, 0))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.length === 2 && xs(0).t === 4 && xs(1).t === 6)
   }
   test("Cube.test_intersect2") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(-5, 0.5, 0), Vector(1,0,0))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(-5, 0.5, 0), Vector(1, 0, 0))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.length === 2 && xs(0).t === 4 && xs(1).t === 6)
   }
   test("Cube.test_intersect3") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0.5, 5, 0), Vector(0,-1,0))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0.5, 5, 0), Vector(0, -1, 0))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.length === 2 && xs(0).t === 4 && xs(1).t === 6)
   }
   test("Cube.test_intersect4") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0.5, -5, 0), Vector(0,1,0))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0.5, -5, 0), Vector(0, 1, 0))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.length === 2 && xs(0).t === 4 && xs(1).t === 6)
   }
   test("Cube.test_intersect5") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0.5, 0, 5), Vector(0,0,-1))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0.5, 0, 5), Vector(0, 0, -1))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.length === 2 && xs(0).t === 4 && xs(1).t === 6)
   }
   test("Cube.test_intersect6") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0.5, 0, -5), Vector(0,0,1))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0.5, 0, -5), Vector(0, 0, 1))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.length === 2 && xs(0).t === 4 && xs(1).t === 6)
   }
   test("Cube.test_intersect7") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0, 0.5, 0), Vector(0,0,1))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0, 0.5, 0), Vector(0, 0, 1))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.length === 2 && xs(0).t === -1 && xs(1).t === 1)
   }
   test("Cube.test_miss1") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(-2, 0, 0), Vector(0.2673,0.5345,0.8018))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(-2, 0, 0), Vector(0.2673, 0.5345, 0.8018))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.isEmpty)
   }
   test("Cube.test_miss2") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0, -2, 0), Vector(0.8018,0.2673,0.5345))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0, -2, 0), Vector(0.8018, 0.2673, 0.5345))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.isEmpty)
   }
   test("Cube.test_miss3") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0, 0, -2), Vector(0.5345,0.8018,0.2673))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0, 0, -2), Vector(0.5345, 0.8018, 0.2673))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.isEmpty)
   }
   test("Cube.test_miss4") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(2, 0, 2), Vector(0,0,-1))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(2, 0, 2), Vector(0, 0, -1))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.isEmpty)
   }
   test("Cube.test_miss5") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(0, 2, 2), Vector(0,-1,0))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(0, 2, 2), Vector(0, -1, 0))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.isEmpty)
   }
   test("Cube.test_miss6") {
-    val c: Cube    = Cube()
-    val r: Ray = Ray(Point(2, 2, 0), Vector(-1,0,0))
+    val c: Cube = Cube()
+    val r: Ray  = Ray(Point(2, 2, 0), Vector(-1, 0, 0))
 
     val xs: Seq[Intersection] = c.localIntersect(r)
     assert(xs.isEmpty)
@@ -113,49 +113,49 @@ class CubeTest extends FunSuite {
     val c: Cube    = Cube()
     val p: RTTuple = Point(1, 0.5, -0.8)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(1, 0, 0))
   }
   test("Cube.test_normal2") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(-1, -0.2, 0.9)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(-1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(-1, 0, 0))
   }
   test("Cube.test_normal3") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(-0.4, 1, -0.1)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,1,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0, 1, 0))
   }
   test("Cube.test_normal4") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(0.3, -1, -0.7)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,-1,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0, -1, 0))
   }
   test("Cube.test_normal5") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(-0.6, 0.3, 1)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,0,1))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0, 0, 1))
   }
   test("Cube.test_normal6") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(0.4, 0.4, -1)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,0,-1))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0, 0, -1))
   }
   test("Cube.test_normal7") {
     val c: Cube    = Cube()
-    val p: RTTuple = Point(1,1,1)
+    val p: RTTuple = Point(1, 1, 1)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(1, 0, 0))
   }
   test("Cube.test_normal8") {
     val c: Cube    = Cube()
-    val p: RTTuple = Point(-1,-1,-1)
+    val p: RTTuple = Point(-1, -1, -1)
 
-    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(-1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(-1, 0, 0))
   }
 
 }

@@ -428,7 +428,8 @@ object Demo {
           .setSpecular(0.4)
       )
 
-    val glass_ball: Sphere = Sphere.glassSphere()
+    val glass_ball: Sphere = Sphere
+      .glassSphere()
       .setTransform(Scaling(0.7, 0.7, 0.7) * Translation(0.25, 1, 0))
       .setMaterial(
         Material
@@ -474,9 +475,10 @@ object Demo {
       .setDiffuse(0.7)
       .setReflective(0.1)
       .setShininess(300)
-      .setPattern(CheckeredPattern(Colour(0, 0, 0), Colour(0.25, 0.25, 0.25)).setTransform(Scaling(0.07, 0.07, 0.07)))
-    val floor: Cube = Cube().setMaterial(floorMaterial).setTransform(Scaling(20, 7, 20) * Translation(0, 1, 0))
-
+      .setPattern(CheckeredPattern(Colour(0, 0, 0), Colour(0.25, 0.25, 0.25))
+        .setTransform(Scaling(0.07, 0.07, 0.07)))
+    val floor: Cube =
+      Cube().setMaterial(floorMaterial).setTransform(Scaling(20, 7, 20) * Translation(0, 1, 0))
 
     val wallMaterial: Material = Material
       .defaultMaterial()
@@ -490,9 +492,10 @@ object Demo {
 
     val walls: Cube = Cube()
       .setMaterial(wallMaterial)
-      .setTransform(Scaling(10,10,10))
+      .setTransform(Scaling(10, 10, 10))
 
-    val tableMaterial: Material = Material.defaultMaterial()
+    val tableMaterial: Material = Material
+      .defaultMaterial()
       .setSpecular(0.9)
       .setAmbient(0.1)
       .setDiffuse(0.7)
@@ -501,28 +504,35 @@ object Demo {
       .setPattern(CheckeredPattern(Colour(0.5529, 0.4235, 0.3255), Colour(0.6588, 0.5098, 0.4000))
         .setTransform(Scaling(0.05, 20, 0.05) * RotationY(0.1)))
 
-    val tabletop: Cube = Cube().setMaterial(tableMaterial)
-      .setTransform(Translation(0, 3.1, 0) * Scaling(3, 0.1, 2) )
+    val tabletop: Cube = Cube()
+      .setMaterial(tableMaterial)
+      .setTransform(Translation(0, 3.1, 0) * Scaling(3, 0.1, 2))
 
-    val legMaterial: Material = Material.defaultMaterial()
+    val legMaterial: Material = Material
+      .defaultMaterial()
       .setColour(Colour(0.5529, 0.4235, 0.3255))
       .setAmbient(0.2)
       .setDiffuse(0.7)
 
-    val leg1: Cube = Cube().setMaterial(legMaterial)
+    val leg1: Cube = Cube()
+      .setMaterial(legMaterial)
       .setTransform(Translation(2.7, 1.5, -1.7) * Scaling(0.1, 1.5, 0.1))
 
-    val leg2: Cube = Cube().setMaterial(legMaterial)
+    val leg2: Cube = Cube()
+      .setMaterial(legMaterial)
       .setTransform(Translation(2.7, 1.5, 1.7) * Scaling(0.1, 1.5, 0.1))
 
-    val leg3: Cube = Cube().setMaterial(legMaterial)
+    val leg3: Cube = Cube()
+      .setMaterial(legMaterial)
       .setTransform(Translation(-2.7, 1.5, -1.7) * Scaling(0.1, 1.5, 0.1))
 
-    val leg4: Cube = Cube().setMaterial(legMaterial)
+    val leg4: Cube = Cube()
+      .setMaterial(legMaterial)
       .setTransform(Translation(-2.7, 1.5, 1.7) * Scaling(0.1, 1.5, 0.1))
 
-    val glassMaterial: Material = Material.glass()
-      .setColour(Colour(1,1,0.8))
+    val glassMaterial: Material = Material
+      .glass()
+      .setColour(Colour(1, 1, 0.8))
       .setAmbient(0)
       .setDiffuse(0.3)
       .setSpecular(0.9)
@@ -531,52 +541,70 @@ object Demo {
       .setTransparency(0.7)
       .setRefractiveIndex(1.5)
 
-    val glassCube: Cube = Cube().setMaterial(glassMaterial)
-      .setTransform(Translation(0, 3.45001, 0)*RotationY(0.2)*Scaling(0.25, 0.25, 0.25))
+    val glassCube: Cube = Cube()
+      .setMaterial(glassMaterial)
+      .setTransform(Translation(0, 3.45001, 0) * RotationY(0.2) * Scaling(0.25, 0.25, 0.25))
       .setShadow(false)
 
-    val cube1: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(1, 0.5, 0.5)).setReflective(0.6).setDiffuse(0.4))
+    val cube1: Cube = Cube()
+      .setMaterial(
+        Material
+          .defaultMaterial()
+          .setColour(Colour(1, 0.5, 0.5))
+          .setReflective(0.6)
+          .setDiffuse(0.4))
       .setTransform(Translation(1, 3.35, -0.9) * RotationY(-0.4) * Scaling(0.15, 0.15, 0.15))
 
-    val cube2: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(1, 1, 0.5)))
+    val cube2: Cube = Cube()
+      .setMaterial(Material.defaultMaterial().setColour(Colour(1, 1, 0.5)))
       .setTransform(Translation(-1.5, 3.27, 0.3) * RotationY(0.4) * Scaling(0.15, 0.07, 0.15))
 
-    val cube3: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0.5, 1, 0.5)))
+    val cube3: Cube = Cube()
+      .setMaterial(Material.defaultMaterial().setColour(Colour(0.5, 1, 0.5)))
       .setTransform(Translation(0, 3.25, 1) * RotationY(0.4) * Scaling(0.2, 0.05, 0.05))
 
-    val cube4: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0.5, 0.5, 1)))
+    val cube4: Cube = Cube()
+      .setMaterial(Material.defaultMaterial().setColour(Colour(0.5, 0.5, 1)))
       .setTransform(Translation(-0.6, 3.4, -1) * RotationY(0.8) * Scaling(0.05, 0.2, 0.05))
 
-    val cube5: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0.5, 1, 1)))
+    val cube5: Cube = Cube()
+      .setMaterial(Material.defaultMaterial().setColour(Colour(0.5, 1, 1)))
       .setTransform(Translation(2, 3.4, 1) * RotationY(0.8) * Scaling(0.05, 0.2, 0.05))
 
-
-    val frame1: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0.7098, 0.2471, 0.2916)).setDiffuse(0.6))
+    val frame1: Cube = Cube()
+      .setMaterial(
+        Material.defaultMaterial().setColour(Colour(0.7098, 0.2471, 0.2916)).setDiffuse(0.6))
       .setTransform(Translation(-10, 4, 1) * Scaling(0.05, 1, 1))
 
-    val frame2: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0.2667, 0.2706, 0.6902)).setDiffuse(0.6))
+    val frame2: Cube = Cube()
+      .setMaterial(
+        Material.defaultMaterial().setColour(Colour(0.2667, 0.2706, 0.6902)).setDiffuse(0.6))
       .setTransform(Translation(-10, 3.4, 2.7) * Scaling(0.05, 0.4, 0.4))
 
-    val frame3: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0.3098, 0.5961, 0.3098)).setDiffuse(0.6))
+    val frame3: Cube = Cube()
+      .setMaterial(
+        Material.defaultMaterial().setColour(Colour(0.3098, 0.5961, 0.3098)).setDiffuse(0.6))
       .setTransform(Translation(-10, 4.6, 2.7) * Scaling(0.05, 0.4, 0.4))
 
-    val mirror_frame: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0.3882, 0.2627, 0.1882)).setDiffuse(0.7))
+    val mirror_frame: Cube = Cube()
+      .setMaterial(
+        Material.defaultMaterial().setColour(Colour(0.3882, 0.2627, 0.1882)).setDiffuse(0.7))
       .setTransform(Translation(-2, 3.5, 9.95) * Scaling(5, 1.5, 0.05))
 
-    val mirror: Cube = Cube().setMaterial(Material.defaultMaterial().
-      setColour(Colour(0, 0, 0)).setDiffuse(0).setAmbient(0).setSpecular(1).setShininess(300).setReflective(1))
+    val mirror: Cube = Cube()
+      .setMaterial(
+        Material
+          .defaultMaterial()
+          .setColour(Colour(0, 0, 0))
+          .setDiffuse(0)
+          .setAmbient(0)
+          .setSpecular(1)
+          .setShininess(300)
+          .setReflective(1))
       .setTransform(Translation(-2, 3.5, 9.95) * Scaling(4.8, 1.4, 0.06))
 
-    val world: World = World(List(Light.pointLight(Point(0, 6.9, -5), Colour(1, 1, 0.9))),
+    val world: World = World(
+      List(Light.pointLight(Point(0, 6.9, -5), Colour(1, 1, 0.9))),
       List(
         floor,
         walls,
@@ -596,8 +624,8 @@ object Demo {
         frame3,
         mirror_frame,
         mirror
-
-       ))
+      )
+    )
 
     val camera: Camera = Camera(2560, 1440, 0.785)
       .setTransform(
