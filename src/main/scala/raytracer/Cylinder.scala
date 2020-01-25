@@ -15,8 +15,6 @@
 
 package raytracer
 
-import cats.implicits._
-
 class Cylinder(val transform: Matrix,
                val material: Material,
                val minimum: Double,

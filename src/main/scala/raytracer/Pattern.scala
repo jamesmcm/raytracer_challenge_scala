@@ -15,8 +15,6 @@
 
 package raytracer
 
-import cats.implicits._
-
 class TestPattern(val transform: Matrix) extends Pattern {
   type T = TestPattern
   val a: Colour = Colour(0, 0, 0)
@@ -37,7 +35,7 @@ object TestPattern {
 class StripePattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   type T = StripePattern
   def colourAt(p: RTTuple): Colour = {
-    if (math.floor(p.x + EPSILON).toInt % 2 === 0) a else b
+    if (math.floor(p.x + EPSILON).toInt % 2 == 0) a else b
   }
   def setTransform(t: Matrix): StripePattern = {
     new StripePattern(a, b, t)
@@ -67,7 +65,7 @@ object GradientPattern {
 class RingPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   type T = RingPattern
   def colourAt(p: RTTuple): Colour = {
-    if (math.floor(math.sqrt(p.x * p.x + p.z * p.z) + EPSILON).toInt % 2 === 0) a else b
+    if (math.floor(math.sqrt(p.x * p.x + p.z * p.z) + EPSILON).toInt % 2 == 0) a else b
   }
   def setTransform(t: Matrix): RingPattern = {
     new RingPattern(a, b, t)
@@ -81,7 +79,7 @@ object RingPattern {
 class CheckeredPattern(val a: Colour, val b: Colour, val transform: Matrix) extends Pattern {
   type T = CheckeredPattern
   def colourAt(p: RTTuple): Colour = {
-    if ((math.floor(p.x + EPSILON) + math.floor(p.y + EPSILON) + math.floor(p.z + EPSILON)).toInt % 2 === 0)
+    if ((math.floor(p.x + EPSILON) + math.floor(p.y + EPSILON) + math.floor(p.z + EPSILON)).toInt % 2 == 0)
       a
     else b
   }

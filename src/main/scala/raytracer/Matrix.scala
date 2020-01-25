@@ -15,8 +15,6 @@
 
 package raytracer
 
-import cats.implicits._
-
 import scala.reflect.ClassTag
 
 class Matrix(val m: Array[Array[Double]]) {
@@ -28,7 +26,7 @@ class Matrix(val m: Array[Array[Double]]) {
 
   final override def equals(that: Any): Boolean = {
     that match {
-      case that: Matrix if that.m.length === m.length && that.m(0).length === m(0).length =>
+      case that: Matrix if that.m.length == m.length && that.m(0).length == m(0).length =>
         Matrix
           .mapMatrix((this zip that), ((x: (Double, Double)) => doubleEq(x._1, x._2)))
           .map((z: Array[Boolean]) => z.forall(identity))
@@ -41,7 +39,7 @@ class Matrix(val m: Array[Array[Double]]) {
   }
 
   final def ===(that: Matrix): Boolean = {
-    if (that.m.length === m.length && that.m(0).length === m(0).length)(Matrix
+    if (that.m.length == m.length && that.m(0).length == m(0).length)(Matrix
       .mapMatrix((this zip that), ((x: (Double, Double)) => doubleEq(x._1, x._2)))
       .map((z: Array[Boolean]) => z.forall(identity))
       .reduce(_ && _))
@@ -50,7 +48,6 @@ class Matrix(val m: Array[Array[Double]]) {
 
   def zip(that: Matrix): Array[Array[(Double, Double)]] = {
     Matrix.zipMatrix(m, that.m)
-    // m.zip(that.m).map((x: (Array[Double], Array[Double])) => x._1 zip x._2)
   }
 
   def row(i: Int): Array[Double] = {
@@ -109,7 +106,7 @@ class Matrix(val m: Array[Array[Double]]) {
 
   def cofactor(row: Int, col: Int): Double = {
     row + col match {
-      case x if x % 2 === 0 => minor(row, col)
+      case x if x % 2 == 0 => minor(row, col)
       case _ => -1 * minor(row, col)
     }
   }
@@ -127,7 +124,7 @@ class Matrix(val m: Array[Array[Double]]) {
     ).transpose
   }
 
-  def isInvertible: Boolean = !(determinant === 0)
+  def isInvertible: Boolean = !(determinant == 0)
 
   def rotateX(r: Double): Matrix = RotationX(r) * this
 
@@ -149,7 +146,7 @@ class Matrix(val m: Array[Array[Double]]) {
 object Matrix {
   def matrixFromString(s: String): Matrix = {
     new Matrix(
-      s.split("\n").map(_.filter(_ =!= ' ').split("\\|").filter(_ =!= "|").map(_.toDouble)))
+      s.split("\n").map(_.filter(_ != ' ').split("\\|").filter(_ != "|").map(_.toDouble)))
   }
 
   def dotArray(a: Array[Double], b: Array[Double]): Double = {
@@ -170,7 +167,7 @@ object Matrix {
         .fill(size)(Array.fill(size)(0: Double))
         .zipWithIndex
         .map((x: (Array[Double], Int)) =>
-          x._1.zipWithIndex.map((y: (Double, Int)) => if (y._2 === x._2) 1: Double else 0: Double))
+          x._1.zipWithIndex.map((y: (Double, Int)) => if (y._2 == x._2) 1: Double else 0: Double))
     )
   }
 }

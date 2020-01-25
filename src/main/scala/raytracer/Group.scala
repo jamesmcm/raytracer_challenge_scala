@@ -15,8 +15,6 @@
 
 package raytracer
 
-import cats.implicits._
-
 class Group(val transform: Matrix,
             val material: Material,
             val shadow: Boolean,

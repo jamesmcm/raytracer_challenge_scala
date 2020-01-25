@@ -15,8 +15,6 @@
 
 package raytracer
 
-import cats.implicits._
-
 class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
   def setLights(l: Seq[Light]): World = {
     new World(l, shapes)
@@ -75,7 +73,7 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
 
   def reflectedColour(comps: Computation, remaining: Int): Colour = {
     if (remaining < 1) { Colour(0, 0, 0) } else {
-      if (comps.shape.material.reflective === 0) { Colour(0, 0, 0) } else {
+      if (comps.shape.material.reflective == 0) { Colour(0, 0, 0) } else {
         val reflect_ray: Ray = Ray(comps.over_point, comps.reflectv)
         colourAt(reflect_ray, remaining - 1) * comps.shape.material.reflective
       }
@@ -86,7 +84,7 @@ class World(val lights: Seq[Light], val shapes: Seq[SpaceObject]) {
     if (remaining < 1) {
       Colour(0, 0, 0)
     } else {
-      if (comps.shape.material.transparency === 0) {
+      if (comps.shape.material.transparency == 0) {
         Colour(0, 0, 0)
       } else {
         val n_ratio: Double = comps.n1 / comps.n2

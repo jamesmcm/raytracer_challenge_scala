@@ -15,8 +15,6 @@
 
 package raytracer
 
-import cats.implicits._
-
 class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double) {
 
   def toTuple: (Double, Double, Double, Double) = (x, y, z, w)
@@ -26,13 +24,13 @@ class RTTuple(val x: Double, val y: Double, val z: Double, val w: Double) {
   final override def equals(that: Any): Boolean = {
     that match {
       case that: RTTuple =>
-        doubleEq(that.x, x) && doubleEq(that.y, y) && doubleEq(that.z, z) && (that.w === w)
+        doubleEq(that.x, x) && doubleEq(that.y, y) && doubleEq(that.z, z) && (that.w == w)
       case _ => false
     }
   }
 
   final def ===(that: RTTuple): Boolean = {
-    doubleEq(that.x, x) && doubleEq(that.y, y) && doubleEq(that.z, z) && (that.w === w)
+    doubleEq(that.x, x) && doubleEq(that.y, y) && doubleEq(that.z, z) && (that.w == w)
   }
 
   final override def hashCode: Int = (x, y, z, w).##

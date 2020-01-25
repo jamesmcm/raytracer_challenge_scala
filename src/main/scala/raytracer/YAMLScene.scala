@@ -16,13 +16,9 @@
 package raytracer
 
 import scala.io.Source
-import io.circe.yaml.parser
-import io.circe.parser
-import io.circe._
 import io.circe.Json
 import net.liftweb.json.DefaultFormats
 import net.liftweb.json._
-import cats.implicits._
 
 final case class JSONPattern(
     typed: String,
@@ -63,7 +59,6 @@ final case class JSONItem(
     p2: Option[List[Double]],
     p3: Option[List[Double]],
     filename: Option[String],
-    // objs: Option[List[JSONItem]], TODO: groups
 )
 
 object YAMLScene {
@@ -168,7 +163,7 @@ object YAMLScene {
       // DEBUG: println(s"add: ${m.add}: ${m}")
       // Pattern match
       m match {
-        case m if m.add === "camera" => {
+        case m if m.add == "camera" => {
           val from = listToTuple(m.from); val to = listToTuple(m.to); val up = listToTuple(m.up);
           camera = Camera(m.width.getOrElse(0), m.height.getOrElse(0), m.field_of_view.getOrElse(0));
           camera = camera.setTransform(
@@ -176,24 +171,24 @@ object YAMLScene {
                           Point(to._1, to._2, to._3),
                           Vector(up._1, up._2, up._3)))
         }
-        case m if m.add === "light" => {
+        case m if m.add == "light" => {
           val t = listToTuple(m.at); val i = listToTuple(m.intensity);
           lights = lights :+ Light.pointLight(Point(t._1, t._2, t._3),
                                               intensity = Colour(i._1, i._2, i._3))
         }
-        case m if m.add === "cube" => {
+        case m if m.add == "cube" => {
           objs = objs :+ Cube()
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
         }
-        case m if m.add === "plane" => {
+        case m if m.add == "plane" => {
           objs = objs :+ Plane()
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
         }
-        case m if m.add === "cylinder" => {
+        case m if m.add == "cylinder" => {
           objs = objs :+ Cylinder()
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
@@ -207,7 +202,7 @@ object YAMLScene {
             })
         }
 
-        case m if m.add === "cone" => {
+        case m if m.add == "cone" => {
           objs = objs :+ Cone()
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
@@ -221,7 +216,7 @@ object YAMLScene {
             })
         }
 
-        case m if m.add === "hexagon_ring" => {
+        case m if m.add == "hexagon_ring" => {
           val hex: Group = HexagonRing
             .hexagon(getMaterial(m.material))
             .setTransform(getTransform(m.transform))
@@ -235,14 +230,14 @@ object YAMLScene {
           objs = objs :+ (if (useBounds) hex.setBounds() else hex)
         }
 
-        case m if m.add === "sphere" => {
+        case m if m.add == "sphere" => {
           objs = objs :+ Sphere
             .unitSphere()
             .setTransform(getTransform(m.transform))
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
         }
-        case m if m.add === "triangle" => {
+        case m if m.add == "triangle" => {
           val p1: List[Double] = m.p1.get
           val p2: List[Double] = m.p2.get
           val p3: List[Double] = m.p3.get
@@ -255,7 +250,7 @@ object YAMLScene {
             .setMaterial(getMaterial(m.material))
             .setShadow(m.shadow match { case None => true; case Some(x: Boolean) => x; })
         }
-        case m if m.add === "object" => {
+        case m if m.add == "object" => {
           val parser: ObjParser  = new ObjParser
           val ignored_lines: Int = parser.parse(m.filename.get)
           val g: Group           = parser.toGroup().setBounds()

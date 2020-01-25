@@ -15,8 +15,6 @@
 
 package raytracer
 
-import cats.implicits._
-
 class Cube(val transform: Matrix, val material: Material, val shadow: Boolean) extends SpaceObject {
   type T = Cube
 
@@ -51,8 +49,8 @@ class Cube(val transform: Matrix, val material: Material, val shadow: Boolean) e
       .foldLeft(Double.NegativeInfinity)((x: Double, y: Double) => if (x >= y) x else y)
 
     maxc match {
-      case z if z === math.abs(p.x) => Vector(p.x, 0, 0)
-      case z if z === math.abs(p.y) => Vector(0, p.y, 0)
+      case z if z == math.abs(p.x) => Vector(p.x, 0, 0)
+      case z if z == math.abs(p.y) => Vector(0, p.y, 0)
       case _                        => Vector(0, 0, p.z)
     }
   }
