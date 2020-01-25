@@ -39,7 +39,7 @@ class Sphere(val transform: Matrix, val material: Material, val shadow: Boolean)
       case _ =>
         List(-b - math.sqrt(discriminant), -b + math.sqrt(discriminant))
           .map(_ / (2 * a))
-          .map((t: Double) => new Intersection(t, this))
+          .map((t: Double) => Intersection(t, this))
     }
   }
 
@@ -53,7 +53,7 @@ class Sphere(val transform: Matrix, val material: Material, val shadow: Boolean)
     ((b * b) - 4 * a * c, a, b)
   }
 
-  def localNormalAt(p: RTTuple): RTTuple = {
+  def localNormalAt(p: RTTuple, hit: Intersection): RTTuple = {
     (p - Point(0, 0, 0))
   }
 

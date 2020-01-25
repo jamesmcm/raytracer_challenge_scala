@@ -79,7 +79,7 @@ object Computation {
   def prepareComputations(intersection: Intersection,
                           ray: Ray,
                           xs: Seq[Intersection]): Computation = {
-    val normalv: RTTuple = intersection.shape.normalAt(ray.position(intersection.t))
+    val normalv: RTTuple = intersection.shape.normalAt(ray.position(intersection.t), intersection)
     val eyev: RTTuple    = ray.direction.negate()
 
     val hit: Intersection        = intersection //Intersection.hit(xs) wtf

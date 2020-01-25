@@ -90,7 +90,7 @@ object Demo {
                   light,
                   ray.position(i.t),
                   ray.direction.negate(),
-                  i.shape.normalAt(ray.position(i.t)),
+                  i.shape.normalAt(ray.position(i.t), i),
                   in_shadow = false
                 )
             );

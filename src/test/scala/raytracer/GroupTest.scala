@@ -83,7 +83,7 @@ class GroupTest extends FunSuite {
     val g2: Group    = Group().setTransform(Scaling(1,2,3)).addChild(s)
     val g1: Group    = Group().setTransform(RotationY(math.Pi/2.0)).addChild(g2)
 
-    val n: RTTuple = s.normalAt(Point(1.7321, 1.1547, -5.5774))
+    val n: RTTuple = s.normalAt(Point(1.7321, 1.1547, -5.5774), Intersection(0, s))
     assert(n === Vector(0.2857037, 0.428543, -0.85716))
   }
   test("Group.bounds_unit_sphere") {

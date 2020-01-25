@@ -20,9 +20,9 @@ import org.scalatest.FunSuite
 class PlaneTest extends FunSuite {
   test("Plane.test_normal") {
     val p: Plane    = Plane()
-    val n1: RTTuple = p.localNormalAt(Point(0, 0, 0))
-    val n2: RTTuple = p.localNormalAt(Point(10, 0, -10))
-    val n3: RTTuple = p.localNormalAt(Point(-5, 0, 150))
+    val n1: RTTuple = p.localNormalAt(Point(0, 0, 0), Intersection(0, p))
+    val n2: RTTuple = p.localNormalAt(Point(10, 0, -10), Intersection(0, p))
+    val n3: RTTuple = p.localNormalAt(Point(-5, 0, 150), Intersection(0, p))
     assert(
       n1 === Vector(0, 1, 0) && n2 === Vector(0, 1, 0) &&
         n3 === Vector(0, 1, 0))

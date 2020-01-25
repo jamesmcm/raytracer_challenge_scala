@@ -15,7 +15,7 @@
 
 package raytracer
 
-class Intersection(val t: Double, val shape: SpaceObject) {
+class Intersection(val t: Double, val shape: SpaceObject, val u: Double, val v: Double) {
   final override def equals(that: Any): Boolean = {
     that match {
       case that: Intersection => doubleEq(that.t, t) && that.shape === shape
@@ -32,7 +32,8 @@ class Intersection(val t: Double, val shape: SpaceObject) {
 }
 
 object Intersection {
-  def apply(t: Double, shape: SpaceObject): Intersection = new Intersection(t, shape)
+  def apply(t: Double, shape: SpaceObject): Intersection = new Intersection(t, shape, 0 ,0)
+  def intersectionWithUV(t: Double, shape: SpaceObject, u: Double, v: Double): Intersection = new Intersection(t, shape, u, v)
   def intersections(is: Intersection*): Seq[Intersection] = {
     is
   }

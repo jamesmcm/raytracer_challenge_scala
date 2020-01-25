@@ -62,25 +62,25 @@ class CylinderTest extends FunSuite {
   }
   test("Cylinder.test_normal1") {
     val c: Cylinder    = Cylinder()
-    val n: RTTuple = c.localNormalAt(Point(1,0,0))
+    val n: RTTuple = c.localNormalAt(Point(1,0,0), Intersection(0, c))
 
     assert(n === Vector(1,0,0))
   }
   test("Cylinder.test_normal2") {
     val c: Cylinder    = Cylinder()
-    val n: RTTuple = c.localNormalAt(Point(0,5,-1))
+    val n: RTTuple = c.localNormalAt(Point(0,5,-1), Intersection(0, c))
 
     assert(n === Vector(0,0,-1))
   }
   test("Cylinder.test_normal3") {
     val c: Cylinder    = Cylinder()
-    val n: RTTuple = c.localNormalAt(Point(0,-2,1))
+    val n: RTTuple = c.localNormalAt(Point(0,-2,1), Intersection(0, c))
 
     assert(n === Vector(0,0,1))
   }
   test("Cylinder.test_normal4") {
     val c: Cylinder    = Cylinder()
-    val n: RTTuple = c.localNormalAt(Point(-1,1,0))
+    val n: RTTuple = c.localNormalAt(Point(-1,1,0), Intersection(0, c))
 
     assert(n === Vector(-1,0,0))
   }
@@ -173,37 +173,37 @@ class CylinderTest extends FunSuite {
   }
   test("Cylinder.test_normal_caps1") {
     val c: Cylinder    = Cylinder().setMinimum(1).setMaximum(2).setClosed(true)
-    val n: RTTuple = c.localNormalAt(Point(0,1,0))
+    val n: RTTuple = c.localNormalAt(Point(0,1,0), Intersection(0, c))
 
     assert(n === Vector(0, -1, 0))
   }
   test("Cylinder.test_normal_caps2") {
     val c: Cylinder    = Cylinder().setMinimum(1).setMaximum(2).setClosed(true)
-    val n: RTTuple = c.localNormalAt(Point(0.5,1,0))
+    val n: RTTuple = c.localNormalAt(Point(0.5,1,0), Intersection(0, c))
 
     assert(n === Vector(0, -1, 0))
   }
   test("Cylinder.test_normal_caps3") {
     val c: Cylinder    = Cylinder().setMinimum(1).setMaximum(2).setClosed(true)
-    val n: RTTuple = c.localNormalAt(Point(0,1,0.5))
+    val n: RTTuple = c.localNormalAt(Point(0,1,0.5), Intersection(0, c))
 
     assert(n === Vector(0, -1, 0))
   }
   test("Cylinder.test_normal_caps4") {
     val c: Cylinder    = Cylinder().setMinimum(1).setMaximum(2).setClosed(true)
-    val n: RTTuple = c.localNormalAt(Point(0,2,0))
+    val n: RTTuple = c.localNormalAt(Point(0,2,0), Intersection(0, c))
 
     assert(n === Vector(0, 1, 0))
   }
   test("Cylinder.test_normal_caps5") {
     val c: Cylinder    = Cylinder().setMinimum(1).setMaximum(2).setClosed(true)
-    val n: RTTuple = c.localNormalAt(Point(0.5,2,0))
+    val n: RTTuple = c.localNormalAt(Point(0.5,2,0), Intersection(0, c))
 
     assert(n === Vector(0, 1, 0))
   }
   test("Cylinder.test_normal_caps6") {
     val c: Cylinder    = Cylinder().setMinimum(1).setMaximum(2).setClosed(true)
-    val n: RTTuple = c.localNormalAt(Point(0,2,0.5))
+    val n: RTTuple = c.localNormalAt(Point(0,2,0.5), Intersection(0, c))
 
     assert(n === Vector(0, 1, 0))
   }

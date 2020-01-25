@@ -95,7 +95,7 @@ class Cone(val transform: Matrix,
     }
   }
 
-  def localNormalAt(p: RTTuple): RTTuple = {
+  def localNormalAt(p: RTTuple, hit: Intersection): RTTuple = {
     val dist: Double = p.x * p.x + p.z * p.z
 
     if (dist < 1 && p.y >= maximum - EPSILON) Vector(0, 1, 0)

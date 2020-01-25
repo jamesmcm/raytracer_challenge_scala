@@ -29,9 +29,9 @@ class TriangleTest extends FunSuite {
 
   test("Triangle.test_normal") {
     val t: Triangle = Triangle(Point(0, 1, 0), Point(-1, 0, 0), Point(1, 0, 0))
-    assert(t.localNormalAt(Point(0,0.5,0)) === t.normal &&
-      t.localNormalAt(Point(-0.5,0.75,0)) === t.normal &&
-      t.localNormalAt(Point(0.5,0.25,0)) === t.normal)
+    assert(t.localNormalAt(Point(0,0.5,0), Intersection(0, t)) === t.normal &&
+      t.localNormalAt(Point(-0.5,0.75,0), Intersection(0, t)) === t.normal &&
+      t.localNormalAt(Point(0.5,0.25,0), Intersection(0, t)) === t.normal)
   }
 
   test("Triangle.intersect_parallel") {

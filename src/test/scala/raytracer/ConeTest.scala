@@ -69,19 +69,19 @@ class ConeTest extends FunSuite {
   }
   test("Cone.test_normal1") {
     val c: Cone    = Cone()
-    val n: RTTuple = c.localNormalAt(Point(0,0,0))
+    val n: RTTuple = c.localNormalAt(Point(0,0,0), Intersection(0, c))
 
     assert(n === Vector(0,0,0))
   }
   test("Cone.test_normal2") {
     val c: Cone    = Cone()
-    val n: RTTuple = c.localNormalAt(Point(1,1,1))
+    val n: RTTuple = c.localNormalAt(Point(1,1,1), Intersection(0, c))
 
     assert(n === Vector(1,-math.sqrt(2),1))
   }
   test("Cone.test_normal3") {
     val c: Cone    = Cone()
-    val n: RTTuple = c.localNormalAt(Point(-1,-1,0))
+    val n: RTTuple = c.localNormalAt(Point(-1,-1,0), Intersection(0, c))
 
     assert(n === Vector(-1,1,0))
   }

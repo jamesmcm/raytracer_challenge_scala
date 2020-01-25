@@ -21,7 +21,7 @@ class ComputationTest extends FunSuite {
   test("Computation.test_creation") {
     val r: Ray          = Ray(Point(0, 0, -5), Vector(0, 0, 1))
     val s: Sphere       = Sphere.unitSphere()
-    val i: Intersection = new Intersection(4, s)
+    val i: Intersection = Intersection(4, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
     assert(
@@ -31,7 +31,7 @@ class ComputationTest extends FunSuite {
   test("Computation.test_outside_hit") {
     val r: Ray          = Ray(Point(0, 0, -5), Vector(0, 0, 1))
     val s: Sphere       = Sphere.unitSphere()
-    val i: Intersection = new Intersection(4, s)
+    val i: Intersection = Intersection(4, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
     assert(!comps.inside)
@@ -39,7 +39,7 @@ class ComputationTest extends FunSuite {
   test("Computation.test_inside_hit") {
     val r: Ray          = Ray(Point(0, 0, 0), Vector(0, 0, 1))
     val s: Sphere       = Sphere.unitSphere()
-    val i: Intersection = new Intersection(1, s)
+    val i: Intersection = Intersection(1, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, Intersection.intersections(i))
     assert(

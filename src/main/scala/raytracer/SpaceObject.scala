@@ -45,12 +45,12 @@ abstract class SpaceObject() {
 
   def bounds: (RTTuple, RTTuple) // Untransformed
 
-  def localNormalAt(p: RTTuple): RTTuple
+  def localNormalAt(p: RTTuple, hit: Intersection): RTTuple
 
-  def normalAt(p: RTTuple): RTTuple = {
+  def normalAt(p: RTTuple, hit: Intersection): RTTuple = {
     val localPoint: RTTuple = worldToObject(p)
 
-    normalToWorld(localNormalAt(localPoint))
+    normalToWorld(localNormalAt(localPoint, hit))
   }
 
   def localIntersect(r: Ray): Seq[Intersection]

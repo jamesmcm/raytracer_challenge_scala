@@ -72,44 +72,44 @@ class SphereTest extends FunSuite {
 
   test("Sphere.test_normal1") {
     val s: Sphere  = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(1, 0, 0))
+    val n: RTTuple = s.normalAt(Point(1, 0, 0), Intersection(0, s))
 
     assert(n === Vector(1, 0, 0))
   }
   test("Sphere.test_normal2") {
     val s: Sphere  = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(0, 1, 0))
+    val n: RTTuple = s.normalAt(Point(0, 1, 0), Intersection(0, s))
 
     assert(n === Vector(0, 1, 0))
   }
   test("Sphere.test_normal3") {
     val s: Sphere  = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(0, 0, 1))
+    val n: RTTuple = s.normalAt(Point(0, 0, 1), Intersection(0, s))
 
     assert(n === Vector(0, 0, 1))
   }
 
   test("Sphere.test_normal4") {
     val s: Sphere  = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3))
+    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3), Intersection(0, s))
 
     assert(n === Vector(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3))
   }
   test("Sphere.test_normal5") {
     val s: Sphere  = Sphere.unitSphere()
-    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3))
+    val n: RTTuple = s.normalAt(Point(math.sqrt(3) / 3, math.sqrt(3) / 3, math.sqrt(3) / 3), Intersection(0, s))
 
     assert(n === n.normalise())
   }
   test("Sphere.test_normal_translated") {
     val s: Sphere  = Sphere.unitSphere().setTransform(Translation(0, 1, 0))
-    val n: RTTuple = s.normalAt(Point(0, 1.70711, -0.70711))
+    val n: RTTuple = s.normalAt(Point(0, 1.70711, -0.70711), Intersection(0, s))
 
     assert(n === Vector(0, 0.70711, -0.70711))
   }
   test("Sphere.test_normal_scaled") {
     val s: Sphere  = Sphere.unitSphere().setTransform(Scaling(1, 0.5, 1) * RotationZ(math.Pi / 5))
-    val n: RTTuple = s.normalAt(Point(0, math.sqrt(2) / 2, -math.sqrt(2) / 2))
+    val n: RTTuple = s.normalAt(Point(0, math.sqrt(2) / 2, -math.sqrt(2) / 2), Intersection(0, s))
 
     assert(n === Vector(0, 0.97014, -0.24254))
   }

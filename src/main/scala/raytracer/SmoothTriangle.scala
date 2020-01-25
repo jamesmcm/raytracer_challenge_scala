@@ -17,36 +17,39 @@ package raytracer
 
 import cats.implicits._
 
-class Triangle(val transform: Matrix,
-               val material: Material,
-               val shadow: Boolean,
-               val points: (RTTuple, RTTuple, RTTuple),
-               val edges: (RTTuple, RTTuple),
-               val normal: RTTuple)
+class SmoothTriangle(val transform: Matrix,
+                     val material: Material,
+                     val shadow: Boolean,
+                     val points: (RTTuple, RTTuple, RTTuple),
+                     val edges: (RTTuple, RTTuple),
+                     val normals: (RTTuple, RTTuple, RTTuple))
     extends SpaceObject {
-  type T = Triangle
+  type T = SmoothTriangle
 
   def constructor(t: Matrix, m: Material, s: Boolean): T = {
-    new Triangle(t, m, s, points, edges, normal)
+    new SmoothTriangle(t, m, s, points, edges, normals)
   }
 
-  def constructor(t: Matrix, m: Material, s: Boolean, p: (RTTuple, RTTuple, RTTuple)): T = {
-    val e1: RTTuple     = p._2 - p._1
-    val e2: RTTuple     = p._3 - p._1
-    val normal: RTTuple = e2.cross(e1).normalise()
+  def constructor(t: Matrix,
+                  m: Material,
+                  s: Boolean,
+                  p: (RTTuple, RTTuple, RTTuple),
+                  n: (RTTuple, RTTuple, RTTuple)): T = {
+    val e1: RTTuple = p._2 - p._1
+    val e2: RTTuple = p._3 - p._1
 
-    new Triangle(t, m, s, p, (e1, e2), normal)
+    new SmoothTriangle(t, m, s, p, (e1, e2), n)
   }
 
   final override def equals(that: Any): Boolean = {
     that match {
-      case that: Triangle =>
-        transform === that.transform && material === that.material && points == that.points
+      case that: SmoothTriangle =>
+        transform === that.transform && material === that.material && points == that.points && normals == that.normals
       case _ => false
     }
   }
 
-  final override def hashCode: Int = (transform, material, points).##
+  final override def hashCode: Int = (transform, material, points, normals).##
 
   def localIntersect(r: Ray): Seq[Intersection] = {
     val dir_cross_e2: RTTuple = r.direction.cross(edges._2)
@@ -59,14 +62,14 @@ class Triangle(val transform: Matrix,
         val origin_cross_e1: RTTuple = p1_to_origin.cross(edges._1)
         val v: Double                = f * r.direction.dot(origin_cross_e1)
         if (v < 0 || (u + v) > 1) { List() } else {
-          List(Intersection(f * edges._2.dot(origin_cross_e1), this))
+          List(Intersection.intersectionWithUV(f * edges._2.dot(origin_cross_e1), this, u, v))
         }
       }
     }
   }
 
   def localNormalAt(p: RTTuple, hit: Intersection): RTTuple = {
-    normal
+    (normals._2 * hit.u) + (normals._3 * hit.v) + (normals._1 * (1 - hit.u - hit.v))
   }
 
   def bounds: (RTTuple, RTTuple) = {
@@ -77,16 +80,20 @@ class Triangle(val transform: Matrix,
   }
 }
 
-object Triangle {
-  def apply(p1: RTTuple, p2: RTTuple, p3: RTTuple): Triangle = {
-    val e1: RTTuple     = p2 - p1
-    val e2: RTTuple     = p3 - p1
-    val normal: RTTuple = e2.cross(e1).normalise()
-    new Triangle(Matrix.getIdentityMatrix(4),
-                 Material.defaultMaterial(),
-                 true,
-                 (p1, p2, p3),
-                 (e1, e2),
-                 normal)
+object SmoothTriangle {
+  def apply(p1: RTTuple,
+            p2: RTTuple,
+            p3: RTTuple,
+            n1: RTTuple,
+            n2: RTTuple,
+            n3: RTTuple): SmoothTriangle = {
+    val e1: RTTuple = p2 - p1
+    val e2: RTTuple = p3 - p1
+    new SmoothTriangle(Matrix.getIdentityMatrix(4),
+                       Material.defaultMaterial(),
+                       true,
+                       (p1, p2, p3),
+                       (e1, e2),
+                       (n1, n2, n3))
   }
 }

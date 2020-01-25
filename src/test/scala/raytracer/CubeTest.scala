@@ -113,49 +113,49 @@ class CubeTest extends FunSuite {
     val c: Cube    = Cube()
     val p: RTTuple = Point(1, 0.5, -0.8)
 
-    assert(c.localNormalAt(p) === Vector(1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(1,0,0))
   }
   test("Cube.test_normal2") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(-1, -0.2, 0.9)
 
-    assert(c.localNormalAt(p) === Vector(-1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(-1,0,0))
   }
   test("Cube.test_normal3") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(-0.4, 1, -0.1)
 
-    assert(c.localNormalAt(p) === Vector(0,1,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,1,0))
   }
   test("Cube.test_normal4") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(0.3, -1, -0.7)
 
-    assert(c.localNormalAt(p) === Vector(0,-1,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,-1,0))
   }
   test("Cube.test_normal5") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(-0.6, 0.3, 1)
 
-    assert(c.localNormalAt(p) === Vector(0,0,1))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,0,1))
   }
   test("Cube.test_normal6") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(0.4, 0.4, -1)
 
-    assert(c.localNormalAt(p) === Vector(0,0,-1))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(0,0,-1))
   }
   test("Cube.test_normal7") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(1,1,1)
 
-    assert(c.localNormalAt(p) === Vector(1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(1,0,0))
   }
   test("Cube.test_normal8") {
     val c: Cube    = Cube()
     val p: RTTuple = Point(-1,-1,-1)
 
-    assert(c.localNormalAt(p) === Vector(-1,0,0))
+    assert(c.localNormalAt(p, Intersection(0, c)) === Vector(-1,0,0))
   }
 
 }

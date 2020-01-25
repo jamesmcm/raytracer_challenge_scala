@@ -71,7 +71,7 @@ class Group(val transform: Matrix,
     }
   }
 
-  def localNormalAt(p: RTTuple): RTTuple = {
+  def localNormalAt(p: RTTuple, hit: Intersection): RTTuple = {
     throw new UnsupportedOperationException("Tried to call localNormalAt() on group")
   }
 

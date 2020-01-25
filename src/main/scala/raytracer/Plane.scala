@@ -33,11 +33,11 @@ class Plane(val transform: Matrix, val material: Material, val shadow: Boolean) 
     if (math.abs(r.direction.y) < EPSILON)(List[Intersection]())
     else {
       val t: Double = -r.origin.y / r.direction.y
-      List(new Intersection(t, this))
+      List(Intersection(t, this))
     }
   }
 
-  def localNormalAt(p: RTTuple): RTTuple = {
+  def localNormalAt(p: RTTuple, hit: Intersection): RTTuple = {
     Vector(0, 1, 0)
   }
   def bounds: (RTTuple, RTTuple) = {

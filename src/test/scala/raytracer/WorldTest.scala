@@ -42,7 +42,7 @@ class WorldTest extends FunSuite {
     val w: World        = World.defaultWorld
     val r: Ray          = Ray(Point(0, 0, -5), Vector(0, 0, 1))
     val s: SpaceObject  = w.shapes(0)
-    val i: Intersection = new Intersection(4, s)
+    val i: Intersection = Intersection(4, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, List(i))
     val c: Colour          = w.shadeHit(comps, 5)
@@ -54,7 +54,7 @@ class WorldTest extends FunSuite {
       World.defaultWorld.setLights(List(Light.pointLight(Point(0, 0.25, 0), Colour(1, 1, 1))))
     val r: Ray          = Ray(Point(0, 0, 0), Vector(0, 0, 1))
     val s: SpaceObject  = w.shapes(1)
-    val i: Intersection = new Intersection(0.5, s)
+    val i: Intersection = Intersection(0.5, s)
 
     val comps: Computation = Computation.prepareComputations(i, r, List(i))
     val c: Colour          = w.shadeHit(comps, 5)
@@ -115,7 +115,7 @@ class WorldTest extends FunSuite {
       .setShapes(List(Sphere.unitSphere(), Sphere.unitSphere().setTransform(Translation(0, 0, 10))))
     val r: Ray          = Ray(Point(0, 0, 5), Vector(0, 0, 1))
     val s2: SpaceObject = w.shapes(1)
-    val i: Intersection = new Intersection(4, s2)
+    val i: Intersection = Intersection(4, s2)
 
     val comps: Computation = Computation.prepareComputations(i, r, List(i))
     val c: Colour          = w.shadeHit(comps, 5)
@@ -125,7 +125,7 @@ class WorldTest extends FunSuite {
     val w: World        = World.defaultWorld
     val r: Ray          = Ray(Point(0, 0, 0), Vector(0, 0, 1))
     val s2: SpaceObject = w.shapes(1).setMaterial(w.shapes(1).material.setAmbient(1))
-    val i: Intersection = new Intersection(1, s2)
+    val i: Intersection = Intersection(1, s2)
 
     val comps: Computation = Computation.prepareComputations(i, r, List(i))
     val c: Colour          = w.reflectedColour(comps, 5)
@@ -137,7 +137,7 @@ class WorldTest extends FunSuite {
       .setTransform(Translation(0, -1, 0))
     val w: World        = World.defaultWorld.setShapes(World.defaultWorld.shapes :+ s)
     val r: Ray          = Ray(Point(0, 0, -3), Vector(0, -1 * math.sqrt(2) / 2, math.sqrt(2) / 2))
-    val i: Intersection = new Intersection(math.sqrt(2), s)
+    val i: Intersection = Intersection(math.sqrt(2), s)
 
     val comps: Computation = Computation.prepareComputations(i, r, List(i))
     val c: Colour          = w.reflectedColour(comps, 5)
@@ -149,7 +149,7 @@ class WorldTest extends FunSuite {
       .setTransform(Translation(0, -1, 0))
     val w: World        = World.defaultWorld.setShapes(World.defaultWorld.shapes :+ s)
     val r: Ray          = Ray(Point(0, 0, -3), Vector(0, -1 * math.sqrt(2) / 2, math.sqrt(2) / 2))
-    val i: Intersection = new Intersection(math.sqrt(2), s)
+    val i: Intersection = Intersection(math.sqrt(2), s)
 
     val comps: Computation = Computation.prepareComputations(i, r, List(i))
     val c: Colour          = w.shadeHit(comps, 5)
@@ -176,7 +176,7 @@ class WorldTest extends FunSuite {
       .setTransform(Translation(0, -1, 0))
     val w: World        = World.defaultWorld.setShapes(World.defaultWorld.shapes :+ s)
     val r: Ray          = Ray(Point(0, 0, -3), Vector(0, -1 * math.sqrt(2) / 2, math.sqrt(2) / 2))
-    val i: Intersection = new Intersection(math.sqrt(2), s)
+    val i: Intersection = Intersection(math.sqrt(2), s)
 
     val comps: Computation = Computation.prepareComputations(i, r, List(i))
     val c: Colour          = w.reflectedColour(comps, 0)
